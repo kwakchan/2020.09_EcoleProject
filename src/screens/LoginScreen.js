@@ -22,12 +22,12 @@ const LoginScreen = ({ navigation }) => {
         />
         <View style = {buttonstyles.button}>
             <Button title="로그인"
-                onPress={() => navigation.navigate('LoginScreen') }
+                onPress={() => navigation.navigate('Login') }
             />
         </View>
         <View style = {buttonstyles.button}>
             <Button title="회원가입"
-                onPress={() => navigation.navigate('SignUpScreen') }
+                onPress={() => navigation.navigate('SignUp') }
             />
         </View>
       </View>

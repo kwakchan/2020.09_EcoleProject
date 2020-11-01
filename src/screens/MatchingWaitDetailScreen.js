@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React from "react";
 import { Text, Image, View, StyleSheet, Button, Alert } from "react-native";
 
 const MatchingWaitDetailScreen = () => {

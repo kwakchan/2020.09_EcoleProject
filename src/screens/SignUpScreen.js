@@ -49,7 +49,7 @@ const SignUpScreen = ({ navigation }) => {
         />
         <View style = {buttonstyles.button}>
             <Button title="회원가입"
-                onPress={() => navigation.navigate('SignUpScreen') }
+                onPress={() => navigation.navigate('SignUp') }
             />
         </View>
       </View>
