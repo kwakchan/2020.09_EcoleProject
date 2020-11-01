@@ -1,9 +1,27 @@
-import React, {Component} from 'react';
-import { View, Text, Button, TextInput, StyleSheet} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Button } from 'react-native';
+import axios from 'axios';
+import { FlatList } from 'react-native-gesture-handler';
+import MemberItem from '../components/MemberItem';
+import {useIsFocused} from '@react-navigation/native';
 
-
+async function fetchMembers(setMembers) {
+  try {
+    const response = await axios.get("http://34.64.75.54/api/members");
+    setMembers(response.data);
+  } catch(e) {
+    console.error(e);
+  }
+}
 
 const MainScreen = ({ navigation }) => {
+  const [members, setMembers] = useState([]);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    fetchMembers(setMembers)
+  },[isFocused])
+
 
 
   return (
@@ -34,8 +52,17 @@ const MainScreen = ({ navigation }) => {
           title="Match Create"
           onPress={() => navigation.navigate('AddMember') }
         />
+        <Button
+          title="Matching Waiting List"
+          onPress={() => navigation.navigate('MatchingWaitingList') }
+        />  
       </View>
       <View style={{ flex: 8 }}>
+      <FlatList
+          data={members}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({item}) => <MemberItem member={item} />}
+      />
       </View>
     </View>
   )
