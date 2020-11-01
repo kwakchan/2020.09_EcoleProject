@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Button } from 'react-native';
 
 const MainScreen = ({ navigation }) => {
     return (
@@ -29,14 +29,6 @@ const MainScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate('MatchingCreate')}
             />
         </View>
-
-    <View style={{ flex: 1 }}>
-      <Button
-        title="Login"
-        onPress={() => navigation.navigate('LoginScreen')}
-      />
-    </View>
-
   )
 }
 
