@@ -12,7 +12,7 @@ const MemberItem = (props) => {
         <Text style={{ fontSize: 20, marginLeft: 5 }}>{name}</Text>
       </View>
       <Text style={{ fontSize: 15, fontWeight: "700" }}>{team ? team.name : "No Team"}</Text>
-    </View>
+    </View> 
   );
 };
 
