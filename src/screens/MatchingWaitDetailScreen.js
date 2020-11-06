@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
-
 import { ListItem, Icon } from 'react-native-elements'
+import { ScrollView } from "react-native-gesture-handler";
 
 const list = [
   {
@@ -61,7 +61,7 @@ const MatchingWaitDetailScreen = () => {
     );
 
   return (
-    <View style={styles.background}>
+    <ScrollView style={styles.background}>
 
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
       <View style={styles.container}>
@@ -95,7 +95,7 @@ const MatchingWaitDetailScreen = () => {
         <Button title={"거절"} onPress={createThreeButtonAlert} color='black'/>
       </View>
 
-    </View>
+    </ScrollView>
   );
 }
 

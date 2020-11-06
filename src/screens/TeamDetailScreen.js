@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
 import { ListItem, Avatar } from 'react-native-elements'
+import { ScrollView } from "react-native-gesture-handler";
 
 const list = [
     {
@@ -65,7 +66,7 @@ const TeamDetailScreen = () => {
     );
 
   return (
-    <View style={styles.background}>
+    <ScrollView style={styles.background}>
 
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
       <View style={styles.container}>
@@ -96,7 +97,7 @@ const TeamDetailScreen = () => {
         <Button title={"취소"} onPress={createThreeButtonAlert} color='black'/>
       </View>
 
-    </View>
+    </ScrollView>
   );
 }
 
