@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, Button, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
-import PropTypes from 'prop-types';
 
 const MyMatchingItem = (props) => {
   const {team_name, matching_location, matching_time, matching_count } = props.myMatching;
@@ -21,7 +20,4 @@ const MyMatchingItem = (props) => {
   );
 };
 
-MyMatchingItem.propTypes = {
-  myMatching: PropTypes.element.isRequired
-}
 export default MyMatchingItem;

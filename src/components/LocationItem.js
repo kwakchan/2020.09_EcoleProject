@@ -56,7 +56,7 @@ const LocationItem = (props) => {
       }}>
       {
         STATES[state].map(
-          ({label, value}) => <Picker.Item label={label} value={value} />
+          ({label, value}) => <Picker.Item key={label+value} label={label} value={value} />
         )
       }
     </Picker>
