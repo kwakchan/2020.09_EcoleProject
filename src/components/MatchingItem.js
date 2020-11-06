@@ -1,22 +1,30 @@
 import React from 'react';
-import { Text, Button, View } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import PropTypes from 'prop-types';
 
 const MatchingItem = (props) => {
   const {team_name, matching_location, matching_time, matching_count } = props.matching;
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between" }}>
-      <View style={{ flexDirection: "row", alignItems: "center"}}>
-        <Avatar size="medium" rounded title={team_name.substring(0,1)} containerStyle={{ backgroundColor: "gray" }} />
-        <Text style={{ fontSize: 20, marginLeft: 5 }}>{team_name}</Text>
-        <Text style={{ fontSize: 20, marginLeft: 5 }}>{matching_location}</Text>
-        <Text style={{ fontSize: 20, marginLeft: 5 }}>{matching_time}</Text>
-        <Text style={{ fontSize: 20, marginLeft: 5 }}>{matching_count}</Text>
-        <Button title="상세보기" onPress={() => navigation.navigate('#') }/>
+    <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between" }}
+                            // onPress={() => navigation.navigate('#') }
+    >
+      <Avatar size="medium" rounded title={team_name.substring(0,1)} containerStyle={{ backgroundColor: "gray" }} />
+      <View>
+        <Text style={{ fontSize: 17, marginLeft: 5, fontWeight: 'bold' }}>{team_name}</Text>
       </View>
-    </View>
+      <View style={{flexDirection: "column", alignItems: "flex-end"}}>
+        <Text style={{ fontSize: 15}}>{matching_time}</Text>
+        <Text style={{ fontSize: 15}}>{matching_location}</Text>
+        <Text style={{ fontSize: 15}}>{matching_count}</Text>
+      </View>
+    </TouchableOpacity>
+    
   );
 };
+MatchingItem.propTypes = {
+  matching: PropTypes.element.isRequired
+}
 
 export default MatchingItem;

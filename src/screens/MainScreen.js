@@ -22,7 +22,7 @@ const MainScreen = ({ navigation }) => {
             />
             <Button
                 title="경기 대기 목록"
-                onPress={() => navigation.navigate('MatchList')}
+                onPress={() => navigation.navigate('MatchingList')}
             />
             <Button
                 title="경기 대기 생성"

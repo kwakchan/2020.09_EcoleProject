@@ -7,7 +7,7 @@ import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import MatchingWaitDetailScreen from './src/screens/MatchingWaitDetailScreen.js';
 import MyPageScreen from './src/screens/MyPageScreen';
-import MatchListScreen from './src/screens/MatchListScreen';
+import MatchingListScreen from './src/screens/MatchingListScreen';
 import MatchingCreateScreen from './src/screens/MatchingCreateScreen';
 import EditMyInformation from './src/screens/EditMyInformation';
 import EditTeamInformation from "./src/screens/EditTeamInformation";
@@ -24,7 +24,7 @@ export default App = () => {
         <Stack.Screen name="SignUp" component={SignUpScreen}/>
         <Stack.Screen name="MatchingWaitDetail" component={MatchingWaitDetailScreen} />
         <Stack.Screen name="MyPage" component={MyPageScreen}/>
-        <Stack.Screen name="MatchList" component={MatchListScreen} />
+        <Stack.Screen name="MatchingList" component={MatchingListScreen} />
         <Stack.Screen name="MatchingCreate" component={MatchingCreateScreen} />
         <Stack.Screen name="EditMyInformation" component={EditMyInformation} />
         <Stack.Screen name="EditTeamInformation" component={EditTeamInformation} />
