@@ -28,8 +28,12 @@ const MainScreen = ({ navigation }) => {
                 title="경기 대기 생성"
                 onPress={() => navigation.navigate('MatchingCreate')}
             />
+            <Button
+                title="팀 상세 페이지"
+                onPress={() => navigation.navigate('TeamDetail')}
+            />
         </View>
-  )
+    )
 }
 
 export default MainScreen;
