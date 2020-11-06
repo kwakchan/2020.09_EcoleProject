@@ -92,7 +92,7 @@ const MatchingListScreen = ({ navigation }) => {
 
   return (
 
-    <ScrollView  style={{ padding: 30 }}>
+    <View  style={{ padding: 30 }}>
       <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>경기 대기 목록</Text>
       
       <View>
@@ -140,7 +140,7 @@ const MatchingListScreen = ({ navigation }) => {
         title="경기개설"
       />
 
-    </ScrollView>
+    </View>
   )
 }
 
