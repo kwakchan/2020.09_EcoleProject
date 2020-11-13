@@ -66,8 +66,6 @@ const MatchingCreateScreen = ({ navigation }) => {
                 <Button title="날짜" onPress={() => setShowCal(true)} />
                 <Text style={{ fontSize: 25, textAlign: "center" }}>{date}</Text>
 
-
-
                 <View>
                   <Text style={styles.info}>지역</Text>
                   <Picker

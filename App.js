@@ -12,6 +12,8 @@ import MatchingCreateScreen from './src/screens/MatchingCreateScreen';
 import EditMyInformation from './src/screens/EditMyInformation';
 import EditTeamInformation from "./src/screens/EditTeamInformation";
 import TeamDetailScreen from "./src/screens/TeamDetailScreen";
+import TeamListScreen from "./src/screens/TeamListScreen";
+import BoardListScreen from "./src/screens/BoardListScreen";
 import TeamMemberScreen from "./src/screens/TeamMemberScreen";
 
 
@@ -31,6 +33,8 @@ export default App = () => {
         <Stack.Screen name="EditMyInformation" component={EditMyInformation} />
         <Stack.Screen name="EditTeamInformation" component={EditTeamInformation} />
         <Stack.Screen name="TeamDetail" component={TeamDetailScreen} />
+        <Stack.Screen name="TeamList" component={TeamListScreen} />
+        <Stack.Screen name="BoardList" component={BoardListScreen} />
         <Stack.Screen name="TeamMember" component={TeamMemberScreen} />
       </Stack.Navigator>
     </NavigationContainer>
