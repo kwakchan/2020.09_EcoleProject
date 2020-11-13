@@ -3,28 +3,39 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert, ScrollView, Button, Image, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+import LocationItem from '../components/LocationItem';
 
 
-const createThreeButtonAlert = () =>
-Alert.alert(
-  "팀 해체",
-  "팀을 정말 해체하시겠습니까",
-  [
-    {
-      text: "취소",
-      onPress: () => console.log("Cancel Pressed"),
-      style: "cancel"
-    },
-    { text: "확인", onPress: () => console.log("OK Pressed") }
-  ],
-  { cancelable: false }
-);
+const createThreeButtonAlert = (navigation) =>
+    Alert.alert(
+        "팀 해체",
+        "팀을 정말 해체하시겠습니까",
+        [
+            {
+                text: "취소",
+            onPress: () => console.log("Cancel Pressed"),
+         
+    
+               style: "cancel"
+            },
+            { 
+                text: "확인", 
+                onPress: () => {console.log("Team Delete") ,
+                navigation.navigate('MyPage')}, 
+            }
+        ],
+        { cancelable: false }
+    );
 
 const EditTeamInformation = ({ navigation }) => {
     const [value, setValue] = useState({
         language: '선택',
     });
     const [image, setImage] = useState(null);
+    const [name, setName] = useState('');
+    const [note, setNote] = useState('');
+
+    const [location, setLocation] = useState('')
 
     useEffect(() => {
         (async () => {
@@ -80,48 +91,60 @@ const EditTeamInformation = ({ navigation }) => {
 
 
                 <Text style={styles.info}>팀 이름</Text>
+
                 <TextInput
+                    onChangeText={setName}
+                    value={name}
                     style={styles.input}
                     placeholder="  고양이팀"
                     placeholderTextColor="grey"
+                    autoCapitalize="none"
+
+                    
                 />
 
                 <Text style={styles.info}>지역</Text>
 
-                <Picker
-                    selectedValue={value}
-                    style={{ height: 50, width: '95%', marginTop: 8 }}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setValue({ language: itemValue })
-                    }>
-                    <Picker.Item label="지역" value="지역선택" />
-
-                    <Picker.Item label="강서구/사하구/사상구" value="West" />
-                    <Picker.Item label="북구/동래구/금정구" value="North" />
-                    <Picker.Item label="서구/중구/영도구" value="South" />
-                    <Picker.Item label="동구/부산진구" value="Leftcenter" />
-                    <Picker.Item label="남구/수영구/연제구" value="Rightcenter" />
-                    <Picker.Item label="해운대구/기장군" value="East" />
+                <LocationItem setLocation={(location) => setLocation(location)} />
 
 
-                </Picker>
+             
+                <Text style={styles.info}>팀 설명</Text>
+                
 
+                <TextInput
+                    onChangeText={setNote}
+                    value={note}
+                    style={styles.inputlong}
+                    multiline ={true}
+                    placeholder="  열심히 해봅시다"
+                    placeholderTextColor="grey"
+                    autoCapitalize="none"
 
-
-
+                    
+                />
 
 
 
             </View>
             <View style={styles.button}>
-                <Button
-                    title={"저장하기"} 
-                    
-
-
+            <Button
+                    onPress={() => {
+                        const response = {
+                           
+                            name: name,
+                            image : image,
+                            note : note ,
+                            ...location
+                           
+                        };
+                        console.log(response);
+                        navigation.navigate('MyPage');
+                    }}
+                    title="저장하기"
                 />
                 <Text></Text>
-                <Button title={"팀 해체"} onPress={createThreeButtonAlert} />
+                <Button title={"팀 해체"} onPress={() => createThreeButtonAlert(navigation)} />
 
             </View>
 
@@ -152,6 +175,17 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderColor: "grey",
         borderWidth: 0.8
+    },
+
+    inputlong: {
+        margin: 7,
+        width: '95%',
+        height: 120,
+        alignSelf: 'center',
+        borderColor: "grey",
+        borderWidth: 0.8,
+        textAlignVertical : 'top'
+        
     },
 
     button: {
