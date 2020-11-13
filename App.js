@@ -16,6 +16,9 @@ import BoardDetailScreen from "./src/screens/BoardDetailScreen";
 import TeamListScreen from "./src/screens/TeamListScreen";
 import BoardListScreen from "./src/screens/BoardListScreen";
 import TeamMemberScreen from "./src/screens/TeamMemberScreen";
+import FindEmailScreen from "./src/screens/FindEmailScreen";
+import FindPwScreen from "./src/screens/FindPwScreen";
+import CreateNewPwScreen from "./src/screens/CreateNewPwScreen";
 
 
 const Stack = createStackNavigator();
@@ -38,6 +41,9 @@ export default App = () => {
         <Stack.Screen name="TeamList" component={TeamListScreen} />
         <Stack.Screen name="BoardList" component={BoardListScreen} />
         <Stack.Screen name="TeamMember" component={TeamMemberScreen} />
+        <Stack.Screen name="FindEmail" component={FindEmailScreen} />
+        <Stack.Screen name="FindPw" component={FindPwScreen} />
+        <Stack.Screen name="CreateNewPw" component={CreateNewPwScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
