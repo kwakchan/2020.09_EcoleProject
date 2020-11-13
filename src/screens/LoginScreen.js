@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
+import { AuthContext } from '../../App';
 
 const LoginScreen = ({ navigation }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signIn } = useContext(AuthContext);
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
@@ -29,14 +31,8 @@ const LoginScreen = ({ navigation }) => {
         />
         <View style={styles.button}>
           <Button title="로그인" color="#EDD81C"
-            // onPress={() => { navigation.navigate('Login') }}
             onPress={() => {
-              const response = {
-                email: email,
-                password: password
-              };
-              console.log(response);
-              navigation.navigate('MyPage');
+              signIn();
             }}
           />
         </View>
