@@ -3,39 +3,43 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Button, Image, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+import LocationItem from '../components/LocationItem';
 
 const EditMyInformation = ({ navigation }) => {
-    const [value, setValue] = useState({
-        language: '선택',
-    });
     const [image, setImage] = useState(null);
-    
+    // const [name, setName] = useState('');
+    // const [birth, setBirth] = useState('');
+    const [location, setLocation] = useState('');
+    const [position, setPosition] = useState('st');
+    const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
+    const [foot, setFoot] = useState('');
 
     useEffect(() => {
         (async () => {
-          if (Platform.OS !== 'web') {
-            const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
-            if (status !== 'granted') {
-              alert('Sorry, we need camera roll permissions to make this work!');
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!');
+                }
             }
-          }
         })();
-      }, []);
-    
-      const pickImage = async () => {
+    }, []);
+
+    const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
         });
-    
+
         console.log(result);
-    
+
         if (!result.cancelled) {
-          setImage(result.uri);
+            setImage(result.uri);
         }
-      };
+    };
 
     return (
         <ScrollView>
@@ -57,65 +61,60 @@ const EditMyInformation = ({ navigation }) => {
                     <Button
                         title="찾아보기"
                         onPress={pickImage}
-                    
+
                     />
                 </View>
 
 
 
 
-                <Text style={styles.info}>닉네임</Text>
+                {/* <Text style={styles.info}>닉네임</Text>
                 <TextInput
+                onChangeText={setName}
+                vlaue={name}
                     style={styles.input}
                     placeholder="  김호랑"
                     placeholderTextColor="grey"
+                    autoCapitalize="none"
                 />
 
                 <Text style={styles.info}>생년월일</Text>
                 <TextInput
+                onChangeText={setBirth}
+                vlaue={birth}
                     style={styles.input}
                     placeholder="  1996.08.21"
                     placeholderTextColor="grey"
-                />
+                /> */}
                 <Text style={styles.info}>지역</Text>
 
-                <Picker
-                    selectedValue={value}
-                    style={{ height: 50, width: '95%', marginTop: 8 }}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setValue({ language: itemValue })
-                    }>
-                    <Picker.Item label="지역" value="지역선택" />
-
-                    <Picker.Item label="강서구/사하구/사상구" value="West" />
-                    <Picker.Item label="북구/동래구/금정구" value="North" />
-                    <Picker.Item label="서구/중구/영도구" value="South" />
-                    <Picker.Item label="동구/부산진구" value="Leftcenter" />
-                    <Picker.Item label="남구/수영구/연제구" value="Rightcenter" />
-                    <Picker.Item label="해운대구/기장군" value="East" />
-
-
-                </Picker>
+                <LocationItem setLocation={(location) => setLocation(location)} />
 
                 <Text style={styles.info}>포지션</Text>
                 <Picker
-                    selectedValue={value}
+                    selectedValue={position}
                     style={{ height: 50, width: '95%', marginTop: 8 }}
                     onValueChange={(itemValue, itemIndex) =>
-                        setValue({ language: itemValue })
+                        setPosition(itemValue)
                     }>
-                    <Picker.Item label="포지션" value="포지션" />
                     <Picker.Item label="st" value="st" />
+                    <Picker.Item label="cf" value="cf" />
+                    <Picker.Item label="lw" value="lw" />
+                    <Picker.Item label="rw" value="rw" />
+                    <Picker.Item label="cam" value="cam" />
+                    <Picker.Item label="cdm" value="cdm" />
+                    <Picker.Item label="cm" value="cm" />
+                    <Picker.Item label="lb" value="lb" />
+                    <Picker.Item label="rb" value="rb" />
                     <Picker.Item label="cb" value="cb" />
-                    <Picker.Item label="지역" value="지역선택" />
-                    <Picker.Item label="지역" value="지역선택" />
-                    <Picker.Item label="지역" value="지역선택" />
-                    <Picker.Item label="지역" value="지역선택" />
+                    <Picker.Item label="gk" value="gk" />
 
                 </Picker>
 
                 <Text style={styles.info}>키</Text>
                 <TextInput
+                    onChangeText={setHeight}
+                    value={height}
                     style={styles.input}
                     placeholder="  196"
                     placeholderTextColor="grey"
@@ -125,19 +124,47 @@ const EditMyInformation = ({ navigation }) => {
 
                 <Text style={styles.info}>몸무게</Text>
                 <TextInput
+                    onChangeText={setWeight}
+                    value={weight}
                     style={styles.input}
                     placeholder="  100"
                     placeholderTextColor="grey"
                 />
+
+                <Text style={styles.info}>주발</Text>
+                <Picker
+                    selectedValue={foot}
+                    style={{ height: 50, width: '95%', marginTop: 8 }}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setFoot(itemValue)
+                    }>
+                    <Picker.Item label="오른발" value="right" />
+                    <Picker.Item label="왼발" value="left" />
+                    <Picker.Item label="양발" value="both" />
+
+
+                </Picker>
 
 
 
             </View>
             <View style={styles.button}>
                 <Button
+                    onPress={() => {
+                        const response = {
+                            image: image,
+                            // name: name,
+                            position: position,
+                            //  birth : birth,
+                            height: height,
+                            weight: weight,
+                            foot : foot,
+                            ...location
+                        };
+                        console.log(response);
+                        navigation.navigate('MyPage');
+                    }}
                     title="저장하기"
-
-
                 />
 
 

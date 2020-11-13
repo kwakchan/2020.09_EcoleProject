@@ -36,6 +36,17 @@ const MainScreen = ({ navigation }) => {
                 title="_게시판 글 상세"
                 onPress={() => navigation.navigate('BoardDetail')}
             />
+            <Button
+                title="팀 목록 페이지" onPress={() => navigation.navigate('TeamList')}
+            />
+            <Button
+                title="게시판 목록 페이지"
+                onPress={() => navigation.navigate('BoardList')}
+            />
+            <Button
+                title="팀 멤버"
+                onPress={() => navigation.navigate('TeamMember')}
+            />
         </View>
     )
 }
