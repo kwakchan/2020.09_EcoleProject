@@ -2,25 +2,25 @@ import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
-const MatchingItem = (props) => {
-  const {team_name, matching_location, matching_time, matching_count } = props.matching;
+const TeamItem = (props) => {
+  const {team_name, team_location, team_birth, team_count } = props.team;
 
   return (
     <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between" }}
-                             onPress={(team_name) => navigation.navigate('#') }
+                            // onPress={() => navigation.navigate('#') }
     >
       <Avatar size="medium" rounded title={team_name.substring(0,1)} containerStyle={{ backgroundColor: "gray" }} />
-      <View>  
+      <View>
         <Text style={{ fontSize: 17, marginLeft: 5, fontWeight: 'bold' }}>{team_name}</Text>
-      </View>       
+      </View>
       <View style={{flexDirection: "column", alignItems: "flex-end"}}>
-        <Text style={{ fontSize: 15}}>{matching_time}</Text>
-        <Text style={{ fontSize: 15}}>{matching_location}</Text>
-        <Text style={{ fontSize: 15}}>{matching_count}</Text>
+        <Text style={{ fontSize: 15}}>{team_location}</Text>
+        <Text style={{ fontSize: 15}}>{team_birth}</Text>
+        <Text style={{ fontSize: 15}}>{team_count}</Text>
       </View>
     </TouchableOpacity>
     
   );
 };
 
-export default MatchingItem;
+export default TeamItem;

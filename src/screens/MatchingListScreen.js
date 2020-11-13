@@ -1,31 +1,18 @@
-import React,{ useState } from 'react';
-import { View, Text, Button, StyleSheet, ScrollView, Switch } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Switch, Button } from 'react-native';
 
 import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import MatchingItem from '../components/MatchingItem';
 import MyMatchingItem from '../components/MyMatchingItem';
 import LocationItem from '../components/LocationItem';
+import { Avatar } from 'react-native-elements';
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 10
-  },
-  info: {
-    marginTop: 15,
-    marginLeft: 8,
-    fontSize: 18
-  },
-  input: {
-    margin: 7,
-    width: '95%',
-    height: 40,
-    alignSelf: 'center',
-    borderColor: "grey",
-    borderWidth: 0.8
-}
-  
-})
+import { Calendar } from 'react-native-calendars';
+import moment from 'moment';
+import 'moment-timezone';
+moment.tz.setDefault("Asia/Seoul");
+
 
 const myMatchings = [
   {
@@ -75,8 +62,14 @@ const matchings = [
   },
   {
     id: 5,
-    
-    team_name: '거제향우회',
+    team_name: '거제향우회1',
+    matching_location: '강서구',
+    matching_time: '11/05 12:00',
+    matching_count: '5명',
+  },
+  {
+    id: 6,
+    team_name: '거제향우회1',
     matching_location: '강서구',
     matching_time: '11/05 12:00',
     matching_count: '5명',
@@ -87,60 +80,105 @@ const matchings = [
 const MatchingListScreen = ({ navigation }) => {
 
   const [search, setSearch] = useState('');
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
+  const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
+  const [showCal, setShowCal] = useState(false);
+  const [showMy, setShowMy] = useState(false);
+  
+  const [isEnabled, setIsEnabled] = useState(false); //toggle
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState); //toggle
   return (
+    <>
+      { 
+        showCal ?
+          <Calendar
+            horizontal={true}
+            pagingEnabled={true}
+            futureScrollRange={50}
+            current={moment().format('YYYY-MM-DD')}
+            minDate={moment().format('YYYY-MM-DD')}
+            maxDate={'2020-11-30'}
+            onDayPress={(day) => {
+              setDate(day.dateString);
+              setShowCal(false);
+              console.log('selected day: ', date)
+            }}
+            monthFormat={'yyyy-MM-dd'}
+            hideExtraDays={true}
+            markedDates={{
+              // '2020-11-12': { startingDay: true, startingDay: true, color: 'skyblue'},
+              // '2020-11-13': { endingDay: true, startingDay: true, color: 'skyblue'},
+              [date]: { selected: true, marked: true, selectedColor: 'blue' }
+            }}
+            markingType={'period'}
+          />
+          :
+          isEnabled ?
+          <View style={{ flex: 1, padding: 20 }}>
+            <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>내가 개설한 경기 목록</Text>
+            <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitch}
+                  value={isEnabled}
+            />  
+            <View style={{ alignItems: 'center' }}>
+              <Avatar
+                size="large"
+                rounded title="팀"
+                containerStyle={{ backgroundColor: "gray" }}
+              />
+              <Text style={{ fontSize: 30 }}> 경성대 </Text>
+            </View>
 
-    <View  style={{ padding: 30 }}>
-      <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>경기 대기 목록</Text>
-      
-      <View>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-      </View>
+            <FlatList
+              data={myMatchings}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => <MyMatchingItem myMatching={item} />}
+              style={{ margin: 10 }}
+            />
+          </View>  
+          :
+          <View style={{ flex: 1, padding: 20 }}>
+            <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>전체 경기 목록</Text>
+            <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+             />
+            <SearchBar
+              placeholder="Team Seach"
+              onChangeText={setSearch}
+              value={search}
+              onSubmitEditing={() => console.log('search:' + search)}
+              containerStyle={{ backgroundColor: '#DCDCDC' }}
+              lightTheme round
+              style={{ margin: 5 }}
+            /> 
+            <View style={{ flexDirection: "row", alignItems: 'center' }}>
+              <LocationItem setLocation={(location) => console.log(location)} />
+            </View>
+            <Button
+              title="날짜선택"
+              onPress={() => setShowCal(true)}
+              color="gray"
+            />
+            <FlatList
+              data={matchings}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => <MatchingItem matching={item} />}
+            />
+            <Button
+              title="경기개설"
+            />
+          </View>
+            
+      }
 
-      <View style={{ margin: 1, borderWidth: 1 }}>
-        <Text style={{ fontSize: 10, margin: 5, fontWeight: 'bold' }}>내가 개설한 경기 목록</Text>
-        <FlatList
-          data={myMatchings}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <MyMatchingItem myMatching={item} />}
-        />
-      </View>
 
-      <View style={{ margin: 1 }}> 
-        <Text style={{ fontSize: 10, margin: 5, fontWeight: 'bold' }}>전체 경기 목록</Text>
-        
-        <LocationItem setLocation={(location) => console.log(location)} />
-
-        <SearchBar
-          placeholder="Team Seach"
-          onChangeText={setSearch}
-          value={search}
-          onSubmitEditing={ ()=>  console.log('search:'+search)}
-          containerStyle={{backgroundColor: '#DCDCDC'}}
-          lightTheme round
-          style={{margin: 5 }}
-        />
-
-        <FlatList
-          data={matchings}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <MatchingItem matching={item} />}
-        />
-        
-      </View>
-      <Button
-        title="경기개설"
-      />
-
-    </View>
+    </>
   )
 }
 
