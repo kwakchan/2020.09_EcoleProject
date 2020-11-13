@@ -33,14 +33,16 @@ const MainScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate('TeamDetail')}
             />
             <Button
-                title="팀 목록 페이지"
-                onPress={() => navigation.navigate('TeamList')}
+                title="팀 목록 페이지" onPress={() => navigation.navigate('TeamList')}
             />
             <Button
                 title="게시판 목록 페이지"
                 onPress={() => navigation.navigate('BoardList')}
             />
-
+            <Button
+                title="팀 멤버"
+                onPress={() => navigation.navigate('TeamMember')}
+            />
         </View>
     )
 }
