@@ -13,8 +13,8 @@ const MainScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate('SignUp')}
             />
             <Button
-                title="경기 대기 상세 페이지로 이동"
-                onPress={() => navigation.navigate('MatchingWaitDetail')}
+                title="_경기 상세"
+                onPress={() => navigation.navigate('MatchingDetail')}
             />
             <Button
                 title="마이페이지"
@@ -29,8 +29,12 @@ const MainScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate('MatchingCreate')}
             />
             <Button
-                title="팀 상세 페이지"
+                title="_팀 상세"
                 onPress={() => navigation.navigate('TeamDetail')}
+            />
+            <Button
+                title="_게시판 글 상세"
+                onPress={() => navigation.navigate('BoardDetail')}
             />
         </View>
     )

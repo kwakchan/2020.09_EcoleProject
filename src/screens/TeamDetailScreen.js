@@ -1,44 +1,16 @@
 import React from "react";
-import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
-import { ListItem, Avatar } from 'react-native-elements'
+import { Text, Image, View, StyleSheet, Alert} from "react-native";
+import { Button } from 'react-native-elements';
 import { ScrollView } from "react-native-gesture-handler";
 
-const list = [
-    {
-      name: '김춘추',
-      avatar_url: 'http://placeimg.com/50/50',
-      subtitle: 'FW/160/53'
-    },
-    {
-      name: '이순신',
-      avatar_url: 'http://placeimg.com/50/50',
-      subtitle: 'GK/180/72'
-    },
-    {
-      name: '장보고',
-      avatar_url: 'http://placeimg.com/50/50',
-      subtitle: 'DF/165/60'
-    },
-    {
-      name: '김유신',
-      avatar_url: 'http://placeimg.com/50/50',
-      subtitle: 'FW/180/73'
-    },
-    {
-      name: '유관순',
-      avatar_url: 'http://placeimg.com/50/50',
-      subtitle: 'GK/195/70'
-    },
-  ]
+import Icon from 'react-native-vector-icons/FontAwesome';
 
+const TeamDetailScreen = ({navigation}) => {
 
-const TeamDetailScreen = () => {
-
-
-  const createTwoButtonAlert = () =>
+  const applyButtonAlert = () =>
     Alert.alert(
       "팀 가입 신청",
-      "FC바르셀로나 팀 가입을 신청하시겠습니까?",
+      "FC미슛가루 팀 가입을 신청하시겠습니까?",
       [
         {
           text: "취소",
@@ -50,10 +22,10 @@ const TeamDetailScreen = () => {
       { cancelable: false }
     );
 
-  const createThreeButtonAlert = () =>
+  const cancelButtonAlert = () =>
     Alert.alert(
       "팀 가입 취소",
-      "FC바르셀로나 팀 가입을 취소하시겠습니까?",
+      "FC미슛가루 팀 가입을 취소하시겠습니까?",
       [
         {
           text: "취소",
@@ -68,33 +40,43 @@ const TeamDetailScreen = () => {
   return (
     <ScrollView style={styles.background}>
 
+      
+
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
-      <View style={styles.container}>
-        <Image source={{uri: 'http://placeimg.com/100/100',}} style={{width:100, height:100}} />
+      <View style={styles.teamprofile}>
+        <Image source={{uri: 'http://placeimg.com/100/100',}} style={{width:100, height:100, borderRadius: 150/2}} />
         <View style={{flexDirection:'column'}}>
           <Text styles={styles.teamname} style={{fontSize:20}}>FC미슛가루</Text>
         </View>
       </View>
 
-      {/* 상세내용 */}
+      {/* 멤버 목록 페이지로 이동하는 버튼 */}
       <View>
-        {
-            list.map((l, i) => (
-            <ListItem key={i} bottomDivider>
-                <Avatar source={{uri: l.avatar_url}} />
-                <ListItem.Content>
-                <ListItem.Title>{l.name}</ListItem.Title>
-                <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
-                </ListItem.Content>
-            </ListItem>
-            ))
-        }
+        <Button
+          onPress={() => navigation.navigate('SignUp')}
+          icon={
+            <Icon
+              name="user"
+              size={30}
+              color='white'
+            />
+          }
+          title="  Enter to MemberList"
+        />
       </View>
 
-      {/* 수락/거절 버튼 */}
-      <View style={styles.button} >
-        <Button title={"신청"} onPress={createTwoButtonAlert} color='black'/>
-        <Button title={"취소"} onPress={createThreeButtonAlert} color='black'/>
+      {/* 신청/취소 버튼 */}
+      <View style={styles.oxbutton}>
+        <Button
+          onPress={applyButtonAlert}
+          title="신청"
+          type="outline"
+        />
+        <Button
+          onPress={cancelButtonAlert}
+          title="취소"
+          disabled
+        />
       </View>
 
     </ScrollView>
@@ -104,9 +86,9 @@ const TeamDetailScreen = () => {
 
 const styles = StyleSheet.create({
   background: {
-    
+    margin:30
   },
-  container: {
+  teamprofile: {
     margin:20,
     alignItems:'center'
   },
@@ -115,13 +97,11 @@ const styles = StyleSheet.create({
     alignContent:'center',
     fontWeight:'bold',
     textAlign:'center',
-    alignSelf:'center',
-    fontFamily:'NanumSquareR'
+    alignSelf:'center'
   },
-  button: {
-    flexDirection:'row',
-    alignSelf:'center',
-    margin:20
+  oxbutton: {
+    marginTop:30,
+    marginBottom:30
   }
 });
 
