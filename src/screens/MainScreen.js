@@ -9,7 +9,7 @@ const MainScreen = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <Button
         title="경기 대기 상세 페이지로 이동"
-        onPress={() => navigation.navigate('MatchingWaitDetail')}
+        onPress={() => navigation.navigate('MatchingDetail')}
       />
       <Button
         title="마이페이지"
@@ -36,11 +36,22 @@ const MainScreen = ({ navigation }) => {
         onPress={() => navigation.navigate('BoardCreate')}
       />
       <Button
+        title="팀 목록 페이지" onPress={() => navigation.navigate('TeamList')}
+      />
+      <Button
+        title="게시판 목록 페이지"
+        onPress={() => navigation.navigate('BoardList')}
+      />
+      <Button
+        title="팀 멤버"
+        onPress={() => navigation.navigate('TeamMember')}
+      />
+      <Button
         title="로그아웃"
         onPress={() => signOut()}
       />
     </View>
-  )
+  );
 }
 
 export default MainScreen;
