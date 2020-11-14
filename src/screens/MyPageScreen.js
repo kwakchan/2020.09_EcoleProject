@@ -65,8 +65,8 @@ const MyPageScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate('EditMyInformation')}
               />
               <Text></Text>
-              <Button title={"  로그아웃  "}
-                onPress={() => navigation.navigate('Login')} />
+              {/* <Button title={"  로그아웃  "}
+                onPress={() => navigation.navigate('Login')} /> */}
             </View>
 
           </View>
@@ -129,7 +129,7 @@ const MyPageScreen = ({ navigation }) => {
           <View style={styles.button}>
             {/* 팀 목록 페이지로 이동 */}
             <Button title={"  팀 목록  "}
-              onPress={MyPageScreen} />
+              onPress={() => {}} />
             <Text></Text>
             {/* 팀 목록 페이지로 이동 */}
             <Button title={"  팀원 목록  "}

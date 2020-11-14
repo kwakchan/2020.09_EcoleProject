@@ -1,20 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Button } from 'react-native';
+import { AuthContext } from "../../App";
 
 const MainScreen = ({ navigation }) => {
+  const { signOut } = useContext(AuthContext);
+
   return (
     <View style={{ flex: 1 }}>
       <Button
-        title="로그인페이지"
-        onPress={() => navigation.navigate('Login')}
-      />
-      <Button
-        title="회원가입페이지"
-        onPress={() => navigation.navigate('SignUp')}
-      />
-      <Button
         title="경기 대기 상세 페이지로 이동"
-        onPress={() => navigation.navigate('MatchingWaitDetail')}
+        onPress={() => navigation.navigate('MatchingDetail')}
       />
       <Button
         title="마이페이지"
@@ -33,6 +28,14 @@ const MainScreen = ({ navigation }) => {
         onPress={() => navigation.navigate('TeamDetail')}
       />
       <Button
+        title="팀 생성 페이지"
+        onPress={() => navigation.navigate('TeamCreate')}
+      />
+      <Button
+        title="게시판 생성 페이지"
+        onPress={() => navigation.navigate('BoardCreate')}
+      />
+      <Button
         title="팀 목록 페이지" onPress={() => navigation.navigate('TeamList')}
       />
       <Button
@@ -43,8 +46,12 @@ const MainScreen = ({ navigation }) => {
         title="팀 멤버"
         onPress={() => navigation.navigate('TeamMember')}
       />
+      <Button
+        title="로그아웃"
+        onPress={() => signOut()}
+      />
     </View>
-  )
+  );
 }
 
 export default MainScreen;
