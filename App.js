@@ -16,6 +16,8 @@ import BoardDetailScreen from "./src/screens/BoardDetailScreen";
 import TeamListScreen from "./src/screens/TeamListScreen";
 import BoardListScreen from "./src/screens/BoardListScreen";
 import TeamMemberScreen from "./src/screens/TeamMemberScreen";
+import MatchingModifyScreen from './src/screens/MatchingModifyScreen';
+import MatchingRequestScreen from './src/screens/MatchingRequestScreen';
 
 
 const Stack = createStackNavigator();
@@ -38,6 +40,8 @@ export default App = () => {
         <Stack.Screen name="TeamList" component={TeamListScreen} />
         <Stack.Screen name="BoardList" component={BoardListScreen} />
         <Stack.Screen name="TeamMember" component={TeamMemberScreen} />
+        <Stack.Screen name="MatchingModify" component={MatchingModifyScreen} />
+        <Stack.Screen name="MatchingRequest" component={MatchingRequestScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

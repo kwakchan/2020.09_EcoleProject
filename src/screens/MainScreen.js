@@ -47,6 +47,14 @@ const MainScreen = ({ navigation }) => {
                 title="팀 멤버"
                 onPress={() => navigation.navigate('TeamMember')}
             />
+            <Button
+                title="_경기 수정"
+                onPress={() => navigation.navigate('MatchingModify')}
+            />
+            <Button
+                title="_경기 요청"
+                onPress={() => navigation.navigate('MatchingRequest')}
+            />
         </View>
     )
 }
