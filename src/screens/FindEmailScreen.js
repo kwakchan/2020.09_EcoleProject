@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Button, TextInput, Alert } from 'react-native';
 import { Picker } from "@react-native-community/picker";
+import { api } from '../api';
+
+async function findemail(data, finde) {
+  try {
+    const res = await api.get("/api/find/email", {params: data});
+    console.log("이메일 찾기 성공");
+    finde(res.data.email);
+  } catch (err) {
+    console.log("이메일 찾기 실패");
+    console.log(err)
+  }
+}
 
 const FindEmailScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [phonestart, setphonestart] = useState('');
   const [phone, setphone] = useState('');
-  var phoneNum = phonestart + '-' + phone;
-  const [value, setValue] = useState({
-    language: 'java',
-  });
 
-
-  const find = () =>
+  const finde = (email) =>
     Alert.alert(
       "이메일 찾기",
-      "회원님의 이메일은 ",
+      `회원님의 이메일은 \n${email} 입니다`,
       [
-        { text: "확인", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
+        { text: "로그인 화면으로", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
       ],
       { cancelable: false }
     );
@@ -42,7 +49,6 @@ const FindEmailScreen = ({ navigation }) => {
             style={{ height: 70, width: 95 }}
             onValueChange={(itemValue, itemIndex) => {
               setphonestart(itemValue);
-              setValue({ language: itemValue });
             }
             }>
             <Picker.Item label="선택" value="" />
@@ -71,8 +77,11 @@ const FindEmailScreen = ({ navigation }) => {
         <View style={styles.button}>
           <Button
             onPress={() => {
-              find();
-              console.log(name + ' ' + phoneNum);
+              const data = {
+                name: name,
+                phoneNum: `${phonestart}-${phone}`
+              }
+              findemail(data, finde);
             }}
             title="완료" color="#EDD81C"
           />
