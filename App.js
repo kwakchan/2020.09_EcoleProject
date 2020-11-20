@@ -21,7 +21,9 @@ BoardListScreen,
 TeamMemberScreen,
 FindEmailScreen,
 FindPwScreen,
-CreateNewPwScreen
+CreateNewPwScreen,
+MatchingModifyScreen,
+MatchingRequestScreen
 } from "./src/screens";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "./src/context";
@@ -131,6 +133,8 @@ export default App = () => {
                 <Stack.Screen name="MyPage" component={MyPageScreen} />
                 <Stack.Screen name="MatchingList" component={MatchingListScreen} />
                 <Stack.Screen name="MatchingCreate" component={MatchingCreateScreen} />
+                <Stack.Screen name="MatchingModify" component={MatchingModifyScreen} />
+                <Stack.Screen name="MatchingRequest" component={MatchingRequestScreen} />
                 <Stack.Screen name="EditMyInformation" component={EditMyInformation} />
                 <Stack.Screen name="EditTeamInformation" component={EditTeamInformation} />
                 <Stack.Screen name="TeamDetail" component={TeamDetailScreen} />

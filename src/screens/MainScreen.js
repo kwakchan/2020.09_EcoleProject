@@ -47,6 +47,19 @@ const MainScreen = ({ navigation }) => {
         onPress={() => navigation.navigate('TeamMember')}
       />
       <Button
+        title="게시판 글 상세"
+        onPress={() => navigation.navigate('BoardDetail')}
+      />
+      <Button
+        title="경기 수정"
+        onPress={() => navigation.navigate('MatchingModify')}
+      />
+      <Button
+        title="경기 요청"
+        onPress={() => navigation.navigate('MatchingRequest')}
+      />
+
+      <Button
         title="로그아웃"
         onPress={() => signOut()}
       />
