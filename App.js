@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useMemo } from "react";
+import { Alert } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -33,7 +34,7 @@ import { api } from "./src/api";
 const Stack = createStackNavigator();
 const {Provider} = AuthContext;
 
-export default App = () => {
+export default App = (navigation) => {
   const [state, dispatch] = useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -76,6 +77,17 @@ export default App = () => {
     bootstrapAsync();
   }, []);
 
+  const success = (navigation) =>
+  Alert.alert(
+    "회원가입 성공!!",
+    `로그인 페이지로 이동합니다.`,
+    [
+      { text: "확인", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
+    ],
+    { cancelable: false }
+  );
+
+
   const authContext = useMemo(
     () => ({
       signIn: async data => {
@@ -100,9 +112,10 @@ export default App = () => {
           console.log("토큰 삭제 실패");
         }
       },
-      signUp: async data => {
+      signUp: async (data, navigation) => {
         try {
           await api.post("/api/accounts", data);
+          success(navigation)
           console.log("회원가입 성공");
         } catch (err) {
           console.log("회원가입 실패");
@@ -123,7 +136,6 @@ export default App = () => {
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="FindEmail" component={FindEmailScreen} />
                 <Stack.Screen name="FindPw" component={FindPwScreen} />
-                <Stack.Screen name="CreateNewPw" component={CreateNewPwScreen} />
               </>
             ) :
             (
@@ -143,6 +155,7 @@ export default App = () => {
                 <Stack.Screen name="BoardList" component={BoardListScreen} />
                 <Stack.Screen name="TeamMember" component={TeamMemberScreen} />
                 <Stack.Screen name="TeamCreate" component={TeamCreateScreen} />
+                <Stack.Screen name="CreateNewPw" component={CreateNewPwScreen} />
                 <Stack.Screen name="BoardCreate" component={BoardCreateScreen} />
               </>
             )}
