@@ -8,7 +8,7 @@ const TeamItem = (props) => {
 
   return (
     <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between" }}
-                      onPress={() => {navigation.navigate('MatchingDetail', {team_name: team_name}); 
+                      onPress={() => {navigation.navigate('TeamDetail', {team_name: team_name}); 
                       }}
     >
       <Avatar size="medium" rounded title={team_name.substring(0,1)} containerStyle={{ backgroundColor: "gray" }} />

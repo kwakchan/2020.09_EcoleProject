@@ -3,14 +3,6 @@ import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
 import { ListItem, Avatar } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
 
-const user = [
-    {
-      name: '김민수',
-      avatar_url: 'http://placeimg.com/50/50',
-      time: '2020/11/15 14:38'
-    }
-  ]
-
 const comment = [
     {
       name: '강동원',
@@ -32,8 +24,16 @@ const comment = [
     }
   ]
 
-const BoardDetailScreen = ({navigation}) => {
-
+const BoardDetailScreen = ({route, navigation}) => {
+  const {board_type, board_title, board_writer, board_timestamp, board_contents} = route.params;
+  const user = [
+    {
+      name: JSON.stringify(board_writer),
+      avatar_url: 'http://placeimg.com/50/50',
+      time: JSON.stringify(board_timestamp)
+    }
+  ]
+  
   const deleteButtonAlert = () =>
     Alert.alert(
       "게시물 삭제",
@@ -85,16 +85,10 @@ const BoardDetailScreen = ({navigation}) => {
       {/* 제목 + 내용 */}
       <View style={styles.content}>
         <Text style={styles.title}>
-          제목입니다 글자수 제한은 없습니다
+          {JSON.stringify(board_title)}
         </Text>
         <Text>
-          내용입니다
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
+          {JSON.stringify(board_contents)}  
         </Text>
       </View>
 

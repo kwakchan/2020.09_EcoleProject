@@ -21,6 +21,7 @@ const myMatchings = [
     matching_location: '남구',
     matching_time: '11/02 20:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 4,
@@ -28,6 +29,7 @@ const myMatchings = [
     matching_location: '남구',
     matching_time: '11/04 12:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   }
 ];
 
@@ -38,6 +40,7 @@ const matchings = [
     matching_location: '영도구',
     matching_time: '11/02 19:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 2,
@@ -45,6 +48,7 @@ const matchings = [
     matching_location: '남구',
     matching_time: '11/02 20:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 3,
@@ -52,6 +56,7 @@ const matchings = [
     matching_location: '동래구',
     matching_time: '11/02 21:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 4,
@@ -59,6 +64,7 @@ const matchings = [
     matching_location: '남구',
     matching_time: '11/04 12:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 5,
@@ -66,6 +72,7 @@ const matchings = [
     matching_location: '강서구',
     matching_time: '11/05 12:00',
     matching_count: '5명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 6,
@@ -73,6 +80,7 @@ const matchings = [
     matching_location: '강서구',
     matching_time: '11/05 12:00',
     matching_count: '5명',
+    matching_contents: '덤벼 덤벼!'
   }
 ];
 
@@ -172,6 +180,7 @@ const MatchingListScreen = ({ navigation }) => {
             />
             <Button
               title="경기개설"
+              onPress={() => navigation.navigate('MatchingCreate')}
             />
           </View>
             

@@ -4,12 +4,12 @@ import { Avatar } from 'react-native-elements';
 
 const MatchingItem = (props) => {
   const  navigation  = props.navigation;
-  const {id, team_name, matching_location, matching_time, matching_count } = props.matching;
+  const {id, team_name, matching_location, matching_time, matching_count, matching_contents } = props.matching;
   
   return (
     <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between" }}
-                      onPress={() => { navigation.navigate('MatchingWaitDetail', 
-                                      {id: id, team_name: team_name, matching_location: matching_location, matching_time: matching_time,matching_count: matching_count});
+                      onPress={() => { navigation.navigate('MatchingDetail', 
+                                      {id: id, team_name: team_name, matching_location: matching_location, matching_time: matching_time,matching_count: matching_count, matching_contents: matching_contents});
                                      }}
     >
       <Avatar size="medium" rounded title={team_name.substring(0,1)} containerStyle={{ backgroundColor: "gray" }} />

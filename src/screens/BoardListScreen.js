@@ -13,6 +13,7 @@ const boards = [
     board_timestamp: '2020-11-14',
     board_title: '방가방가 반가워요',
     board_writer: '남도산',
+    board_contents: "이미 나에게로 하여 집착하게 만든 너 실패에 주저앉은 처참한 날 본후 다시 용기얻는 모습 생각하며 날 사랑해 줄 수 있겠니"
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const boards = [
     board_timestamp: '2020-11-14',
     board_title: '경성대근처 윙어구함',
     board_writer: '도날드',
+    board_contents: "이미 나에게로 하여 집착하게 만든 너 실패에 주저앉은 처참한 날 본후 다시 용기얻는 모습 생각하며 날 사랑해 줄 수 있겠니"
   },
   {
     id: 3,
@@ -27,12 +29,14 @@ const boards = [
     board_timestamp: '2020-11-14',
     board_title: '거제향우회 팀원 구합니다',
     board_writer: '올거제',
+    board_contents: "이미 나에게로 하여 집착하게 만든 너 실패에 주저앉은 처참한 날 본후 다시 용기얻는 모습 생각하며 날 사랑해 줄 수 있겠니"
   }, {
     id: 4,
     board_type: '[자유게시판]',
     board_timestamp: '2020-11-14',
     board_title: '방가방가 반가워요',
     board_writer: '남도산',
+    board_contents: "이미 나에게로 하여 집착하게 만든 너 실패에 주저앉은 처참한 날 본후 다시 용기얻는 모습 생각하며 날 사랑해 줄 수 있겠니"
   },
   {
     id: 5,
@@ -40,6 +44,7 @@ const boards = [
     board_timestamp: '2020-11-14',
     board_title: '경성대근처 윙어구함',
     board_writer: '도날드',
+    board_contents: "이미 나에게로 하여 집착하게 만든 너 실패에 주저앉은 처참한 날 본후 다시 용기얻는 모습 생각하며 날 사랑해 줄 수 있겠니"
   },
   {
     id: 6,
@@ -47,6 +52,7 @@ const boards = [
     board_timestamp: '2020-11-14',
     board_title: '거제향우회 팀원 구합니다',
     board_writer: '올거제',
+    board_contents: "이미 나에게로 하여 집착하게 만든 너 실패에 주저앉은 처참한 날 본후 다시 용기얻는 모습 생각하며 날 사랑해 줄 수 있겠니"
   },
   {
     id: 7,
@@ -54,6 +60,7 @@ const boards = [
     board_timestamp: '2020-11-14',
     board_title: '거제향우회 팀원 구합니다',
     board_writer: '올거제',
+    board_contents: "이미 나에게로 하여 집착하게 만든 너 실패에 주저앉은 처참한 날 본후 다시 용기얻는 모습 생각하며 날 사랑해 줄 수 있겠니"
   }
 ];
 
@@ -88,6 +95,7 @@ const BoardListScreen = ({ navigation }) => {
 
         <Button
           title="팀 만들기"
+          onPress={() => navigation.navigate('BoardCreate')}
         />
 
       </View>

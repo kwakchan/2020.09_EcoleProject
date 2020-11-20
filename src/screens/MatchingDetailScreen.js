@@ -3,30 +3,30 @@ import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
 import { ListItem, Icon } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
 
-const list = [
-  {
-    title: '시간',
-    icon: 'event',
-    text: '2020년 12월 32일 오후 8시'
-  },
-  {
-    title: '장소',
-    icon: 'room',
-    text: '경성대'
-  },
-  {
-    title: '인원',
-    icon: 'group',
-    text: '11명'
-  },
-  {
-    title: '설명',
-    icon: 'info',
-    text: '먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요'
-  }
-]
-
-const MatchingDetailScreen = () => {
+const MatchingDetailScreen = ({route, navigation}) => {
+  const { team_name, matching_location, matching_time, matching_count, matching_contents } = route.params;
+  const list = [
+    {
+      title: '시간',
+      icon: 'event',
+      text: JSON.stringify(matching_time)
+    },
+    {
+      title: '장소',
+      icon: 'room',
+      text: JSON.stringify(matching_location)
+    },
+    {
+      title: '인원',
+      icon: 'group',
+      text: JSON.stringify(matching_count)
+    },
+    {
+      title: '설명',
+      icon: 'info',
+      text: JSON.stringify(matching_contents)   
+    }
+  ]
 
   const deleteButtonAlert = () =>
     Alert.alert(
@@ -94,7 +94,7 @@ const MatchingDetailScreen = () => {
         <Image source={{uri: 'http://placeimg.com/100/100'}} style={{width:100, height:100, borderRadius: 150/2}}
         />
         <View style={{flexDirection:'column'}}>
-          <Text styles={styles.teamname} style={{fontSize:20}}>FC미슛가루</Text>
+          <Text styles={styles.teamname} style={{fontSize:20}}>{JSON.stringify(team_name)}</Text>
         </View>
       </View>
 
@@ -119,6 +119,10 @@ const MatchingDetailScreen = () => {
           onPress={requestButtonAlert}
           title="신청"
           type="outline"
+          onPress={() => {
+            console.log(JSON.stringify(team_name)+"팀에게 매칭신청을 하였습니다.");
+            navigation.navigate('MatchingDetail');
+          }}
         />
         <Button
           onPress={cancelButtonAlert}
