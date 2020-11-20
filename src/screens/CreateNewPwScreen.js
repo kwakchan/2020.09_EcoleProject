@@ -11,6 +11,12 @@ const CreateNewPwScreen = ({ navigation }) => {
       </View>
       <View style={styles.container}>
         <TextInput
+          style={styles.input}
+          placeholder="  기존 비밀번호 입력"
+          placeholderTextColor="grey"
+          secureTextEntry
+        />
+        <TextInput
           onChangeText={setPassword}
           value={password}
           style={styles.input}
@@ -28,11 +34,11 @@ const CreateNewPwScreen = ({ navigation }) => {
           <Button title="완료" color="#EDD81C"
             onPress={() => {
               console.log(password);
-              navigation.navigate('Login');
+              navigation.navigate('EditMyInformation');
             }}
           />
         </View>
-        
+
       </View>
       <View style={{ flex: 8 }}>
       </View>
