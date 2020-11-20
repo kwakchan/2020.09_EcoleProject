@@ -25,12 +25,12 @@ const comment = [
   ]
 
 const BoardDetailScreen = ({route, navigation}) => {
-  const {board_type, board_title, board_writer, board_timestamp, board_contents} = route.params;
+  const {title, author, createdAt, content} = route.params;
   const user = [
     {
-      name: JSON.stringify(board_writer),
+      name: JSON.stringify(author),
       avatar_url: 'http://placeimg.com/50/50',
-      time: JSON.stringify(board_timestamp)
+      time: JSON.stringify(createdAt)
     }
   ]
   
@@ -85,10 +85,10 @@ const BoardDetailScreen = ({route, navigation}) => {
       {/* 제목 + 내용 */}
       <View style={styles.content}>
         <Text style={styles.title}>
-          {JSON.stringify(board_title)}
+          {JSON.stringify(title)}
         </Text>
         <Text>
-          {JSON.stringify(board_contents)}  
+          {JSON.stringify(content)}  
         </Text>
       </View>
 

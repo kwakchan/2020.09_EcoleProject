@@ -4,11 +4,11 @@ import { Avatar } from 'react-native-elements';
 
 const TeamItem = (props) => {
   const  navigation  = props.navigation;
-  const {team_name, team_location, team_birth, team_count } = props.team;
+  const {name, logopath, state, district, description, owner} = props.team;
 
   return (
     <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between" }}
-                      onPress={() => {navigation.navigate('TeamDetail', {team_name: team_name}); 
+                      onPress={() => {navigation.navigate('TeamDetail', {name: name}); 
                       }}
     >
       <Avatar size="medium" rounded title={team_name.substring(0,1)} containerStyle={{ backgroundColor: "gray" }} />

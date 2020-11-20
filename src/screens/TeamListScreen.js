@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, Button } from 'react-native';
-
 import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import LocationItem from '../components/LocationItem';
 import TeamItem from '../components/TeamItem'
+import { api } from '../api';
 
 const teams = [
     {
@@ -45,15 +45,28 @@ const teams = [
 
 ];
 
+async function getTeamList(setTeams){
+    try {
+      const res = await api.get('/api/boards'); // 주소 바꾸기
+      setTeams(res.data);
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+}
+
 const TeamListScreen = ({ navigation }) => {
   const [search, setSearch] = useState(''); 
+  const [teams, setTeams] = useState([]);
+
+  useEffect(() => {
+    getTeamList(setTeams);
+  }, [])
 
   return (
     <>
         <View style={{ flex: 1, padding: 20 }}>
-
             <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>팀 목록</Text>
-
             <SearchBar
                 placeholder="Team Seach"
                 onChangeText={setSearch}

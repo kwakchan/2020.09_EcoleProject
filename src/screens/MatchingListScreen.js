@@ -11,6 +11,8 @@ import { Avatar } from 'react-native-elements';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment-timezone';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { apisAreAvailable } from 'expo';
 moment.tz.setDefault("Asia/Seoul");
 
 
@@ -84,6 +86,14 @@ const matchings = [
   }
 ];
 
+// async function getMatchingList(data){
+//   try {
+//     const res = await api.post('/api/matching', data, config);
+//     console.log(res);
+//   } catch (error) {
+//     console.log(err)
+//   }
+// }
 
 const MatchingListScreen = ({ navigation }) => {
 
