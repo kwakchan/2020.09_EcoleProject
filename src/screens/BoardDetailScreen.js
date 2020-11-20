@@ -16,19 +16,19 @@ const comment = [
       name: '강동원',
       avatar_url: 'http://placeimg.com/50/50',
       time: '2020/11/15 14:38',
-      text: '선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다'
+      text: '선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다'
     },
     {
       name: '강동원',
       avatar_url: 'http://placeimg.com/50/50',
       time: '2020/11/15 14:38',
-      text: '선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다'
+      text: '선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다'
     },
     {
       name: '강동원',
       avatar_url: 'http://placeimg.com/50/50',
       time: '2020/11/15 14:38',
-      text: '선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다'
+      text: '선한 댓글은 모두에게 행복을 줍니다 선한 댓글은 모두에게 행복을 줍니다'
     }
   ]
 
@@ -44,7 +44,8 @@ const BoardDetailScreen = ({navigation}) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress:() => navigation.navigate('BoardList')
+      }
       ],
       { cancelable: false }
     );
@@ -62,23 +63,23 @@ const BoardDetailScreen = ({navigation}) => {
                 <ListItem.Title>{l.name}</ListItem.Title>
                 <ListItem.Subtitle>{l.time}</ListItem.Subtitle>
                 </ListItem.Content>
+
+                {/* 수정/삭제 버튼 _ permission:글쓴이 */}
+                <View style={styles.udbutton} >
+                  <Button
+                    title="수정"
+                    type="outline"
+                  />
+                  <Text>   </Text>
+                  <Button
+                    onPress={deleteButtonAlert}
+                    title="삭제"
+                    type="outline"
+                  />
+                </View>
             </ListItem>
             ))
         }
-      </View>
-
-      {/* 수정/삭제 버튼 _ permission:작성자 */}
-      <View style={styles.udbutton} >
-        <Button
-          title="수정"
-          type="outline"
-        />
-        <Text>   </Text>
-        <Button
-          onPress={deleteButtonAlert}
-          title="삭제"
-          type="outline"
-        />
       </View>
 
       {/* 제목 + 내용 */}
@@ -88,11 +89,17 @@ const BoardDetailScreen = ({navigation}) => {
         </Text>
         <Text>
           내용입니다
+          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
+          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
+          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
+          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
+          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
+          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
         </Text>
       </View>
 
       {/* 프로필사진 avatar + 이름 title + 시간 subtitle */}
-      <View>
+      <View style={{margin:10}}>
         {
             comment.map((l, i) => (
               <View key={i} style={styles.commenter}>
@@ -100,8 +107,22 @@ const BoardDetailScreen = ({navigation}) => {
                   <Avatar rounded source={{ uri: l.avatar_url }} />
                   <ListItem.Content>
                     <ListItem.Title>{l.name}</ListItem.Title>
+                    <ListItem.Subtitle>{l.time}</ListItem.Subtitle>
                   </ListItem.Content>
-                  <ListItem.Subtitle>{l.time}</ListItem.Subtitle>
+                  
+                  {/* 수정/삭제 버튼 _ permission:댓쓴이 */}
+                  <View style={styles.udbutton} >
+                    <Button
+                      title="수정"
+                      type="outline"
+                    />
+                    <Text>   </Text>
+                    <Button
+                      onPress={deleteButtonAlert}
+                      title="삭제"
+                      type="outline"
+                    />
+                  </View>
                 </ListItem>
                 <Text style={{margin:10}}>{l.text}</Text>
               </View>
@@ -116,9 +137,7 @@ const BoardDetailScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   udbutton: {
     flexDirection:'row',
-    position:'absolute',
-    top:30,
-    right:30
+    alignItems:'baseline'
   },
   writer: {
     marginTop:10,

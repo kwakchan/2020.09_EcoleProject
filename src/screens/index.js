@@ -11,6 +11,8 @@ export { default as MainScreen } from "./MainScreen";
 export { default as MatchingCreateScreen } from "./MatchingCreateScreen";
 export { default as MatchingDetailScreen } from "./MatchingDetailScreen";
 export { default as MatchingListScreen } from "./MatchingListScreen";
+export { default as MatchingModifyScreen } from "./MatchingModifyScreen";
+export { default as MatchingRequestScreen } from "./MatchingRequestScreen";
 export { default as MyPageScreen } from "./MyPageScreen";
 export { default as SignUpScreen } from "./SignUpScreen";
 export { default as TeamCreateScreen } from "./TeamCreateScreen";
