@@ -134,7 +134,7 @@ const MatchingListScreen = ({ navigation }) => {
             <FlatList
               data={myMatchings}
               keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => <MyMatchingItem myMatching={item} />}
+              renderItem={({ item }) => <MyMatchingItem myMatching={item} navigation={navigation}/>}
               style={{ margin: 10 }}
             />
           </View>  
@@ -168,7 +168,7 @@ const MatchingListScreen = ({ navigation }) => {
             <FlatList
               data={matchings}
               keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => <MatchingItem matching={item} />}
+              renderItem={({ item }) => <MatchingItem matching={item} navigation={navigation} />}
             />
             <Button
               title="경기개설"

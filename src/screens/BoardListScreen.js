@@ -82,7 +82,7 @@ const BoardListScreen = ({ navigation }) => {
         <FlatList
           data={boards}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <BoardItem board={item} />}
+          renderItem={({ item }) => <BoardItem board={item} navigation={navigation}/>}
           style={{ backgroundColor: 'white' }}
         />
 

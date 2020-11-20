@@ -2,11 +2,12 @@ import React from 'react';
 import { TouchableOpacity, Text, Button } from 'react-native';
 
 const MyMatchingItem = (props) => {
+  const  navigation  = props.navigation;
   const {matching_location, matching_time, matching_count } = props.myMatching;
 
   return (
     <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between"}}
-                            // onPress={() => navigation.navigate('#') }
+                      onPress={() => {navigation.navigate('MatchingDetail',{ matching_location: matching_location, matching_time: matching_time, matching_count: matching_count}); }}
     >
         <Text style={{ fontSize: 15, marginLeft: 5 }}>{matching_time}</Text>
         <Text style={{ fontSize: 15, marginLeft: 5 }}>{matching_location}</Text>

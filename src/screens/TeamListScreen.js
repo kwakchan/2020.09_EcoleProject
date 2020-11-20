@@ -70,7 +70,7 @@ const TeamListScreen = ({ navigation }) => {
             <FlatList
                 data={teams}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <TeamItem team={item} />}
+                renderItem={({ item }) => <TeamItem team={item} navigation={navigation}/>}
                 style={{ backgroundColor: 'white' }}
             />
 

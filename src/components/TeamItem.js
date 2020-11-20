@@ -3,11 +3,13 @@ import { TouchableOpacity, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 const TeamItem = (props) => {
+  const  navigation  = props.navigation;
   const {team_name, team_location, team_birth, team_count } = props.team;
 
   return (
     <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between" }}
-                            // onPress={() => navigation.navigate('#') }
+                      onPress={() => {navigation.navigate('MatchingDetail', {team_name: team_name}); 
+                      }}
     >
       <Avatar size="medium" rounded title={team_name.substring(0,1)} containerStyle={{ backgroundColor: "gray" }} />
       <View>
