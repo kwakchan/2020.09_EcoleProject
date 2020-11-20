@@ -2,11 +2,13 @@ import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 
 const BoardItem = (props) => {
-  const {board_type, board_title, board_writer, board_timestamp } = props.board;
+  const  navigation  = props.navigation;
+  const {board_type, board_title, board_writer, board_timestamp, board_contents } = props.board;
 
   return (
     <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between"}}
-                            // onPress={() => navigation.navigate('#') }
+                      onPress={() => {navigation.navigate('BoardDetail', { board_type: board_type, board_title: board_title, board_writer: board_writer, board_timestamp: board_timestamp, board_contents: board_contents}); 
+                      }}
     >
       {/* <Avatar size="medium" rounded title={team_name.substring(0,1)} containerStyle={{ backgroundColor: "gray" }} /> */}
       <View style={{flexDirection: "column", alignItems: "center"}}>
