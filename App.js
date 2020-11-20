@@ -1,36 +1,40 @@
-import React from "react";
+import React, { useEffect, useReducer, useMemo } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import MainScreen from './src/screens/MainScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import SignUpScreen from './src/screens/SignUpScreen';
-import MatchingDetailScreen from './src/screens/MatchingDetailScreen.js';
-import MyPageScreen from './src/screens/MyPageScreen';
-import MatchingListScreen from './src/screens/MatchingListScreen';
-import MatchingCreateScreen from './src/screens/MatchingCreateScreen';
-import EditMyInformation from './src/screens/EditMyInformation';
-import EditTeamInformation from "./src/screens/EditTeamInformation";
-import TeamDetailScreen from "./src/screens/TeamDetailScreen";
-import TeamCreateScreen from "./src/screens/TeamCreateScreen";
-import BoardCreateScreen from "./src/screens/BoardCreateScreen";
-import BoardDetailScreen from "./src/screens/BoardDetailScreen";
-import TeamListScreen from "./src/screens/TeamListScreen";
-import BoardListScreen from "./src/screens/BoardListScreen";
-import TeamMemberScreen from "./src/screens/TeamMemberScreen";
-import MatchingModifyScreen from './src/screens/MatchingModifyScreen';
-import MatchingRequestScreen from './src/screens/MatchingRequestScreen';
-import FindEmailScreen from "./src/screens/FindEmailScreen";
-import FindPwScreen from "./src/screens/FindPwScreen";
-import CreateNewPwScreen from "./src/screens/CreateNewPwScreen";
+import {
+MainScreen,
+LoginScreen,
+SignUpScreen,
+MatchingDetailScreen,
+MyPageScreen,
+MatchingListScreen,
+MatchingCreateScreen,
+EditMyInformation,
+EditTeamInformation,
+TeamDetailScreen,
+TeamCreateScreen,
+BoardCreateScreen,
+BoardDetailScreen,
+TeamListScreen,
+BoardListScreen,
+TeamMemberScreen,
+FindEmailScreen,
+FindPwScreen,
+CreateNewPwScreen,
+MatchingModifyScreen,
+MatchingRequestScreen
+} from "./src/screens";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "./src/context";
+import { api } from "./src/api";
 
 
 const Stack = createStackNavigator();
-export const AuthContext = React.createContext();
+const {Provider} = AuthContext;
 
 export default App = () => {
-
-  const [state, dispatch] = React.useReducer(
+  const [state, dispatch] = useReducer(
     (prevState, action) => {
       switch (action.type) {
         case 'RESTORE_TOKEN':
@@ -60,38 +64,56 @@ export default App = () => {
     }
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const bootstrapAsync = async () => {
       let userToken;
-
       try {
         userToken = await AsyncStorage.getItem('userToken');
       } catch (e) {
-
       }
-
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
-
     bootstrapAsync();
   }, []);
 
-  const authContext = React.useMemo(
+  const authContext = useMemo(
     () => ({
       signIn: async data => {
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        try {
+          const res = await api.post("/api/login", data);
+          const token = res.data;
+          await AsyncStorage.setItem("token", token);
+          console.log("토큰 저장 성공");
+          dispatch({ type: 'SIGN_IN', token: token });
+          console.log("로그인 성공");
+        } catch (err) {
+          console.log("로그인 실패");
+        }
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signOut: async () => {
+        try {
+          await AsyncStorage.removeItem("token");
+          console.log("토큰 삭제 성공");
+          dispatch({ type: 'SIGN_OUT' });
+          console.log("로그아웃");
+        } catch (err) {
+          console.log("토큰 삭제 실패");
+        }
+      },
       signUp: async data => {
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        try {
+          await api.post("/api/accounts", data);
+          console.log("회원가입 성공");
+        } catch (err) {
+          console.log("회원가입 실패");
+        }
       },
     }),
     []
-
   );
 
   return (
-    <AuthContext.Provider value={authContext}>
+    <Provider value={authContext}>
       <NavigationContainer>
         <Stack.Navigator>
           {state.userToken == null ?
@@ -111,6 +133,8 @@ export default App = () => {
                 <Stack.Screen name="MyPage" component={MyPageScreen} />
                 <Stack.Screen name="MatchingList" component={MatchingListScreen} />
                 <Stack.Screen name="MatchingCreate" component={MatchingCreateScreen} />
+                <Stack.Screen name="MatchingModify" component={MatchingModifyScreen} />
+                <Stack.Screen name="MatchingRequest" component={MatchingRequestScreen} />
                 <Stack.Screen name="EditMyInformation" component={EditMyInformation} />
                 <Stack.Screen name="EditTeamInformation" component={EditTeamInformation} />
                 <Stack.Screen name="TeamDetail" component={TeamDetailScreen} />
@@ -120,13 +144,10 @@ export default App = () => {
                 <Stack.Screen name="TeamMember" component={TeamMemberScreen} />
                 <Stack.Screen name="TeamCreate" component={TeamCreateScreen} />
                 <Stack.Screen name="BoardCreate" component={BoardCreateScreen} />
-                <Stack.Screen name="Main" component={MainScreen} />
-                <Stack.Screen name="MatchingModify" component={MatchingModifyScreen} />
-                <Stack.Screen name="MatchingRequest" component={MatchingRequestScreen} />
               </>
             )}
         </Stack.Navigator>
       </NavigationContainer>
-    </AuthContext.Provider>
+    </Provider>
   )
 }

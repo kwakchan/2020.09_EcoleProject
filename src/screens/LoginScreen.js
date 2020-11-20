@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
-import { AuthContext } from '../../App';
+import { AuthContext } from '../context';
 
 const LoginScreen = ({ navigation }) => {
 
@@ -32,7 +32,11 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.button}>
           <Button title="로그인" color="#EDD81C"
             onPress={() => {
-              signIn();
+              const data = {
+                email: email,
+                password: password
+              }
+              signIn(data);
             }}
           />
         </View>

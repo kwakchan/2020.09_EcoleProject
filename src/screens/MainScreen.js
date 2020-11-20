@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Button } from 'react-native';
-import { AuthContext } from "../../App";
+import { AuthContext } from '../context';
 
 const MainScreen = ({ navigation }) => {
   const { signOut } = useContext(AuthContext);
@@ -58,6 +58,7 @@ const MainScreen = ({ navigation }) => {
         title="경기 요청"
         onPress={() => navigation.navigate('MatchingRequest')}
       />
+
       <Button
         title="로그아웃"
         onPress={() => signOut()}

@@ -1,21 +1,17 @@
+import { Picker } from '@react-native-community/picker';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, ScrollView } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import 'moment-timezone';
-import LocationItem from '../components/LocationItem';
 moment.tz.setDefault("Asia/Seoul");
 
-state = {
-  selectedHours: 0,
-  selectedMinutes: 0,
-};
-
-const MatchingCreateScreen = ({ navigation }) => {
-
+const MatchingModifyScreen = ({ navigation }) => {
   const [showCal, setShowCal] = useState(false);
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
-  const [location, setLocation] = useState('');
+  const [value, setValue] = useState({
+    language: 'java',
+  });
   const [count, setCount] = useState('');
   const [etc, setEtc] = useState('');
 
@@ -28,7 +24,6 @@ const MatchingCreateScreen = ({ navigation }) => {
 
               // 가로 스크롤링을 할 지 여부. 기본값은 false입니다.
               horizontal={true}
-
               // 페이지처럼 넘길 지 여부. 기본값은 false입니다.
               // true로 할 경우, 부드럽게 스크롤링이 되는 게 아니라 페이지를 넘기는 듯한 효과로 바뀝니다.
               pagingEnabled={true}
@@ -41,18 +36,17 @@ const MatchingCreateScreen = ({ navigation }) => {
               // 50이면 현재를 기준으로 50개월 후까지 스크롤 가능합니다.
               futureScrollRange={50}
 
-              current={moment().format('YYYY-MM-DD')}
+              current={moment().format('YYYY-MM-DD')} //moment.js 참조
               minDate={moment().format('YYYY-MM-DD')}
               maxDate={'2020-11-30'}
               onDayPress={(day) => {
                 setDate(day.dateString);
                 setShowCal(false);
-                console.log('selected day', day)
+                console.log('selected day', day) // 날짜, 지역, 인원수, 세부사항
               }}
               monthFormat={'yyyy-MM-dd'}
               //onMonthChange={(month) => { console.log('month changed', month) }}
               hideExtraDays={true}
-              enableSwipeMonths={true}
               markedDates={{
                 [date]: { selected: true, marked: true, selectedColor: 'blue' }
               }}
@@ -62,7 +56,6 @@ const MatchingCreateScreen = ({ navigation }) => {
           <ScrollView>
             <View style={{ flex: 1, padding: 10 }}>
               <View style={styles.container}>
-
                 <View>
                   <Text style={styles.info}>날짜</Text>
                   <View style={{ flexDirection: 'row',}}>
@@ -70,11 +63,25 @@ const MatchingCreateScreen = ({ navigation }) => {
                     <Button title="변경" color="gray"
                     onPress={() => setShowCal(true)} />
                   </View>
+                  
                 </View>
-
+                
                 <View>
                   <Text style={styles.info}>지역</Text>
-                  <LocationItem setLocation={setLocation} />
+                  <Picker
+                    selectedValue={value}
+                    style={{ height: 50, width: 100 }}
+                    onValueChange={(itemValue, itemIndex) =>
+                      setValue({ language: itemValue })
+                    }>
+                    <Picker.Item label="선택" value="" />
+                    <Picker.Item label="서울" value="서울" />
+                    <Picker.Item label="경기" value="경기" />
+                    <Picker.Item label="경상남도" value="경남" />
+                    <Picker.Item label="경상북도" value="경북" />
+                    <Picker.Item label="부산" value="부산" />
+                    <Picker.Item label="대구광역시" value="대구" />
+                  </Picker>
                 </View>
 
                 <View>
@@ -98,20 +105,17 @@ const MatchingCreateScreen = ({ navigation }) => {
                     placeholderTextColor="grey"
                   />
                 </View>
-
               </View>
 
               <View style={buttonstyles.button}>
                 <Button title="수정 완료"
                   onPress={() => {
-                    const data = {
+                    const reponse = {
                       count: count,
-                      etc: etc,
-                      date: date,
-                      ...location
+                      etc: etc
                     }
-                    console.log(data);
-                    navigation.navigate('MatchingWaitDetail');
+                    console.log(reponse);
+                    navigation.navigate('MatchingDetail');
                   }}
                 />
               </View>
@@ -121,10 +125,9 @@ const MatchingCreateScreen = ({ navigation }) => {
       }
     </>
   )
-
 }
 
-export default MatchingCreateScreen;
+export default MatchingModifyScreen;
 
 const styles = StyleSheet.create({
   container: {
