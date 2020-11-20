@@ -62,12 +62,15 @@ const TeamDetailScreen = ({navigation}) => {
             />
           }
           title="  Enter to MemberList"
+          onPress={() => {
+            navigation.navigate('TeamMember');
+          }}
         />
       </View>
 
       {/* 신청/취소 버튼 */}
       <View style={styles.oxbutton}>
-        <Button
+        <Button 
           onPress={applyButtonAlert}
           title="신청"
           type="outline"

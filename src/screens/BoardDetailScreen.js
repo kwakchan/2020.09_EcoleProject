@@ -1,7 +1,9 @@
-import React from "react";
-import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
+import React, {Component} from "react";
+import { Text, Image, View, StyleSheet, Button, Alert,
+  TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from "react-native";
 import { ListItem, Avatar } from 'react-native-elements'
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView} from "react-native-gesture-handler";
+
 
 const user = [
     {
@@ -34,6 +36,8 @@ const comment = [
 
 const BoardDetailScreen = ({navigation}) => {
 
+  const [value, setValue] = React.useState('');
+
   const deleteButtonAlert = () =>
     Alert.alert(
       "게시물 삭제",
@@ -51,6 +55,7 @@ const BoardDetailScreen = ({navigation}) => {
     );
 
   return (
+    
     <ScrollView style={styles.background}>
 
       {/* 프로필사진 avatar + 이름 title + 시간 subtitle */}
@@ -68,12 +73,14 @@ const BoardDetailScreen = ({navigation}) => {
                 <View style={styles.udbutton} >
                   <Button
                     title="수정"
+                    color="gray"
                     type="outline"
                   />
                   <Text>   </Text>
                   <Button
                     onPress={deleteButtonAlert}
                     title="삭제"
+                    color="#de3143"
                     type="outline"
                   />
                 </View>
@@ -98,6 +105,19 @@ const BoardDetailScreen = ({navigation}) => {
         </Text>
       </View>
 
+      {/* 댓글 입력창 */}
+      <View style={styles.inputComment}>
+        <TextInput
+          style={styles.inputCommentTextbox}
+          multiline ={true}          
+          placeholderTextColor="grey"
+          placeholder="댓글을 입력하세요."
+        />
+        <Button title="완료" color="gray" >
+        </Button>
+      </View>
+
+
       {/* 프로필사진 avatar + 이름 title + 시간 subtitle */}
       <View style={{margin:10}}>
         {
@@ -113,13 +133,9 @@ const BoardDetailScreen = ({navigation}) => {
                   {/* 수정/삭제 버튼 _ permission:댓쓴이 */}
                   <View style={styles.udbutton} >
                     <Button
-                      title="수정"
-                      type="outline"
-                    />
-                    <Text>   </Text>
-                    <Button
                       onPress={deleteButtonAlert}
                       title="삭제"
+                      color="#de3143"
                       type="outline"
                     />
                   </View>
@@ -162,7 +178,35 @@ const styles = StyleSheet.create({
     marginLeft:10,
     marginRight:10,
     marginBottom:5
+  },
+
+
+
+
+
+  inputComment: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    marginTop: 15,
+    marginLeft: 20,
+    marginRight: 20,
+    padding: 25
+  },
+  inputCommentTextbox: {
+    marginRight:20,
+    width:"83%"
   }
+
+
+
+
+
+
+
+
+
+
+
 });
 
 export default BoardDetailScreen;
