@@ -53,7 +53,7 @@ const TeamDetailScreen = ({navigation}) => {
       {/* 멤버 목록 페이지로 이동하는 버튼 */}
       <View>
         <Button
-          onPress={() => navigation.navigate('SignUp')}
+          onPress={() => {}}
           icon={
             <Icon
               name="user"

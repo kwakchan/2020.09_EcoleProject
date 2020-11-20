@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
+import { AuthContext } from '../../App';
 
 const LoginScreen = ({ navigation }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signIn } = useContext(AuthContext);
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
       <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 22, textAlign: 'center' }}>이메일로 로그인</Text>
+        <Text style={{ fontSize: 22, textAlign: 'center' }}>로그인</Text>
       </View>
       <View style={styles.container}>
-        <TextInput 
+        <TextInput
           onChangeText={setEmail}
           value={email}
           style={styles.input}
           placeholder="     이메일"
           placeholderTextColor="grey"
         />
-        <TextInput 
+        <TextInput
           onChangeText={setPassword}
           value={password}
           style={styles.input}
@@ -29,16 +31,32 @@ const LoginScreen = ({ navigation }) => {
         />
         <View style={styles.button}>
           <Button title="로그인" color="#EDD81C"
-            // onPress={() => { navigation.navigate('Login') }}
             onPress={() => {
-              const response = {
-                email: email,
-                password: password
-              };
-              console.log(response);
-              navigation.navigate('MyPage');
+              signIn();
             }}
           />
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{
+            width: '50%',
+            alignSelf: 'center',
+            marginVertical: 1,
+            marginTop: 15,
+          }}>
+            <Button title="이메일 찾기" color="#EDD81C"
+              onPress={() => navigation.navigate('FindEmail')}
+            />
+          </View>
+          <View style={{
+            width: '50%',
+            alignSelf: 'center',
+            marginVertical: 1,
+            marginTop: 15,
+          }}>
+            <Button title="비밀번호 찾기" color="#EDD81C"
+              onPress={() => navigation.navigate('FindPw')}
+            />
+          </View>
         </View>
         <View style={styles.button}>
           <Button title="회원가입" color="#EDD81C"
