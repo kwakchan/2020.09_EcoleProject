@@ -93,7 +93,7 @@ export default App = (navigation) => {
       signIn: async data => {
         try {
           const res = await api.post("/api/login", data);
-          const token = res.data;
+          const token = res.data.token;
           await AsyncStorage.setItem("token", token);
           console.log("토큰 저장 성공");
           dispatch({ type: 'SIGN_IN', token: token });

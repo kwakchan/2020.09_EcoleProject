@@ -58,6 +58,10 @@ const MainScreen = ({ navigation }) => {
         title="경기 요청"
         onPress={() => navigation.navigate('MatchingRequest')}
       />
+      <Button
+        title="비밀번호 수정"
+        onPress={() => navigation.navigate('CreateNewPw')}
+      />
 
       <Button
         title="로그아웃"
