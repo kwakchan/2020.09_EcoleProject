@@ -1,40 +1,26 @@
 import React, { useEffect, useReducer, useMemo } from "react";
 import { Alert } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
-MainScreen,
-LoginScreen,
-SignUpScreen,
-MatchingDetailScreen,
-MyPageScreen,
-MatchingListScreen,
-MatchingCreateScreen,
-EditMyInformation,
-EditTeamInformation,
-TeamDetailScreen,
-TeamCreateScreen,
-BoardCreateScreen,
-BoardDetailScreen,
-TeamListScreen,
-BoardListScreen,
-TeamMemberScreen,
-FindEmailScreen,
-FindPwScreen,
-CreateNewPwScreen,
-MatchingModifyScreen,
-MatchingRequestScreen
+  LoginStackScreen
+} from "./src/screens/Stack";
+import {
+  MyPageScreen,
+  MatchingListScreen,
+  BoardListScreen
 } from "./src/screens";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "./src/context";
 import { api } from "./src/api";
 
+const Tab = createBottomTabNavigator();
 
-const Stack = createStackNavigator();
-const {Provider} = AuthContext;
+const { Provider } = AuthContext;
 
-export default App = (navigation) => {
+export default App = () => {
   const [state, dispatch] = useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -78,14 +64,14 @@ export default App = (navigation) => {
   }, []);
 
   const success = (navigation) =>
-  Alert.alert(
-    "회원가입 성공!!",
-    `로그인 페이지로 이동합니다.`,
-    [
-      { text: "확인", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
-    ],
-    { cancelable: false }
-  );
+    Alert.alert(
+      "회원가입 성공!!",
+      `로그인 페이지로 이동합니다.`,
+      [
+        { text: "확인", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
+      ],
+      { cancelable: false }
+    );
 
 
   const authContext = useMemo(
@@ -128,38 +114,41 @@ export default App = (navigation) => {
   return (
     <Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator>
           {state.userToken == null ?
             (
               <>
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="SignUp" component={SignUpScreen} />
-                <Stack.Screen name="FindEmail" component={FindEmailScreen} />
-                <Stack.Screen name="FindPw" component={FindPwScreen} />
+                <LoginStackScreen />
               </>
             ) :
             (
-              <>
-                <Stack.Screen name="Main" component={MainScreen} />
-                <Stack.Screen name="MatchingDetail" component={MatchingDetailScreen} />
-                <Stack.Screen name="MyPage" component={MyPageScreen} />
-                <Stack.Screen name="MatchingList" component={MatchingListScreen} />
-                <Stack.Screen name="MatchingCreate" component={MatchingCreateScreen} />
-                <Stack.Screen name="MatchingModify" component={MatchingModifyScreen} />
-                <Stack.Screen name="MatchingRequest" component={MatchingRequestScreen} />
-                <Stack.Screen name="EditMyInformation" component={EditMyInformation} />
-                <Stack.Screen name="EditTeamInformation" component={EditTeamInformation} />
-                <Stack.Screen name="TeamDetail" component={TeamDetailScreen} />
-                <Stack.Screen name="BoardDetail" component={BoardDetailScreen} />
-                <Stack.Screen name="TeamList" component={TeamListScreen} />
-                <Stack.Screen name="BoardList" component={BoardListScreen} />
-                <Stack.Screen name="TeamMember" component={TeamMemberScreen} />
-                <Stack.Screen name="TeamCreate" component={TeamCreateScreen} />
-                <Stack.Screen name="CreateNewPw" component={CreateNewPwScreen} />
-                <Stack.Screen name="BoardCreate" component={BoardCreateScreen} />
-              </>
-            )}
-        </Stack.Navigator>
+            <>
+              <Tab.Navigator tabBarOptions={{
+                activeTintColor: '#e85433'
+              }}>
+                <Tab.Screen name="마이페이지" component={MyPageScreen}
+                  options={{
+                    tabBarLabel: "마이페이지",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons name="account" color={color} size={size} />
+                    ),
+                  }} />
+                <Tab.Screen name="경기" component={MatchingListScreen} 
+                options={{
+                  tabBarLabel: "경기",
+                  tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="soccer" color={color} size={size} />
+                  ),
+                }} />
+                <Tab.Screen name="게시판" component={BoardListScreen}
+                options={{
+                  tabBarLabel: "게시판",
+                  tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="clipboard-text-outline" color={color} size={size} />
+                  ),
+                }}  />
+              </Tab.Navigator>
+            </>
+          )}
       </NavigationContainer>
     </Provider>
   )
