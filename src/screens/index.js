@@ -7,7 +7,6 @@ export { default as EditTeamInformation } from "./EditTeamInformation";
 export { default as FindEmailScreen } from "./FindEmailScreen";
 export { default as FindPwScreen } from "./FindPwScreen";
 export { default as LoginScreen } from "./LoginScreen";
-export { default as MainScreen } from "./MainScreen";
 export { default as MatchingCreateScreen } from "./MatchingCreateScreen";
 export { default as MatchingDetailScreen } from "./MatchingDetailScreen";
 export { default as MatchingListScreen } from "./MatchingListScreen";
