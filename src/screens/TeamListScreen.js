@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Button } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
-import LocationItem from '../components/LocationItem';
+import AllLocationItem from '../components/AllLocationItem';
 import TeamItem from '../components/TeamItem'
 import { api } from '../api';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -18,7 +18,6 @@ async function getTeamList(setTeams, search, location) {
     }
     const res = await api.get(`/api/teams?teamName=${search}&state=${location.state}&district=${location.district}`, config);
     setTeams(res.data);
-    console.log(res.data);
   } catch (error) {
     console.log(error)
   }
@@ -46,7 +45,7 @@ const TeamListScreen = ({ navigation }) => {
           style={{ margin: 5, height: 5 }}
         />
         <View style={{ flexDirection: "row", alignItems: 'center' }}>
-          <LocationItem all setLocation={setLocation} />
+          <AllLocationItem setLocation={setLocation} />
         </View>
 
         <FlatList
