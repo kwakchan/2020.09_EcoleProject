@@ -1,122 +1,145 @@
-import moment from 'moment';
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, Button, ScrollView, ActivityIndicator } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
-import 'moment-timezone';
+import moment from 'moment';
 import LocationItem from '../components/LocationItem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from '../api';
 
-moment.tz.setDefault("Asia/Seoul");
+async function PostMatching(data, navigation) {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: {
+        'Authorization': token
+      }
+    }
+    const res = await api.post('/api/matches', data, config);
+    console.log(res);
+    navigation.navigate('MatchingList');
+  } catch (err) {
+    console.log(err)
+  }
+}
 
-state = {
-  selectedHours: 0,
-  selectedMinutes: 0,
-};
+async function getProfile(setAccount) {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: {
+        'Authorization': token
+      }
+    }
+    const res = await api.get('/api/accounts/profile', config);
+    setAccount(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
 
 const MatchingCreateScreen = ({ navigation }) => {
 
   const [showCal, setShowCal] = useState(false);
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [location, setLocation] = useState('');
-  const [count, setCount] = useState('');
-  const [etc, setEtc] = useState('');
+  const [countMember, setCountMember] = useState('');
+  const [description, setDescription] = useState('');
+  const [account, setAccount] = useState(null);
 
-
+  useEffect(() => {
+    getProfile(setAccount);
+  }, [])
 
 
   return (
     <>
       {
-        showCal ?
-          <View style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}>
-            <CalendarList
+        account ?
+          account.leadingTeam ?
+            showCal ?
+              <View style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}>
+                <CalendarList
+                  horizontal={true}
+                  pagingEnabled={true}
+                  futureScrollRange={50}
 
-              // 가로 스크롤링을 할 지 여부. 기본값은 false입니다.
-              horizontal={true}
-
-              // 페이지처럼 넘길 지 여부. 기본값은 false입니다.
-              // true로 할 경우, 부드럽게 스크롤링이 되는 게 아니라 페이지를 넘기는 듯한 효과로 바뀝니다.
-              pagingEnabled={true}
-
-              // 과거로 스크롤 할 수 있는 개월 수. 기본값은 50입니다. 
-              // 50이면 현재를 기준으로 50개월 전까지 스크롤 가능합니다.
-              //pastScrollRange={50}
-
-              // 미래로 스크롤 할 수 있는 개월 수. 기본값은 50입니다.
-              // 50이면 현재를 기준으로 50개월 후까지 스크롤 가능합니다.
-              futureScrollRange={50}
-
-              current={moment().format('YYYY-MM-DD')}
-              minDate={moment().format('YYYY-MM-DD')}
-              maxDate={'2020-11-30'}
-              onDayPress={(day) => {
-                setDate(day.dateString);
-                setShowCal(false);
-                console.log('selected day', day)
-              }}
-              monthFormat={'yyyy-MM-dd'}
-              //onMonthChange={(month) => { console.log('month changed', month) }}
-              hideExtraDays={true}
-              enableSwipeMonths={true}
-              markedDates={{
-                [date]: { selected: true, marked: true, selectedColor: 'blue' }
-              }}
-            />
-          </View>
-          :
-          <ScrollView>
-            <View style={{ flex: 1, padding: 10 }}>
-              <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 30, textAlign: "center" }}>경기 개설</Text>
-              </View>
-              <View style={styles.container}>
-                <Button title="날짜" onPress={() => setShowCal(true)} />
-                <Text style={{ fontSize: 25, textAlign: "center" }}>{date}</Text>
-
-                <View>
-                  <Text style={styles.info}>지역</Text>
-
-                  <LocationItem setLocation={setLocation} />
-
-                </View>
-
-                <View>
-                  <Text style={styles.info}>인원 수</Text>
-                  <TextInput
-                    onChangeText={setCount}
-                    value={count}
-                    style={styles.input}
-                    placeholder="  00명"
-                    placeholderTextColor="grey"
-                  />
-                </View>
-
-                <View>
-                  <Text style={styles.info}>세부사항</Text>
-                  <TextInput
-                    onChangeText={setEtc}
-                    value={etc}
-                    style={styles.input}
-                    placeholder="  내용을 입력 해 주세요"
-                    placeholderTextColor="grey"
-                  />
-                </View>
-              </View>
-              <View style={buttonstyles.button}>
-                <Button title="매칭생성하기"
-                  onPress={() => {
-                    const data = {
-                      count: count,
-                      etc: etc,
-                      date: date,
-                      ...location
-                    }
-                    console.log(data);
-                    navigation.navigate('MatchingWaitDetail');
+                  current={moment().format('YYYY-MM-DD')}
+                  minDate={moment().format('YYYY-MM-DD')}
+                  maxDate={'2020-11-30'}
+                  onDayPress={(day) => {
+                    setDate(day.dateString);
+                    setShowCal(false);
+                  }}
+                  monthFormat={'yyyy-MM-dd'}
+                  hideExtraDays={true}
+                  enableSwipeMonths={true}
+                  markedDates={{
+                    [date]: { selected: true, marked: true, selectedColor: 'blue' }
                   }}
                 />
               </View>
-            </View>
-          </ScrollView>
+              :
+              <ScrollView>
+                <View style={{ flex: 1, padding: 10 }}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 30, textAlign: "center" }}>경기 개설</Text>
+                  </View>
+                  <View style={styles.container}>
+                    <Button title="날짜" onPress={() => setShowCal(true)} />
+                    <Text style={{ fontSize: 25, textAlign: "center" }}>{date}</Text>
+                    <View>
+                      <Text style={styles.info}>지역</Text>
+
+                      <LocationItem setLocation={setLocation} />
+
+                    </View>
+
+                    <View>
+                      <Text style={styles.info}>인원 수</Text>
+                      <TextInput
+                        onChangeText={setCountMember}
+                        value={countMember}
+                        style={styles.input}
+                        placeholder="  00명 숫자만 입력하여 주세요"
+                        placeholderTextColor="grey"
+                      />
+                    </View>
+
+                    <View>
+                      <Text style={styles.info}>세부사항</Text>
+                      <TextInput
+                        onChangeText={setDescription}
+                        value={description}
+                        style={styles.input}
+                        placeholder="  내용을 입력 해 주세요"
+                        placeholderTextColor="grey"
+                        maxLength={200}
+                      />
+                    </View>
+                  </View>
+
+                  <View style={buttonstyles.button}>
+                    <Button title="매칭생성하기"
+                      onPress={() => {
+                        const data = {
+                          countMember: countMember,
+                          description: description,
+                          date: date,
+                          ...location
+                        }
+                        console.log(data)
+                        PostMatching(data, navigation);
+                      }}
+                    />
+                  </View>
+                </View>
+              </ScrollView>
+              :
+              <Text>팀장만 개설할 수 있습니다.</Text>
+            :
+            <ActivityIndicator />
       }
     </>
   )

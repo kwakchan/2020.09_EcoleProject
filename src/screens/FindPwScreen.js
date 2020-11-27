@@ -26,17 +26,14 @@ const findpw = (tempPW) =>
       "비밀번호 찾기",
       `회원님의 임시 비밀번호는 \n${tempPW} 입니다. \n내 정보에서 비밀번호를 꼭 변경하세요.`,
       [
-        { text: "로그인 화면으로", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
+        { text: "로그인 화면으로", onPress: () => { console.log("OK Pressed"), navigation.navigate('로그인'); } }
       ],
       { cancelable: false }
     );
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 22, textAlign: 'center' }}>비밀번호 찾기</Text>
-      </View>
-
+      
       <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
         <TextInput
           onChangeText={setEmailstart}
