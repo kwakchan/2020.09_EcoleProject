@@ -16,7 +16,7 @@ async function getBoardList(setBoards){
         Authorization: token
       }
     }
-    const res = await api.get('/api/boards', config);
+    const res = await api.get(`/api/boards?search=${search}`, config);
     setBoards(res.data);
     console.log(res.data)
   } catch (error) {
@@ -31,8 +31,8 @@ const BoardListScreen = ({ navigation }) => {
   const [boards, setBoards] = useState([]);
 
   useEffect(() => {
-    getBoardList(setBoards);
-  }, [isFocused])
+    getBoardList(setBoards, search);
+  }, [])
 
   return (
     <>
@@ -74,7 +74,7 @@ const BoardListScreen = ({ navigation }) => {
         />
 
         <Button
-          title="팀 만들기"
+          title="게시글 만들기"
           onPress={() => navigation.navigate('BoardCreate')}
         />
 

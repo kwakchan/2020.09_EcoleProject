@@ -158,7 +158,6 @@ const MatchingListScreen = ({ navigation }) => {
           </View>  
           :
           <View style={{ flex: 1, padding: 20 }}>
-            <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>전체 경기 목록</Text>
             <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
