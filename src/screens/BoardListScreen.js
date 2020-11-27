@@ -5,6 +5,8 @@ import { FlatList } from 'react-native-gesture-handler';
 import BoardItem from '../components/BoardItems'
 import { api } from '../api';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from '@react-navigation/native';
+
 
 async function getBoardList(setBoards, search, selectedValue) {
   try {
@@ -16,12 +18,14 @@ async function getBoardList(setBoards, search, selectedValue) {
     }
     const res = await api.get(`/api/boards?title=${search}&boardType=${selectedValue}`, config);
     setBoards(res.data);
+    console.log(res.data)
   } catch (error) {
     console.log(error)
   }
 }
 
 const BoardListScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const [search, setSearch] = useState('');
   const [selectedValue, setSelectedValue] = useState('All');
   const [boards, setBoards] = useState([]);
@@ -33,6 +37,9 @@ const BoardListScreen = ({ navigation }) => {
   return (
     <>
       <View style={{ flex: 1, padding: 20 }}>
+
+        <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>게시판 목록</Text>
+
         <SearchBar
           placeholder="Team Seach"
           onChangeText={setSearch}

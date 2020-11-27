@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, Image, View, StyleSheet, Alert} from "react-native";
-import { Button } from 'react-native-elements';
+import { Button, ListItem, Icon } from 'react-native-elements';
 import { ScrollView } from "react-native-gesture-handler";
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TeamDetailScreen = ({route, navigation}) => {
-  const { id, name, logopath } = route.params;
+  const { id, name, logopath, state, district, description } = route.params;
   const applyButtonAlert = () =>
     Alert.alert(
       "팀 가입 신청",
@@ -14,10 +14,10 @@ const TeamDetailScreen = ({route, navigation}) => {
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("팀 가입 신청 취소"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("팀 가입 신청 완료") }
       ],
       { cancelable: false }
     );
@@ -29,10 +29,10 @@ const TeamDetailScreen = ({route, navigation}) => {
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("팀 가입 신청 유지"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("팀 가입 신청 취소 완료") }
       ],
       { cancelable: false }
     );
@@ -43,22 +43,38 @@ const TeamDetailScreen = ({route, navigation}) => {
       <View style={styles.teamprofile}>
         <Image source={{uri: JSON.stringify(logopath)}} style={{width:100, height:100, borderRadius: 150/2}} />
         <View style={{flexDirection:'column'}}>
-          <Text styles={styles.teamname} style={{fontSize:20}}>{JSON.stringify(name)}</Text>
+          <Text styles={styles.teamname} style={{fontSize:20}}>{name}</Text>
         </View>
       </View>
 
+
+      {/* 설명 */}
+      <View style={{marginBottom:30}}>
+        <ListItem bottomDivider>
+          <Icon name='room' />
+          <ListItem.Content>
+            <ListItem.Title >지역</ListItem.Title>
+            <ListItem.Subtitle >{state} {district}</ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+        <ListItem bottomDivider>
+          <Icon name='info' />
+          <ListItem.Content>
+            <ListItem.Title >설명</ListItem.Title>
+            <ListItem.Subtitle >{description}</ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      </View>
+
+
       {/* 멤버 목록 페이지로 이동하는 버튼 */}
-      <View>
+      <View style={{marginBottom:30}}>
         <Button
-          onPress={() => {}}
-          icon={
-            <Icon
-              name="user"
-              size={30}
-              color='white'
-            />
-          }
-          title="  Enter to MemberList"
+          onPress={() => {navigation.navigate('TeamMember', 
+          {id: id}); 
+          }}
+          title="팀원 목록"
+          type="outline"
         />
       </View>
 
@@ -67,7 +83,6 @@ const TeamDetailScreen = ({route, navigation}) => {
         <Button
           onPress={applyButtonAlert}
           title="신청"
-          type="outline"
         />
         <Button
           onPress={cancelButtonAlert}
@@ -75,6 +90,7 @@ const TeamDetailScreen = ({route, navigation}) => {
           disabled
         />
       </View>
+
 
     </ScrollView>
   );
