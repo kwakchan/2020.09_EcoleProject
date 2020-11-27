@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from '@react-navigation/native';
 
 
-async function getBoardList(setBoards){
+async function getBoardList(setBoards, search, selectedValue) {
   try {
     const token = await AsyncStorage.getItem("token");
     const config = {
@@ -16,9 +16,8 @@ async function getBoardList(setBoards){
         Authorization: token
       }
     }
-    const res = await api.get(`/api/boards`, config);
+    const res = await api.get(`/api/boards?title=${search}&boardType=${selectedValue}`, config);
     setBoards(res.data);
-    console.log(res.data)
   } catch (error) {
     console.log(error)
   }
@@ -27,19 +26,16 @@ async function getBoardList(setBoards){
 const BoardListScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [search, setSearch] = useState('');
-  const [selectedValue, setSelectedValue] = useState('FREE');
+  const [selectedValue, setSelectedValue] = useState('All');
   const [boards, setBoards] = useState([]);
 
   useEffect(() => {
-    getBoardList(setBoards, search);
-  }, [])
+    getBoardList(setBoards, search, selectedValue);
+  }, [search, selectedValue])
 
   return (
     <>
       <View style={{ flex: 1, padding: 20 }}>
-
-        <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>게시판 목록</Text>
-
         <SearchBar
           placeholder="Team Seach"
           onChangeText={setSearch}
@@ -53,14 +49,14 @@ const BoardListScreen = ({ navigation }) => {
         <Picker
           selectedValue={selectedValue}
           style={{ height: 50, width: 150 }}
-          onValueChange={(itemValue, itemIndex) => 
-            {
-              setSelectedValue(itemValue);
-              console.log(selectedValue);
-            }
-            
+          onValueChange={(itemValue, itemIndex) => {
+            setSelectedValue(itemValue);
+            console.log(selectedValue);
+          }
+
           }
         >
+          <Picker.Item label="전체" value="All" />
           <Picker.Item label="자유게시판" value="FREE" />
           <Picker.Item label="용병 신청" value="INVITE" />
           <Picker.Item label="용병 찾기" value="FIND" />
@@ -69,7 +65,7 @@ const BoardListScreen = ({ navigation }) => {
         <FlatList
           data={boards}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <BoardItem board={item} navigation={navigation}/>}
+          renderItem={({ item }) => <BoardItem board={item} navigation={navigation} />}
           style={{ backgroundColor: 'white' }}
         />
 

@@ -24,16 +24,14 @@ const FindEmailScreen = ({ navigation }) => {
       "이메일 찾기",
       `회원님의 이메일은 \n${email} 입니다`,
       [
-        { text: "로그인 화면으로", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
+        { text: "로그인 화면으로", onPress: () => { console.log("OK Pressed"), navigation.navigate('로그인'); } }
       ],
       { cancelable: false }
     );
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 22, textAlign: 'center' }}>이메일 찾기</Text>
-      </View>
+      
       <View style={styles.container}>
         <TextInput
           onChangeText={setName}

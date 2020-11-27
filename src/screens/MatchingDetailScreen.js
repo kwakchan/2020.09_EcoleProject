@@ -4,28 +4,28 @@ import { ListItem, Icon } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
 
 const MatchingDetailScreen = ({route, navigation}) => {
-  const { team_name, matching_location, matching_time, matching_count, matching_contents } = route.params;
+  const { name, logoPath, state, district, date, countMember, description } = route.params;
   const [showbtn, setShowbtn ] = useState(false)
   const list = [
     {
       title: '시간',
       icon: 'event',
-      text: JSON.stringify(matching_time)
+      text: state
     },
     {
       title: '장소',
       icon: 'room',
-      text: JSON.stringify(matching_location)
+      text: state + district
     },
     {
       title: '인원',
       icon: 'group',
-      text: JSON.stringify(matching_count)
+      text: countMember
     },
     {
       title: '설명',
       icon: 'info',
-      text: JSON.stringify(matching_contents)   
+      text: description   
     }
   ]
 
@@ -81,7 +81,7 @@ const MatchingDetailScreen = ({route, navigation}) => {
       <View style={styles.udbutton} >
         <Button
           onPress={() => {navigation.navigate('MatchingModify',
-            {team_name: team_name, matching_location: matching_location, matching_time: matching_time, matching_count: matching_count, matching_contents: matching_contents}); }}
+            {name: name, state: state, district: district, date: date, countMember: countMember, description: description}); }}
           title="수정"
           color="gray"
           type="outline"
@@ -96,10 +96,10 @@ const MatchingDetailScreen = ({route, navigation}) => {
 
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
       <View style={styles.teamprofile}>
-        <Image source={{uri: 'http://placeimg.com/100/100'}} style={{width:100, height:100, borderRadius: 150/2}}
+        <Image source={{ uri: logoPath }} style={{width:100, height:100, borderRadius: 150/2}}
         />
         <View style={{flexDirection:'column'}}>
-          <Text styles={styles.teamname} style={{fontSize:20}}>{JSON.stringify(team_name)}</Text>
+          <Text styles={styles.teamname} style={{fontSize:20}}>{name}</Text>
         </View>
       </View>
 

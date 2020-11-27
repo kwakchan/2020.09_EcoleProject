@@ -18,6 +18,7 @@
     "expo": "^39.0.4",
     "expo-image-picker": "~9.1.0",
     "expo-status-bar": "~1.0.2",
+    "mime": "^2.4.6",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.31",
     "picker": "^0.1.4",

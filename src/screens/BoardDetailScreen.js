@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Button, Alert } from "react-native";
+import { Text, View, StyleSheet, Button, Alert, TextInput } from "react-native";
 import { ListItem, Avatar } from 'react-native-elements'
 import { FlatList } from 'react-native-gesture-handler';
 import CommentsItem from '../components/CommentsItem'
@@ -21,13 +21,30 @@ async function getBoardDetail(setBoards, id) {
   }
 }
 
+async function postComment(data, setContent) {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    const res = await api.post(`/api/comments`, data, config);
+    setContent('');
+    console.log(res);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const BoardDetailScreen = ({ route, navigation }) => {
   const { id } = route.params;
   const [boards, setBoards] = useState('');
+  const [content, setContent] = useState('');
 
   useEffect(() => {
     getBoardDetail(setBoards, id);
-  }, [])
+  }, [boards])
 
   const deleteButtonAlert = () =>
     Alert.alert(
@@ -52,7 +69,7 @@ const BoardDetailScreen = ({ route, navigation }) => {
         {/* 게시글; 프로필사진 avatar + 이름 title + 시간 subtitle */}
         <View style={styles.writer} >
           <ListItem bottomDivider>
-            <Avatar rounded source={{ uri: 'http://placeimg.com/50/50' }} />
+            <Avatar rounded source={{ uri: boards.image }} />
             <ListItem.Content>
               <ListItem.Title>{boards.name}</ListItem.Title>
               <ListItem.Subtitle>{boards.createdAt}</ListItem.Subtitle>
@@ -83,8 +100,29 @@ const BoardDetailScreen = ({ route, navigation }) => {
           </Text>
         </View>
 
+        {/* 댓글 입력창 */}
+        <View style={styles.inputComment}>
+          <TextInput
+            onChangeText={setContent}
+            value={content}
+            style={styles.inputCommentTextbox}
+            multiline={true}
+            placeholderTextColor="grey"
+            placeholder="댓글을 입력하세요."
+          />
+          <Button title="완료" color="gray" onPress={() => {
+            const data = {
+              boardId: id,
+              content: content
+            }
+            postComment(data, setContent);
+          }}>
+          </Button>
+        </View>
+
+
         {/* 프로필사진 avatar + 이름 title + 시간 subtitle */}
-        <View style={{ flex:1, margin: 10 }}>
+        <View style={{ flex: 1, margin: 10 }}>
           <FlatList
             data={boards.comments}
             keyExtractor={(item) => item.id.toString()} // comment의 id 값 주긴
