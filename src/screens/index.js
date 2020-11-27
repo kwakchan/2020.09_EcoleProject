@@ -19,3 +19,4 @@ export { default as TeamDetailScreen } from "./TeamDetailScreen";
 export { default as TeamListScreen } from "./TeamListScreen";
 export { default as TeamMemberScreen } from "./TeamMemberScreen";
 export { default as MyTeamDetailScreen } from "./MyTeamDetailScreen";
+export { default as BoardModifyScreen } from "./BoardModifyScreen";

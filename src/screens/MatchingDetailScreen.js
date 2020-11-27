@@ -35,10 +35,10 @@ const MatchingDetailScreen = ({route, navigation}) => {
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("매칭 삭제 취소"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("매칭 삭제 완료") }
       ],
       { cancelable: false }
     );
@@ -50,10 +50,10 @@ const MatchingDetailScreen = ({route, navigation}) => {
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("매칭 신청 취소"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("매칭 신청 완료") }
       ],
       { cancelable: false }
     );
@@ -65,10 +65,10 @@ const MatchingDetailScreen = ({route, navigation}) => {
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("매칭 신청 유지"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("매칭 신청 취소 완료") }
       ],
       { cancelable: false }
     );
@@ -79,12 +79,16 @@ const MatchingDetailScreen = ({route, navigation}) => {
       {/* 수정/삭제 버튼 */}
       <View style={styles.udbutton} >
         <Button
+          onPress={() => {navigation.navigate('MatchingModify',
+            {team_name: team_name, matching_location: matching_location, matching_time: matching_time, matching_count: matching_count, matching_contents: matching_contents}); }}
           title="수정"
+          color="gray"
           type="outline"
         />
         <Button
           onPress={deleteButtonAlert}
           title="삭제"
+          color="#de3143"
           type="outline"
         />
       </View>
@@ -119,10 +123,6 @@ const MatchingDetailScreen = ({route, navigation}) => {
           onPress={requestButtonAlert}
           title="신청"
           type="outline"
-          onPress={() => {
-            console.log(JSON.stringify(team_name)+"팀에게 매칭신청을 하였습니다.");
-            navigation.navigate('MatchingDetail');
-          }}
         />
         <Button
           onPress={cancelButtonAlert}

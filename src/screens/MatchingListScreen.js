@@ -5,13 +5,12 @@ import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import MatchingItem from '../components/MatchingItem';
 import MyMatchingItem from '../components/MyMatchingItem';
-import LocationItem from '../components/LocationItem';
+import AllLocationItem from '../components/AllLocationItem';
 import { Avatar } from 'react-native-elements';
 
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import 'moment-timezone';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { apisAreAvailable } from 'expo';
 moment.tz.setDefault("Asia/Seoul");
 
@@ -100,13 +99,13 @@ const MatchingListScreen = ({ navigation }) => {
   const [search, setSearch] = useState('');
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [showCal, setShowCal] = useState(false);
-  const [showMy, setShowMy] = useState(false);
-  
+  const [location, setLocation] = useState();
+
   const [isEnabled, setIsEnabled] = useState(false); //toggle
   const toggleSwitch = () => setIsEnabled(previousState => !previousState); //toggle
   return (
     <>
-      { 
+      {
         showCal ?
           <Calendar
             horizontal={true}
@@ -131,69 +130,68 @@ const MatchingListScreen = ({ navigation }) => {
           />
           :
           isEnabled ?
-          <View style={{ flex: 1, padding: 20 }}>
-            <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>내가 개설한 경기 목록</Text>
-            <Switch
-                  trackColor={{ false: "#767577", true: "#81b0ff" }}
-                  thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
-            />  
-            <View style={{ alignItems: 'center' }}>
-              <Avatar
-                size="large"
-                rounded title="팀"
-                containerStyle={{ backgroundColor: "gray" }}
-              />
-              <Text style={{ fontSize: 30 }}> 경성대 </Text>
-            </View>
-
-            <FlatList
-              data={myMatchings}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => <MyMatchingItem myMatching={item} navigation={navigation}/>}
-              style={{ margin: 10 }}
-            />
-          </View>  
-          :
-          <View style={{ flex: 1, padding: 20 }}>
-            <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>전체 경기 목록</Text>
-            <Switch
+            <View style={{ flex: 1, padding: 20 }}>
+              <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>내가 개설한 경기 목록</Text>
+              <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitch}
                 value={isEnabled}
-             />
-            <SearchBar
-              placeholder="Team Seach"
-              onChangeText={setSearch}
-              value={search}
-              onSubmitEditing={() => console.log('search:' + search)}
-              containerStyle={{ backgroundColor: '#DCDCDC' }}
-              lightTheme round
-              style={{ margin: 5 }}
-            /> 
-            <View style={{ flexDirection: "row", alignItems: 'center' }}>
-              <LocationItem all setLocation={(location) => console.log(location)} />
+              />
+              <View style={{ alignItems: 'center' }}>
+                <Avatar
+                  size="large"
+                  rounded title="팀"
+                  containerStyle={{ backgroundColor: "gray" }}
+                />
+                <Text style={{ fontSize: 30 }}> 경성대 </Text>
+              </View>
+
+              <FlatList
+                data={myMatchings}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <MyMatchingItem myMatching={item} navigation={navigation} />}
+                style={{ margin: 10 }}
+              />
             </View>
-            <Button
-              title="날짜선택"
-              onPress={() => setShowCal(true)}
-              color="gray"
-            />
-            <FlatList
-              data={matchings}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => <MatchingItem matching={item} navigation={navigation} />}
-            />
-            <Button
-              title="경기개설"
-              onPress={() => navigation.navigate('MatchingCreate')}
-            />
-          </View>
-            
+            :
+            <View style={{ flex: 1, padding: 20 }}>
+              <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+              />
+              <SearchBar
+                placeholder="Team Seach"
+                onChangeText={setSearch}
+                value={search}
+                onSubmitEditing={() => console.log('search:' + search)}
+                containerStyle={{ backgroundColor: '#DCDCDC' }}
+                lightTheme round
+                style={{ margin: 5 }}
+              />
+              <View style={{ flexDirection: "row", alignItems: 'center' }}>
+                <AllLocationItem setLocation={setLocation} />
+              </View>
+              <Button
+                title="날짜선택"
+                onPress={() => setShowCal(true)}
+                color="gray"
+              />
+              <FlatList
+                data={matchings}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <MatchingItem matching={item} navigation={navigation} />}
+              />
+              <Button
+                title="경기개설"
+                onPress={() => navigation.navigate('MatchingCreate')}
+              />
+            </View>
+
       }
 
 

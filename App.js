@@ -154,7 +154,7 @@ export default App = () => {
                   }} />
               </Tab.Navigator>
             </>
-          )}
+          )} 
       </NavigationContainer>
     </Provider>
   )
