@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import { STATES } from '../constants/constants';
@@ -28,8 +28,12 @@ const styles = StyleSheet.create({
 
 const LocationItem = (props) => {
   const {setLocation, all} = props;
-  const [state, setState] = useState('All');
+  const [state, setState] = useState(all?'All':'Busan');
   const [district, setDistrict] = useState('All');  
+
+  useEffect(() => {
+    setLocation({state: state, district: district});
+  }, []);
   
   return (
      <View style={styles.container}>
