@@ -6,7 +6,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TeamDetailScreen = ({route, navigation}) => {
-  const { name } = route.params;
+  const { id, name, logopath } = route.params;
   const applyButtonAlert = () =>
     Alert.alert(
       "팀 가입 신청",
@@ -41,7 +41,7 @@ const TeamDetailScreen = ({route, navigation}) => {
     <ScrollView style={styles.background}>
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
       <View style={styles.teamprofile}>
-        <Image source={{uri: 'http://placeimg.com/100/100',}} style={{width:100, height:100, borderRadius: 150/2}} />
+        <Image source={{uri: JSON.stringify(logopath)}} style={{width:100, height:100, borderRadius: 150/2}} />
         <View style={{flexDirection:'column'}}>
           <Text styles={styles.teamname} style={{fontSize:20}}>{JSON.stringify(name)}</Text>
         </View>

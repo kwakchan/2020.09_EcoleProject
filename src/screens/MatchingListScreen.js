@@ -176,7 +176,7 @@ const MatchingListScreen = ({ navigation }) => {
               style={{ margin: 5 }}
             /> 
             <View style={{ flexDirection: "row", alignItems: 'center' }}>
-              <LocationItem setLocation={(location) => console.log(location)} />
+              <LocationItem all setLocation={(location) => console.log(location)} />
             </View>
             <Button
               title="날짜선택"

@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
 })
 
 const LocationItem = (props) => {
-  const setLocation = props.setLocation;
-  const [state, setState] = useState('Busan');
+  const {setLocation, all} = props;
+  const [state, setState] = useState('All');
   const [district, setDistrict] = useState('All');  
   
   return (
@@ -44,6 +44,7 @@ const LocationItem = (props) => {
           });
         }
         }>
+        {all && <Picker.Item label="전체" value="All" />}
         <Picker.Item label="부산광역시" value="Busan" />
         <Picker.Item label="서울특별시" value="Seoul" />
       </Picker>
@@ -59,6 +60,9 @@ const LocationItem = (props) => {
           });
         }}>
         {
+          all && state==='All'?
+          <Picker.Item key={"ALL/ALL"} label="전체" value="All" />
+          :
           STATES[state].map(
             ({label, value}) => <Picker.Item key={label+value} label={label} value={value} />
           )
