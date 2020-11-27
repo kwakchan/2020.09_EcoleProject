@@ -1,23 +1,23 @@
 import React from "react";
 import { Text, Image, View, StyleSheet, Alert} from "react-native";
-import { Button } from 'react-native-elements';
+import { Button, ListItem, Icon } from 'react-native-elements';
 import { ScrollView } from "react-native-gesture-handler";
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TeamDetailScreen = ({route, navigation}) => {
-  const { team_name } = route.params;
+  const { id, name, logopath } = route.params;
   const applyButtonAlert = () =>
     Alert.alert(
       "팀 가입 신청",
-      JSON.stringify(team_name) + "팀 가입을 신청하시겠습니까?",
+      JSON.stringify(name) + "팀 가입을 신청하시겠습니까?",
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("팀 가입 신청 취소"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("팀 가입 신청 완료") }
       ],
       { cancelable: false }
     );
@@ -25,44 +25,47 @@ const TeamDetailScreen = ({route, navigation}) => {
   const cancelButtonAlert = () =>
     Alert.alert(
       "팀 가입 취소",
-      JSON.stringify(team_name) + "팀 가입을 취소하시겠습니까?",
+      JSON.stringify(name) + "팀 가입을 취소하시겠습니까?",
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("팀 가입 신청 유지"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("팀 가입 신청 취소 완료") }
       ],
       { cancelable: false }
     );
 
   return (
     <ScrollView style={styles.background}>
-
-      
-
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
       <View style={styles.teamprofile}>
-        <Image source={{uri: 'http://placeimg.com/100/100',}} style={{width:100, height:100, borderRadius: 150/2}} />
+        <Image source={{uri: JSON.stringify(logopath)}} style={{width:100, height:100, borderRadius: 150/2}} />
         <View style={{flexDirection:'column'}}>
-        <Text styles={styles.teamname} style={{fontSize:20}}>{JSON.stringify(team_name)}</Text>
+          <Text styles={styles.teamname} style={{fontSize:20}}>{JSON.stringify(name)}</Text>
         </View>
       </View>
 
+
+      {/* 설명 */}
+      <View style={{marginBottom:30}}>
+        <ListItem bottomDivider>
+          <Icon name='info' />
+          <ListItem.Content>
+            <ListItem.Title >설명</ListItem.Title>
+            <ListItem.Subtitle >{team_name}</ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      </View>
+
+
       {/* 멤버 목록 페이지로 이동하는 버튼 */}
-      <View>
+      <View style={{marginBottom:30}}>
         <Button
           onPress={() => {}}
-          icon={
-            <Icon
-              name="user"
-              size={30}
-              color='#2296f3'
-            />
-          }
-          type='outline'
-          title="  팀원 목록"
+          title="팀원 목록"
+          type="outline"
         />
       </View>
 

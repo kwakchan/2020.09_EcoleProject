@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
 import { AuthContext } from '../context';
 
+
+
 const LoginScreen = ({ navigation }) => {
 
   const [email, setEmail] = useState('');

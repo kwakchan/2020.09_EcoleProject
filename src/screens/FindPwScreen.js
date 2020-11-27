@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput, Alert } from 'react-native';
 import { Picker } from "@react-native-community/picker";
+import { api } from '../api';
+
+async function findpassword(data, findpw) {
+  try {
+    const res = await api.get("/api/find/password", {params: data});
+    console.log("임시 비밀번호 생성 성공");
+    findpw(res.data);
+  } catch (err) {
+    console.log("임시 비밀번호 생성 실패");
+    console.log(err)
+  }
+}
 
 const FindPwScreen = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -9,12 +21,15 @@ const FindPwScreen = ({ navigation }) => {
   const [phonestart, setphonestart] = useState('');
   const [phone, setphone] = useState('');
 
-  var phoneNum = phonestart + '-' + phone;
-  var email = emailstart + emailchoice;
-
-  const [value, setValue] = useState({
-    language: 'java',
-  });
+const findpw = (tempPW) =>
+    Alert.alert(
+      "비밀번호 찾기",
+      `회원님의 임시 비밀번호는 \n${tempPW} 입니다. \n내 정보에서 비밀번호를 꼭 변경하세요.`,
+      [
+        { text: "로그인 화면으로", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
+      ],
+      { cancelable: false }
+    );
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
@@ -43,7 +58,6 @@ const FindPwScreen = ({ navigation }) => {
           style={{ height: 70, width: 180 }}
           onValueChange={(itemValue, itemIndex) => {
             setEmailchoice(itemValue);
-            setValue({ language: itemValue });
           }
           }>
           <Picker.Item label="선택" value="" />
@@ -76,7 +90,6 @@ const FindPwScreen = ({ navigation }) => {
             style={{ height: 70, width: 95 }}
             onValueChange={(itemValue, itemIndex) => {
               setphonestart(itemValue);
-              setValue({ language: itemValue });
             }
             }>
             <Picker.Item label="선택" value="" />
@@ -105,8 +118,12 @@ const FindPwScreen = ({ navigation }) => {
         <View style={styles.button}>
           <Button
             onPress={() => {
-              console.log(email + ' ' + name + ' ' + phoneNum);
-              navigation.navigate('CreateNewPw');
+              const data = {
+                name: name,
+                email: `${emailstart}${emailchoice}`,
+                phoneNum: `${phonestart}-${phone}`
+              }
+              findpassword(data, findpw);
             }}
             title="완료" color="#EDD81C"
           />
