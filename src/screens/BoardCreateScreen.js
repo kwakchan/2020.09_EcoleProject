@@ -6,17 +6,17 @@ import { api } from '../api';
 
 async function postBoard(data, navigation) {
   try {
-      const token = await AsyncStorage.getItem('token');
-      const config = {
-          headers: {
-              'Authorization': token
-          }
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: {
+        'Authorization': token
       }
-      const res = await api.post('/api/boards', data, config);
-      console.log(res);
-      navigation.navigate('BoardList');
+    }
+    const res = await api.post('/api/boards', data, config);
+    console.log(res);
+    navigation.navigate('BoardList');
   } catch (err) {
-      console.log(err);
+    console.log(err);
   }
 }
 
