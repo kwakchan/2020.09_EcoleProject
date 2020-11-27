@@ -21,10 +21,10 @@ const FindPwScreen = ({ navigation }) => {
   const [phonestart, setphonestart] = useState('');
   const [phone, setphone] = useState('');
 
-const findpw = (email) =>
+const findpw = (tempPW) =>
     Alert.alert(
       "비밀번호 찾기",
-      `회원님의 임시 비밀번호는 \n${email} 입니다. \n내 정보에서 비밀번호를 꼭 변경하세요.`,
+      `회원님의 임시 비밀번호는 \n${tempPW} 입니다. \n내 정보에서 비밀번호를 꼭 변경하세요.`,
       [
         { text: "로그인 화면으로", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
       ],
