@@ -33,7 +33,7 @@ const AllLocationItem = (props) => {
 
   useEffect(() => {
     setLocation({ state: state, district: district });
-  }, []);
+  }, [state, district]);
 
   return (
     <View style={styles.container}>

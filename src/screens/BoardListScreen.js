@@ -18,7 +18,6 @@ async function getBoardList(setBoards, search, selectedValue) {
     }
     const res = await api.get(`/api/boards?title=${search}&boardType=${selectedValue}`, config);
     setBoards(res.data);
-    console.log(res.data)
   } catch (error) {
     console.log(error)
   }
@@ -37,9 +36,6 @@ const BoardListScreen = ({ navigation }) => {
   return (
     <>
       <View style={{ flex: 1, padding: 20 }}>
-
-        <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>게시판 목록</Text>
-
         <SearchBar
           placeholder="Team Seach"
           onChangeText={setSearch}

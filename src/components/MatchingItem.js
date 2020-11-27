@@ -3,26 +3,30 @@ import { TouchableOpacity, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 const MatchingItem = (props) => {
-  const  navigation  = props.navigation;
-  const {id, team_name, matching_location, matching_time, matching_count, matching_contents } = props.matching;
-  
+  const navigation = props.navigation;
+  const { id, homeTeam, state, district, date, countMember } = props.matching;
+  const name = homeTeam.name;
+  const logoPath = homeTeam.logopath;
+  const description = homeTeam.description
+
   return (
     <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between" }}
-                      onPress={() => { navigation.navigate('MatchingDetail', 
-                                      {id: id, team_name: team_name, matching_location: matching_location, matching_time: matching_time,matching_count: matching_count, matching_contents: matching_contents});
-                                     }}
+      onPress={() => {
+        navigation.navigate('MatchingDetail',
+          { id: id, name: name, logoPath: logoPath, state: state, district: district, date: date, countMember: countMember, description: description });
+      }}
     >
-      <Avatar size="medium" rounded title={team_name.substring(0,1)} containerStyle={{ backgroundColor: "gray" }} />
-      <View>  
-        <Text style={{ fontSize: 17, marginLeft: 5, fontWeight: 'bold' }}>{team_name}</Text>
-      </View>       
-      <View style={{flexDirection: "column", alignItems: "flex-end"}}>
-        <Text style={{ fontSize: 15}}>{matching_time}</Text>
-        <Text style={{ fontSize: 15}}>{matching_location}</Text>
-        <Text style={{ fontSize: 15}}>{matching_count}</Text>
+      <Avatar size="medium" rounded source={{ uri: logoPath }} containerStyle={{ backgroundColor: "gray" }} />
+      <View>
+        <Text style={{ fontSize: 17, marginLeft: 5, fontWeight: 'bold' }}>{name}</Text>
+      </View>
+      <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
+        <Text style={{ fontSize: 15 }}>{date}</Text>
+        <Text style={{ fontSize: 15 }}>{state} {district}</Text>
+        <Text style={{ fontSize: 15 }}>{countMember}</Text>
       </View>
     </TouchableOpacity>
-    
+
   );
 };
 

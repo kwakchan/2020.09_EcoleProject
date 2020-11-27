@@ -23,7 +23,6 @@ const CommentsItem = (props) => {
   }
 
 const [modifyContent, setModifyContent] = useState("");
-
   return (
     <View style={styles.commenter}>
       <ListItem bottomDivider style={styles.commenter}>
