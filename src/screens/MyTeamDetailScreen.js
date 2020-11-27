@@ -5,6 +5,7 @@ import { Text, Image, View, StyleSheet, Alert, } from "react-native";
 import { Button, ListItem, Icon } from 'react-native-elements';
 import { ScrollView } from "react-native-gesture-handler";
 import { api } from '../api';
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from '@react-navigation/native';
 
@@ -30,9 +31,10 @@ async function getTeam(setTeam, teamId) {
 const MyTeamDetailScreen = ({ route, navigation }) => {
   const teamId = route.params.id;
   const [team, setTeam] = useState(null);
+  const isFocused = useIsFocused();
   useEffect(() => {
     getTeam(setTeam, teamId);
-  }, [])
+  }, [isFocused])
 
   const exitButtonAlert = () =>
     Alert.alert(
@@ -46,6 +48,7 @@ const MyTeamDetailScreen = ({ route, navigation }) => {
         },
         {
           text: "확인", onPress: () => {
+            
             console.log("팀 탈퇴 성공")
             navigation.navigate('MyPage');
           }
@@ -70,7 +73,7 @@ const MyTeamDetailScreen = ({ route, navigation }) => {
             <View>
         <Button
           onPress={() => {
-            navigation.navigate('EditTeamInformation')
+            navigation.navigate('EditTeamInformation', {team: team})
           }}
           title="팀 정보 수정"
         />
