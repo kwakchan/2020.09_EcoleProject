@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import { STATES } from '../constants/constants';
 
-const LocationItem = (props) => {
-  const { setLocation, all } = props;
-  const [state, setState] = useState(all ? 'All' : 'Busan');
-  const [district, setDistrict] = useState('All');
 
-  useEffect(() => {
-    setLocation({ state: state, district: district });
-  }, []);
+
+const LocationItem = (props) => {
+  const setLocation = props.setLocation;
+  const [state, setState] = useState('Busan');
+  const [district, setDistrict] = useState('All');
 
   return (
     <View style={styles.container}>
@@ -25,7 +23,6 @@ const LocationItem = (props) => {
           });
         }
         }>
-        {all && <Picker.Item label="전체" value="All" />}
         <Picker.Item label="부산광역시" value="Busan" />
         <Picker.Item label="서울특별시" value="Seoul" />
       </Picker>
@@ -41,12 +38,9 @@ const LocationItem = (props) => {
           });
         }}>
         {
-          all && state === 'All' ?
-            <Picker.Item key={"ALL/ALL"} label="전체" value="All" />
-            :
-            STATES[state].map(
-              ({ label, value }) => <Picker.Item key={label + value} label={label} value={value} />
-            )
+          STATES[state].map(
+            ({ label, value }) => <Picker.Item key={label + value} label={label} value={value} />
+          )
         }
       </Picker>
     </View>
