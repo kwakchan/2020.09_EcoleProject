@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, ScrollView, Image } from 'react-native';
 import LocationItem from '../components/LocationItem';
-import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from '../api';
 
+async function postTeam(data, navigation) {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: {
+        'Authorization': token
+      }
+    }
+    const res = await api.post(`/api/teams`, data, config);
+    console.log(res);
+    navigation.navigate('MyPage');
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 const TeamCreateScreen = ({ navigation }) => {
 
-  const [nameteam, setNameTeam] = useState('');
-  const [etcteam, setEtcTeam] = useState('');
-  const [image, setImage] = useState(null);
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-  };
-
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [location, setLocation] = useState();
 
   return (
     <ScrollView>
@@ -36,22 +37,14 @@ const TeamCreateScreen = ({ navigation }) => {
 
           <View>
             <Text style={styles.info}>팀 로고</Text>
-            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-
-          </View>
-          <View style={styles.button1}>
-            <Button
-              title="찾아보기"
-              onPress={pickImage}
-
-            />
+            <Image source={{ uri: 'http://34.64.75.54/api/teams/images/team_default.jpg' }} style={{ width: 200, height: 200 }} />
           </View>
 
           <View>
             <Text style={styles.info}>팀 이름</Text>
             <TextInput
-              onChangeText={setNameTeam}
-              value={nameteam}
+              onChangeText={setName}
+              value={name}
               style={styles.input}
               placeholder="  팀이름을 입력하세요 "
               placeholderTextColor="grey"
@@ -60,32 +53,31 @@ const TeamCreateScreen = ({ navigation }) => {
 
           <View>
             <Text style={styles.info}>지역</Text>
-
-            <LocationItem setLocation={(location) => console.log(location)} />
-
+            <LocationItem setLocation={setLocation} />
           </View>
 
           <View>
             <Text style={styles.info}>팀 소개글</Text>
             <TextInput
-              onChangeText={setEtcTeam}
-              value={etcteam}
+              onChangeText={setDescription}
+              value={description}
               style={styles.input}
               placeholder="  내용을 입력 해 주세요"
               placeholderTextColor="grey"
+              maxLength={200}
             />
           </View>
         </View>
         <View style={buttonstyles.button}>
           <Button title="팀 생성하기"
             onPress={() => {
-              const reponse = {
-                nameteam: nameteam,
-                etcteam: etcteam,
-                image: image
+              const data = {
+                name: name,
+                description: description,
+                ...location
               }
-              console.log(reponse);
-              navigation.navigate('MyPage');
+              console.log(data);
+              postTeam(data, navigation);
             }}
           />
         </View>
