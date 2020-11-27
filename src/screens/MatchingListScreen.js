@@ -21,6 +21,7 @@ const myMatchings = [
     matching_location: '남구',
     matching_time: '11/02 20:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 4,
@@ -28,6 +29,7 @@ const myMatchings = [
     matching_location: '남구',
     matching_time: '11/04 12:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   }
 ];
 
@@ -38,6 +40,7 @@ const matchings = [
     matching_location: '영도구',
     matching_time: '11/02 19:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 2,
@@ -45,6 +48,7 @@ const matchings = [
     matching_location: '남구',
     matching_time: '11/02 20:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 3,
@@ -52,6 +56,7 @@ const matchings = [
     matching_location: '동래구',
     matching_time: '11/02 21:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 4,
@@ -59,6 +64,7 @@ const matchings = [
     matching_location: '남구',
     matching_time: '11/04 12:00',
     matching_count: '11명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 5,
@@ -66,6 +72,7 @@ const matchings = [
     matching_location: '강서구',
     matching_time: '11/05 12:00',
     matching_count: '5명',
+    matching_contents: '덤벼 덤벼!'
   },
   {
     id: 6,
@@ -73,6 +80,7 @@ const matchings = [
     matching_location: '강서구',
     matching_time: '11/05 12:00',
     matching_count: '5명',
+    matching_contents: '덤벼 덤벼!'
   }
 ];
 
@@ -134,7 +142,7 @@ const MatchingListScreen = ({ navigation }) => {
             <FlatList
               data={myMatchings}
               keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => <MyMatchingItem myMatching={item} />}
+              renderItem={({ item }) => <MyMatchingItem myMatching={item} navigation={navigation}/>}
               style={{ margin: 10 }}
             />
           </View>  
@@ -168,10 +176,11 @@ const MatchingListScreen = ({ navigation }) => {
             <FlatList
               data={matchings}
               keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => <MatchingItem matching={item} />}
+              renderItem={({ item }) => <MatchingItem matching={item} navigation={navigation} />}
             />
             <Button
               title="경기개설"
+              onPress={() => navigation.navigate('MatchingCreate')}
             />
           </View>
             

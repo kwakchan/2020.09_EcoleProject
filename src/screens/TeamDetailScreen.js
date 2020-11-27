@@ -5,12 +5,12 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const TeamDetailScreen = ({navigation}) => {
-
+const TeamDetailScreen = ({route, navigation}) => {
+  const { team_name } = route.params;
   const applyButtonAlert = () =>
     Alert.alert(
       "팀 가입 신청",
-      "FC미슛가루 팀 가입을 신청하시겠습니까?",
+      JSON.stringify(team_name) + "팀 가입을 신청하시겠습니까?",
       [
         {
           text: "취소",
@@ -25,7 +25,7 @@ const TeamDetailScreen = ({navigation}) => {
   const cancelButtonAlert = () =>
     Alert.alert(
       "팀 가입 취소",
-      "FC미슛가루 팀 가입을 취소하시겠습니까?",
+      JSON.stringify(team_name) + "팀 가입을 취소하시겠습니까?",
       [
         {
           text: "취소",
@@ -46,7 +46,7 @@ const TeamDetailScreen = ({navigation}) => {
       <View style={styles.teamprofile}>
         <Image source={{uri: 'http://placeimg.com/100/100',}} style={{width:100, height:100, borderRadius: 150/2}} />
         <View style={{flexDirection:'column'}}>
-          <Text styles={styles.teamname} style={{fontSize:20}}>FC미슛가루</Text>
+        <Text styles={styles.teamname} style={{fontSize:20}}>{JSON.stringify(team_name)}</Text>
         </View>
       </View>
 
@@ -58,22 +58,19 @@ const TeamDetailScreen = ({navigation}) => {
             <Icon
               name="user"
               size={30}
-              color='white'
+              color='#2296f3'
             />
           }
-          title="  Enter to MemberList"
-          onPress={() => {
-            navigation.navigate('TeamMember');
-          }}
+          type='outline'
+          title="  팀원 목록"
         />
       </View>
 
       {/* 신청/취소 버튼 */}
       <View style={styles.oxbutton}>
-        <Button 
+        <Button
           onPress={applyButtonAlert}
           title="신청"
-          type="outline"
         />
         <Button
           onPress={cancelButtonAlert}
@@ -81,6 +78,7 @@ const TeamDetailScreen = ({navigation}) => {
           disabled
         />
       </View>
+
 
     </ScrollView>
   );

@@ -16,6 +16,7 @@ TeamDetailScreen,
 TeamCreateScreen,
 BoardCreateScreen,
 BoardDetailScreen,
+BoardModifyScreen,
 TeamListScreen,
 BoardListScreen,
 TeamMemberScreen,
@@ -81,7 +82,7 @@ export default App = () => {
       signIn: async data => {
         try {
           const res = await api.post("/api/login", data);
-          const token = res.data;
+          const token = res.data.token;
           await AsyncStorage.setItem("token", token);
           console.log("토큰 저장 성공");
           dispatch({ type: 'SIGN_IN', token: token });
@@ -119,15 +120,6 @@ export default App = () => {
           {state.userToken == null ?
             (
               <>
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="SignUp" component={SignUpScreen} />
-                <Stack.Screen name="FindEmail" component={FindEmailScreen} />
-                <Stack.Screen name="FindPw" component={FindPwScreen} />
-                <Stack.Screen name="CreateNewPw" component={CreateNewPwScreen} />
-              </>
-            ) :
-            (
-              <>
                 <Stack.Screen name="Main" component={MainScreen} />
                 <Stack.Screen name="MatchingDetail" component={MatchingDetailScreen} />
                 <Stack.Screen name="MyPage" component={MyPageScreen} />
@@ -144,6 +136,18 @@ export default App = () => {
                 <Stack.Screen name="TeamMember" component={TeamMemberScreen} />
                 <Stack.Screen name="TeamCreate" component={TeamCreateScreen} />
                 <Stack.Screen name="BoardCreate" component={BoardCreateScreen} />
+                <Stack.Screen name="BoardModify" component={BoardModifyScreen} /> 
+                
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="SignUp" component={SignUpScreen} />
+                <Stack.Screen name="FindEmail" component={FindEmailScreen} />
+                <Stack.Screen name="FindPw" component={FindPwScreen} />
+                <Stack.Screen name="CreateNewPw" component={CreateNewPwScreen} />
+              </>
+            ) :
+            (
+              <>
+                
               </>
             )}
         </Stack.Navigator>

@@ -11,13 +11,15 @@ state = {
   selectedMinutes: 0,
 };  ``
 
-const MatchingModifyScreen = ({ navigation }) => {
+const MatchingModifyScreen = ({ route, navigation }) => {
 
   const [showCal, setShowCal] = useState(false);
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [location, setLocation] = useState('');
   const [count, setCount] = useState('');
   const [etc, setEtc] = useState('');
+
+  const { team_name, matching_location, matching_time, matching_count, matching_contents } = route.params;
 
   return (
     <>
@@ -85,7 +87,9 @@ const MatchingModifyScreen = ({ navigation }) => {
                     style={styles.input}
                     placeholder="  00명"
                     placeholderTextColor="grey"
-                  />
+                  >
+                    {JSON.stringify(matching_count)}
+                  </TextInput>
                 </View>
 
                 <View>
@@ -96,7 +100,9 @@ const MatchingModifyScreen = ({ navigation }) => {
                     style={styles.input}
                     placeholder="  내용을 입력 해 주세요"
                     placeholderTextColor="grey"
-                  />
+                  >
+                    {JSON.stringify(matching_contents)}
+                  </TextInput>
                 </View>
 
               </View>

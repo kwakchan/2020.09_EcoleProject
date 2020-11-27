@@ -3,30 +3,30 @@ import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
 import { ListItem, Icon } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
 
-const list = [
-  {
-    title: '시간',
-    icon: 'event',
-    text: '2020년 12월 32일 오후 8시'
-  },
-  {
-    title: '장소',
-    icon: 'room',
-    text: '경성대'
-  },
-  {
-    title: '인원',
-    icon: 'group',
-    text: '11명'
-  },
-  {
-    title: '설명',
-    icon: 'info',
-    text: '먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요 먼저 연락오는 분이랑 바로할게요'
-  }
-]
-
-const MatchingDetailScreen = () => {
+const MatchingDetailScreen = ({route, navigation}) => {
+  const { team_name, matching_location, matching_time, matching_count, matching_contents } = route.params;
+  const list = [
+    {
+      title: '시간',
+      icon: 'event',
+      text: JSON.stringify(matching_time)
+    },
+    {
+      title: '장소',
+      icon: 'room',
+      text: JSON.stringify(matching_location)
+    },
+    {
+      title: '인원',
+      icon: 'group',
+      text: JSON.stringify(matching_count)
+    },
+    {
+      title: '설명',
+      icon: 'info',
+      text: JSON.stringify(matching_contents)   
+    }
+  ]
 
   const deleteButtonAlert = () =>
     Alert.alert(
@@ -35,10 +35,10 @@ const MatchingDetailScreen = () => {
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("매칭 삭제 취소"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("매칭 삭제 완료") }
       ],
       { cancelable: false }
     );
@@ -50,10 +50,10 @@ const MatchingDetailScreen = () => {
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("매칭 신청 취소"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("매칭 신청 완료") }
       ],
       { cancelable: false }
     );
@@ -65,10 +65,10 @@ const MatchingDetailScreen = () => {
       [
         {
           text: "취소",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("매칭 신청 유지"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("OK Pressed") }
+        { text: "확인", onPress: () => console.log("매칭 신청 취소 완료") }
       ],
       { cancelable: false }
     );
@@ -79,12 +79,16 @@ const MatchingDetailScreen = () => {
       {/* 수정/삭제 버튼 */}
       <View style={styles.udbutton} >
         <Button
+          onPress={() => {navigation.navigate('MatchingModify',
+            {team_name: team_name, matching_location: matching_location, matching_time: matching_time, matching_count: matching_count, matching_contents: matching_contents}); }}
           title="수정"
+          color="gray"
           type="outline"
         />
         <Button
           onPress={deleteButtonAlert}
           title="삭제"
+          color="#de3143"
           type="outline"
         />
       </View>
@@ -94,7 +98,7 @@ const MatchingDetailScreen = () => {
         <Image source={{uri: 'http://placeimg.com/100/100'}} style={{width:100, height:100, borderRadius: 150/2}}
         />
         <View style={{flexDirection:'column'}}>
-          <Text styles={styles.teamname} style={{fontSize:20}}>FC미슛가루</Text>
+          <Text styles={styles.teamname} style={{fontSize:20}}>{JSON.stringify(team_name)}</Text>
         </View>
       </View>
 

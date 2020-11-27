@@ -1,64 +1,38 @@
-import React, { useState } from "react";
-import { View, Text, Button } from 'react-native';
-
+import React, { useEffect, useState } from "react";
+import { View, Text, Button, Picker } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
-import LocationItem from '../components/LocationItem';
 import BoardItem from '../components/BoardItems'
+import { api } from '../api';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from '@react-navigation/native';
 
-const boards = [
-  {
-    id: 1,
-    board_type: '[자유게시판]',
-    board_timestamp: '2020-11-14',
-    board_title: '방가방가 반가워요',
-    board_writer: '남도산',
-  },
-  {
-    id: 2,
-    board_type: '[용병찾기/신청]',
-    board_timestamp: '2020-11-14',
-    board_title: '경성대근처 윙어구함',
-    board_writer: '도날드',
-  },
-  {
-    id: 3,
-    board_type: '[멤버찾기/신청]',
-    board_timestamp: '2020-11-14',
-    board_title: '거제향우회 팀원 구합니다',
-    board_writer: '올거제',
-  }, {
-    id: 4,
-    board_type: '[자유게시판]',
-    board_timestamp: '2020-11-14',
-    board_title: '방가방가 반가워요',
-    board_writer: '남도산',
-  },
-  {
-    id: 5,
-    board_type: '[용병찾기/신청]',
-    board_timestamp: '2020-11-14',
-    board_title: '경성대근처 윙어구함',
-    board_writer: '도날드',
-  },
-  {
-    id: 6,
-    board_type: '[멤버찾기/신청]',
-    board_timestamp: '2020-11-14',
-    board_title: '거제향우회 팀원 구합니다',
-    board_writer: '올거제',
-  },
-  {
-    id: 7,
-    board_type: '[멤버찾기/신청]',
-    board_timestamp: '2020-11-14',
-    board_title: '거제향우회 팀원 구합니다',
-    board_writer: '올거제',
+
+async function getBoardList(setBoards){
+  try {
+    const token = await AsyncStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    const res = await api.get('/api/boards', config);
+    setBoards(res.data);
+    console.log(res.data)
+  } catch (error) {
+    console.log(error)
   }
-];
+}
 
 const BoardListScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const [search, setSearch] = useState('');
+  const [selectedValue, setSelectedValue] = useState('FREE');
+  const [boards, setBoards] = useState([]);
+
+  useEffect(() => {
+    getBoardList(setBoards);
+  }, [isFocused])
 
   return (
     <>
@@ -75,19 +49,33 @@ const BoardListScreen = ({ navigation }) => {
           lightTheme round
           style={{ margin: 5, height: 5 }}
         />
-        <View style={{ flexDirection: "row" }}>
-          <LocationItem setLocation={(location) => console.log(location)} />
-        </View>
+
+        <Picker
+          selectedValue={selectedValue}
+          style={{ height: 50, width: 150 }}
+          onValueChange={(itemValue, itemIndex) => 
+            {
+              setSelectedValue(itemValue);
+              console.log(selectedValue);
+            }
+            
+          }
+        >
+          <Picker.Item label="자유게시판" value="FREE" />
+          <Picker.Item label="용병 신청" value="INVITE" />
+          <Picker.Item label="용병 찾기" value="FIND" />
+        </Picker>
 
         <FlatList
           data={boards}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <BoardItem board={item} />}
+          renderItem={({ item }) => <BoardItem board={item} navigation={navigation}/>}
           style={{ backgroundColor: 'white' }}
         />
 
         <Button
           title="팀 만들기"
+          onPress={() => navigation.navigate('BoardCreate')}
         />
 
       </View>

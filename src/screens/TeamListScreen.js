@@ -52,7 +52,7 @@ const TeamListScreen = ({ navigation }) => {
     <>
         <View style={{ flex: 1, padding: 20 }}>
 
-            <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>게시글 목록</Text>
+            <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', margin: 10 }}>팀 목록</Text>
 
             <SearchBar
                 placeholder="Team Seach"
@@ -70,12 +70,13 @@ const TeamListScreen = ({ navigation }) => {
             <FlatList
                 data={teams}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <TeamItem team={item} />}
+                renderItem={({ item }) => <TeamItem team={item} navigation={navigation}/>}
                 style={{ backgroundColor: 'white' }}
             />
 
             <Button
                 title="게시글 만들기"
+                onPress={() => navigation.navigate('TeamCreate')}
             />
 
         </View>

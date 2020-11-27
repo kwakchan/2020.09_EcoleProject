@@ -1,17 +1,7 @@
-import React, {Component} from "react";
-import { Text, Image, View, StyleSheet, Button, Alert,
-  TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from "react-native";
+import React from "react";
+import { Text, Image, View, StyleSheet, Button, Alert, TextInput} from "react-native";
 import { ListItem, Avatar } from 'react-native-elements'
-import { ScrollView} from "react-native-gesture-handler";
-
-
-const user = [
-    {
-      name: '김민수',
-      avatar_url: 'http://placeimg.com/50/50',
-      time: '2020/11/15 14:38'
-    }
-  ]
+import { ScrollView } from "react-native-gesture-handler";
 
 const comment = [
     {
@@ -34,10 +24,16 @@ const comment = [
     }
   ]
 
-const BoardDetailScreen = ({navigation}) => {
-
-  const [value, setValue] = React.useState('');
-
+const BoardDetailScreen = ({route, navigation}) => {
+  const {boardtype, id, title, author, createdAt, content} = route.params;
+  const user = [
+    {
+      name: JSON.stringify(author),
+      avatar_url: 'http://placeimg.com/50/50',
+      time: JSON.stringify(createdAt)
+    }
+  ]
+  
   const deleteButtonAlert = () =>
     Alert.alert(
       "게시물 삭제",
@@ -55,7 +51,6 @@ const BoardDetailScreen = ({navigation}) => {
     );
 
   return (
-    
     <ScrollView style={styles.background}>
 
       {/* 프로필사진 avatar + 이름 title + 시간 subtitle */}
@@ -73,14 +68,22 @@ const BoardDetailScreen = ({navigation}) => {
                 <View style={styles.udbutton} >
                   <Button
                     title="수정"
-                    color="gray"
                     type="outline"
+                    onPress={() => {
+                      const data = {
+                        id: id,
+                        title: title,
+                        content: content
+                      }
+                      console.log(data)
+                      navigation.navigate('BoardModify',
+                      {id: id, title: title, content: content});
+                    }}
                   />
                   <Text>   </Text>
                   <Button
                     onPress={deleteButtonAlert}
                     title="삭제"
-                    color="#de3143"
                     type="outline"
                   />
                 </View>
@@ -92,16 +95,10 @@ const BoardDetailScreen = ({navigation}) => {
       {/* 제목 + 내용 */}
       <View style={styles.content}>
         <Text style={styles.title}>
-          제목입니다 글자수 제한은 없습니다
+          {JSON.stringify(title)}
         </Text>
         <Text>
-          내용입니다
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이보전하세
+          {JSON.stringify(content)}  
         </Text>
       </View>
 
@@ -117,7 +114,6 @@ const BoardDetailScreen = ({navigation}) => {
         </Button>
       </View>
 
-
       {/* 프로필사진 avatar + 이름 title + 시간 subtitle */}
       <View style={{margin:10}}>
         {
@@ -132,10 +128,10 @@ const BoardDetailScreen = ({navigation}) => {
                   
                   {/* 수정/삭제 버튼 _ permission:댓쓴이 */}
                   <View style={styles.udbutton} >
+                    
                     <Button
                       onPress={deleteButtonAlert}
                       title="삭제"
-                      color="#de3143"
                       type="outline"
                     />
                   </View>
@@ -179,11 +175,6 @@ const styles = StyleSheet.create({
     marginRight:10,
     marginBottom:5
   },
-
-
-
-
-
   inputComment: {
     flexDirection: 'row',
     backgroundColor: 'white',
@@ -196,17 +187,6 @@ const styles = StyleSheet.create({
     marginRight:20,
     width:"83%"
   }
-
-
-
-
-
-
-
-
-
-
-
 });
 
 export default BoardDetailScreen;
