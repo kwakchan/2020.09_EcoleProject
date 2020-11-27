@@ -6,7 +6,7 @@ import { ScrollView } from "react-native-gesture-handler";
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TeamDetailScreen = ({route, navigation}) => {
-  const { id, name, logopath } = route.params;
+  const { id, name, logopath, state, district, description } = route.params;
   const applyButtonAlert = () =>
     Alert.alert(
       "팀 가입 신청",
@@ -43,7 +43,7 @@ const TeamDetailScreen = ({route, navigation}) => {
       <View style={styles.teamprofile}>
         <Image source={{uri: JSON.stringify(logopath)}} style={{width:100, height:100, borderRadius: 150/2}} />
         <View style={{flexDirection:'column'}}>
-          <Text styles={styles.teamname} style={{fontSize:20}}>{JSON.stringify(name)}</Text>
+          <Text styles={styles.teamname} style={{fontSize:20}}>{name}</Text>
         </View>
       </View>
 
@@ -51,10 +51,17 @@ const TeamDetailScreen = ({route, navigation}) => {
       {/* 설명 */}
       <View style={{marginBottom:30}}>
         <ListItem bottomDivider>
+          <Icon name='room' />
+          <ListItem.Content>
+            <ListItem.Title >지역</ListItem.Title>
+            <ListItem.Subtitle >{state} {district}</ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+        <ListItem bottomDivider>
           <Icon name='info' />
           <ListItem.Content>
             <ListItem.Title >설명</ListItem.Title>
-            <ListItem.Subtitle >{team_name}</ListItem.Subtitle>
+            <ListItem.Subtitle >{description}</ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
       </View>
@@ -63,7 +70,9 @@ const TeamDetailScreen = ({route, navigation}) => {
       {/* 멤버 목록 페이지로 이동하는 버튼 */}
       <View style={{marginBottom:30}}>
         <Button
-          onPress={() => {}}
+          onPress={() => {navigation.navigate('TeamMember', 
+          {id: id}); 
+          }}
           title="팀원 목록"
           type="outline"
         />

@@ -113,13 +113,13 @@ export default App = () => {
   return (
     <Provider value={authContext}>
       <NavigationContainer>
-        {/* {state.userToken == null ?
+        {state.userToken == null ?
           (
             <>
               <LoginStackScreen />
             </>
           ) :
-          ( */}
+          (
             <>
               <Tab.Navigator tabBarOptions={{
                 activeTintColor: '#e85433'
@@ -154,7 +154,7 @@ export default App = () => {
                   }} />
               </Tab.Navigator>
             </>
-          {/* )} */}
+          )} 
       </NavigationContainer>
     </Provider>
   )
