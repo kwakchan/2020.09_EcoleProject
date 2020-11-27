@@ -22,9 +22,6 @@ const SignUpScreen = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={{ flex: 1, padding: 20 }}>
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 22, textAlign: 'center' }}>회원가입</Text>
-        </View>
         <View style={styles.container}>
           <TextInput
             onChangeText={setName}
@@ -46,7 +43,7 @@ const SignUpScreen = ({ navigation }) => {
                 borderColor: "grey",
                 borderWidth: 0.8
               }}
-              placeholder="        이메일"
+              placeholder="     이메일"
               placeholderTextColor="grey"
               autoCapitalize="none"
             />
@@ -234,7 +231,7 @@ export default SignUpScreen;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40
+    paddingTop: 20
   },
   input: {
     margin: 7,

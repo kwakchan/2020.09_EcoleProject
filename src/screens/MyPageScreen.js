@@ -1,208 +1,155 @@
-import React from 'react';
-import { Button, View, Text, Image, StyleSheet, Alert, ScrollView } from 'react-native';
-import TeamDetailScreen from './TeamDetailScreen';
 
-const dummyData = {
-  username: "김호랑",
-  birthdate: "1996.08.21",
-  location: "부산",
-  position: "CB",
-  height: "200",
-  weight: "100",
-  foot: "오른발",
-  image: 'https://ichef.bbci.co.uk/news/240/cpsprodpb/1675A/production/_113249919_hi061718491.jpg'
-  
+
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, View, Text, Switch, Image, StyleSheet, Alert, ScrollView } from 'react-native';
+import { api } from '../api';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from '@react-navigation/native';
+import { AuthContext } from '../context';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+async function getProfile(setAccount) {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: {
+        'Authorization': token
+      }
+    }
+    const res = await api.get('/api/accounts/profile', config);
+    setAccount(res.data);
+    console.log(res.data);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-const teamdummyData = {
-  teamname: "팀 고양이",
-  image: 'https://reactnative.dev/docs/assets/p_cat2.png',
-  memo: "열심히 합시다"
-}
-
-const createThreeButtonAlert = (navigation) =>
-    Alert.alert(
-        "팀 탈퇴",
-        "팀에서 정말 탈퇴하시겠습니까",
-        [
-            {
-                text: "취소",
-            onPress: () => console.log("Cancel Pressed"),
-         
-    
-               style: "cancel"
-            },
-            { 
-                text: "확인", 
-                onPress: () => {console.log("Leave The Team") ,
-                navigation.navigate('MyPage')}, 
-            }
-        ],
-        { cancelable: false }
-    );
 
 const MyPageScreen = ({ navigation }) => {
+  const [account, setAccount] = useState(null);
+  const isFocused = useIsFocused();
+  const { signOut } = useContext(AuthContext);
 
-  return (
-    <ScrollView>
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 1.5, borderWidth: 1 }}>
-          <View style={{ flex: 1.2, flexDirection: 'row' }}>
-            <View style={{ flex: 4, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={styles.teamname}>개인 정보</Text>
 
-              <Image
-                source={{
-                  uri: dummyData.image,
-                }}
+  useEffect(() => {
+    getProfile(setAccount);
+  }, [isFocused])
 
-                style={styles.image}
-              />
-            </View>
-            <View style={styles.button}>
-              <Button
-                title={"  내 정보 수정  "}
-                onPress={() => navigation.navigate('EditMyInformation')}
-              />
-              <Text></Text>
-              {/* <Button title={"  로그아웃  "}
-                onPress={() => navigation.navigate('Login')} /> */}
-            </View>
+  if (account) {
+    return (
+      <ScrollView>
 
+        <View style={{ alignItems: "center" }}>
+          <Image
+            source={{
+              uri: account.image,
+            }}
+
+            style={styles.image}
+          />
+          <View style={styles.profileWrapper}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('EditMyInformation', {
+                screen: 'Mypage',
+                params: account
+              })}
+            >
+              <Text
+                style={styles.button}
+              >내 정보 수정</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CreateNewPw')}
+            >
+              <Text
+                style={styles.button}
+              >비밀번호변경</Text>
+            </TouchableOpacity>
+
+
+            <TouchableOpacity
+              onPress={() => signOut()}
+            >
+              <Text
+                style={styles.button}
+              >로그아웃</Text>
+            </TouchableOpacity>
           </View>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <View style={{ flex: 1 }}>
 
-                <Text style={styles.font}>이름 : </Text>
-                <Text style={styles.font}>생년월일 :</Text>
-                <Text style={styles.font}>지역 :</Text>
-                <Text style={styles.font}> </Text>
-
-              </View>
-              <View style={{ flex: 1.4 }}>
-                <Text style={styles.font}>{dummyData.username}</Text>
-                <Text style={styles.font}>{dummyData.birthdate}</Text>
-                <Text style={styles.font}>{dummyData.location} </Text>
-
-
-              </View>
+          <View style={{ width: "65%" }}>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.font}>{`이름 : ${account.name || ""}`}</Text>
+              <Text style={{...styles.font}}>{`포지션 : ${account.position || ""}`}</Text>
             </View>
 
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.font}>포지션 : </Text>
-
-                <Text style={styles.font}>키  :</Text>
-                <Text style={styles.font}>몸무게 : </Text>
-                <Text style={styles.font}>주발 : </Text>
-                <Text> </Text>
-              </View>
-              <View style={{ flex: 1.4 }}>
-                <Text style={styles.font}>{dummyData.position} </Text>
-
-                <Text style={styles.font}>{dummyData.height} </Text>
-                <Text style={styles.font}>{dummyData.weight} </Text>
-                <Text style={styles.font}>{dummyData.foot} </Text>
-                <Text> </Text>
-              </View>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.font}>{`생년월일 : ${account.birth || ""}`}</Text>
+              <Text style={styles.font}>{`키 : ${account.height || ""}`}</Text>
             </View>
 
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.font}>{`지역 : ${account.state || ""}`}</Text>
+              <Text style={styles.font}>{`지역 : ${account.district || ""}`}</Text>
+            </View>
 
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.font}>{`몸무게 : ${account.weight || ""}`}</Text>
+              <Text style={styles.font}>{`주발 : ${account.foot || ""}`}</Text>
+            </View><Text></Text>
           </View>
+          {
+             account.team === null ?
+             <Text style={{fontSize :30, marginTop : 50}}>Team 없음 </Text>
+
+                           
+               :
+               //<Text style={{fontSize :30, marginTop : 50}}>Team 있음</Text>
+               <Button 
+               title ={" 팀 정보 보기 "}
+               onPress={() => navigation.navigate('MyTeamDetailScreen', {id: account.team.id})} 
+               />
+           }
+
         </View>
-        <View style={{ flex: 1, borderWidth: 1, flexDirection: 'row' }}>
-          <View style={{ flex: 4, justifyContent: 'center', alignItems: 'center' }}>
 
-            <Text style={styles.teamname}>팀 정보</Text>
-            <Image
-              source={{
-                uri: teamdummyData.image,
-              }}
-              style={styles.image}
-            />
-            <Text style={styles.teamname}>{teamdummyData.teamname}</Text>
-            <Text style={styles.fontleft} >팀 설명                                                                      </Text>
-            <Text style={styles.teammemo}>{teamdummyData.memo}</Text>
+      </ScrollView >
 
-          </View>
-          <View style={styles.button}>
-            {/* 팀 목록 페이지로 이동 */}
-            <Button title={"  팀 목록  "}
-              onPress={() => {}} />
-            <Text></Text>
-            {/* 팀 목록 페이지로 이동 */}
-            <Button title={"  팀원 목록  "}
-            onPress={() => navigation.navigate('TeamMemberScreen')} />            
-            <Text></Text>
-            {/* 팀장일 경우에 팀 정보 수정  */}
-            <Button title={"  팀 정보 수정  "}
-              onPress={() => navigation.navigate('EditTeamInformation')} />
-            <Text></Text>
-            {/* 팀원일 경우에 팀 탈퇴 버튼 */}
-            <Button title={"팀 탈퇴"} onPress={() => createThreeButtonAlert(navigation)} />
-            <Text></Text>
-            {/* 팀 소속이 아닐 경우 팀 개설페이지로 이동 */}
-            <Button title={"팀 개설"} onPress={MyPageScreen} />
-
-
-          </View>
-        </View>
-      </View>
-    </ScrollView>
-  );
-
+    );
+  } else {
+    return <Text>Loading</Text>
+  }
 }
 
 
 
 const styles = StyleSheet.create({
-  font: {
-    fontSize: 15,
-    marginTop: 15,
-    marginLeft: 7
-  },
-  fontleft: {
-    fontSize: 15,
-    marginTop: 15,
-    marginLeft: 7,
-    textAlign : 'left'
-    
-  },
-
-  button: {
-
-    justifyContent: 'flex-end',
-
-
-  },
-
-
-  teamname: {
-    fontSize: 30,
-    margin: 5,
-    textAlign: 'center'
-
-
-  },
-
   image: {
     height: 160,
     width: 160,
     borderWidth: 0.5,
-    borderColor: "black"
-
-  }, 
-  teammemo: {
-    margin: 7,
-    width: '95%',
-    height: 120,
-    alignSelf: 'center',
-    borderColor: "grey",
-    borderWidth: 0.8,
-    
-},
+    borderColor: "black",
+    marginTop: 30
+  },
+  profileWrapper: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 20,
+    width: "70%"
+  },
+  button: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#00008B"
+  },
+  font: {
+    fontSize: 14,
+    marginTop: 20,
+    flex: 1,
+    marginLeft : 35
+  },
 
 });
+
 
 export default MyPageScreen;

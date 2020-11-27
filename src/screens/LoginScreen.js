@@ -12,9 +12,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 22, textAlign: 'center' }}>로그인</Text>
-      </View>
+      
       <View style={styles.container}>
         <TextInput
           onChangeText={setEmail}
@@ -50,7 +48,7 @@ const LoginScreen = ({ navigation }) => {
             marginTop: 15,
           }}>
             <Button title="이메일 찾기" color="#EDD81C"
-              onPress={() => navigation.navigate('FindEmail')}
+              onPress={() => navigation.navigate('이메일 찾기')}
             />
           </View>
           <View style={{
@@ -60,13 +58,13 @@ const LoginScreen = ({ navigation }) => {
             marginTop: 15,
           }}>
             <Button title="비밀번호 찾기" color="#EDD81C"
-              onPress={() => navigation.navigate('FindPw')}
+              onPress={() => navigation.navigate('비밀번호 찾기')}
             />
           </View>
         </View>
         <View style={styles.button}>
           <Button title="회원가입" color="#EDD81C"
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('회원가입')}
           />
         </View>
       </View>

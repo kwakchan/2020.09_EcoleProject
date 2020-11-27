@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
+import { api } from '../api';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CommentsItem = (props) => {
-  const { id, name, image, title, createdAt, content, modifiedAt } = props.comment;
+  const { id, name, image, title, createdAt, content, modifiedAt} = props.comment;
 
+  async function putComment(data, id) {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: token
+        }
+      }
+      const res = await api.put(`/api/comments/${id}`, data, config);
+      console.log(res);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+const [modifyContent, setModifyContent] = useState("");
   return (
     <View style={styles.commenter}>
-      {/* 댓글; 이름+ 날짜 */}
       <ListItem bottomDivider style={styles.commenter}>
         <Avatar rounded source={{ uri: image }} />
         <ListItem.Content>
@@ -19,6 +36,13 @@ const CommentsItem = (props) => {
           <Button
             title="수정"
             type="outline"
+            onPress={() => {
+              const data = {
+                boardId: id,
+                content: setModifyContent
+              }
+              putComment(data, id);
+            }}
           />
           <Text>   </Text>
           <Button
