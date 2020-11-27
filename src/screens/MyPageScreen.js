@@ -59,12 +59,14 @@ const MyPageScreen = ({ navigation }) => {
               >내 정보 수정</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('MyPage')}
+              onPress={() => navigation.navigate('CreateNewPw')}
             >
               <Text
                 style={styles.button}
               >비밀번호변경</Text>
             </TouchableOpacity>
+
+
             <TouchableOpacity
               onPress={() => signOut()}
             >

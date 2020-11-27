@@ -50,7 +50,6 @@ const EditMyInformation = ({ route, navigation }) => {
   const [t_foot, setFoot] = useState(foot);
 
   useEffect(() => {
-
     (async () => {
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
