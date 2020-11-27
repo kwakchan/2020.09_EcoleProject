@@ -43,7 +43,7 @@ const requestmembers = [
   }
 ];
 
-const TeamMemberScreen = ({ navigation }) => {
+const TeamMemberScreen = ({  }) => {
   return (
     <View style={{ flex: 1 }}>
       <View style={{ backgroundColor: "#EDD81C" }}>

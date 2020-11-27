@@ -67,7 +67,7 @@ export default App = () => {
       "회원가입 성공!!",
       `로그인 페이지로 이동합니다.`,
       [
-        { text: "확인", onPress: () => { console.log("OK Pressed"), navigation.navigate('Login'); } }
+        { text: "확인", onPress: () => { console.log("OK Pressed"), navigation.navigate('로그인'); } }
       ],
       { cancelable: false }
     );
@@ -131,6 +131,13 @@ export default App = () => {
                       <MaterialCommunityIcons name="account" color={color} size={size} />
                     ),
                   }} />
+                <Tab.Screen name="팀목록" component={TeamStackScreen}
+                  options={{
+                    tabBarLabel: "팀목록",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons name="account-supervisor" color={color} size={size} />
+                    ),
+                  }} />
                 <Tab.Screen name="경기" component={MatchingStackScreen}
                   options={{
                     tabBarLabel: "경기",
@@ -143,13 +150,6 @@ export default App = () => {
                     tabBarLabel: "게시판",
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons name="clipboard-text-outline" color={color} size={size} />
-                    ),
-                  }} />
-                <Tab.Screen name="팀정보" component={TeamStackScreen}
-                  options={{
-                    tabBarLabel: "팀정보",
-                    tabBarIcon: ({ color, size }) => (
-                      <MaterialCommunityIcons name="account" color={color} size={size} />
                     ),
                   }} />
               </Tab.Navigator>

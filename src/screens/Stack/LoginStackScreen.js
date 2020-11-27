@@ -12,10 +12,10 @@ const LoginStack = createStackNavigator();
 export default LoginStackScreen = () => {
   return (
     <LoginStack.Navigator>
-      <LoginStack.Screen name="Login" component={LoginScreen} />
-      <LoginStack.Screen name="SignUp" component={SignUpScreen} />
-      <LoginStack.Screen name="FindEmail" component={FindEmailScreen} />
-      <LoginStack.Screen name="FindPw" component={FindPwScreen} />
+      <LoginStack.Screen name="로그인" component={LoginScreen} />
+      <LoginStack.Screen name="회원가입" component={SignUpScreen} />
+      <LoginStack.Screen name="이메일 찾기" component={FindEmailScreen} />
+      <LoginStack.Screen name="비밀번호 찾기" component={FindPwScreen} />
     </LoginStack.Navigator>
   );
 }
