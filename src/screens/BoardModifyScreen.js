@@ -4,7 +4,9 @@ import { Picker } from '@react-native-community/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../api';
 
-async function postBoard(data, navigation) {
+async function putBoard(data, id, navigation) {
+  console.log(data);
+  console.log(id);
   try {
       const token = await AsyncStorage.getItem('token');
       const config = {
@@ -12,7 +14,7 @@ async function postBoard(data, navigation) {
               'Authorization': token
           }
       }
-      const res = await api.post('/api/boards', data, config);
+      const res = await api.put(`/api/boards/${id}`, data, config);
       console.log(res);
       navigation.navigate('BoardList');
   } catch (err) {
@@ -20,13 +22,14 @@ async function postBoard(data, navigation) {
   }
 }
 
-const BoardCreateScreen = ({ navigation }) => {
+const BoardModifyScreen = ({ route, navigation }) => {
+  const {id, title, content} = route.params;
+  const [boardTitle, setTitle] = useState(title);
+  const [boardContent, setContent] = useState(content);
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [boardType, setBoardType] = useState('FREE');
 
 
+  
   // const [image, setImage] = useState(null);
 
   // const pickImage = async () => {
@@ -49,23 +52,9 @@ const BoardCreateScreen = ({ navigation }) => {
     <ScrollView>
       <View style={{ flex: 1, padding: 10 }}>
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 30, textAlign: "center" }}>게시글 개설</Text>
+          <Text style={{ fontSize: 30, textAlign: "center" }}>게시글 수정</Text>
         </View>
         <View style={styles.container}>
-          <Picker
-            style={[styles.picker]} //스타일 지정
-            selectedValue={boardType} //제일 위 선택란에 누른 아이템이 표시된다
-            onValueChange={(itemValue, itemIndex) => {
-              setBoardType(itemValue)
-              console.log(itemValue);
-            }}                        //value가 바뀌면 상태를 변경해준다 
-          >
-            <Picker.Item label="자유 게시판" value="FREE" />
-            <Picker.Item label="용병 신청" value="INVITE" />
-            <Picker.Item label="용병 찾기" value="FIND" />
-          </Picker>
-
-
 
           {/* <View>
                         <Text style={styles.info}>팀 로고</Text>
@@ -83,36 +72,37 @@ const BoardCreateScreen = ({ navigation }) => {
           <View>
             <TextInput
               onChangeText={setTitle}
-              value={title}
+              value={boardTitle}
               style={styles.input}
-              placeholder="  제목을 입력하세요 "
               placeholderTextColor="grey"
-            />
+            >
+              
+            </TextInput>
           </View>
 
           <View>
             <TextInput
               onChangeText={setContent}
-              value={content}
+              value={boardContent}
               style={styles.inputcontents}
-              placeholder="  내용을 입력 해 주세요"
               placeholderTextColor="grey"
               multiline={true}
               maxLength={300}
-            />
+            > 
+            </TextInput>
           </View>
         </View>
 
         <View style={buttonstyles.button}>
-          <Button title="게시글 올리기"
+          <Button title="수정 완료"
             onPress={() => {
               const data = {
-                title: title,
-                content: content,
+                title: boardTitle,
+                content: boardContent,
                 // image: image
-                boardType: boardType
               }
-              postBoard(data, navigation);
+              console.log(data)
+              putBoard(data, id, navigation);
             }}
           />
         </View>
@@ -123,7 +113,7 @@ const BoardCreateScreen = ({ navigation }) => {
 
 }
 
-export default BoardCreateScreen;
+export default BoardModifyScreen;
 
 const styles = StyleSheet.create({
   container: {

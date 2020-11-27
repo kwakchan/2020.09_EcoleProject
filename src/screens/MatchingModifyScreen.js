@@ -9,15 +9,17 @@ moment.tz.setDefault("Asia/Seoul");
 state = {
   selectedHours: 0,
   selectedMinutes: 0,
-};
+};  ``
 
-const MatchingCreateScreen = ({ navigation }) => {
+const MatchingModifyScreen = ({ route, navigation }) => {
 
   const [showCal, setShowCal] = useState(false);
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [location, setLocation] = useState('');
   const [count, setCount] = useState('');
   const [etc, setEtc] = useState('');
+
+  const { team_name, matching_location, matching_time, matching_count, matching_contents } = route.params;
 
   return (
     <>
@@ -85,7 +87,9 @@ const MatchingCreateScreen = ({ navigation }) => {
                     style={styles.input}
                     placeholder="  00명"
                     placeholderTextColor="grey"
-                  />
+                  >
+                    {JSON.stringify(matching_count)}
+                  </TextInput>
                 </View>
 
                 <View>
@@ -96,7 +100,9 @@ const MatchingCreateScreen = ({ navigation }) => {
                     style={styles.input}
                     placeholder="  내용을 입력 해 주세요"
                     placeholderTextColor="grey"
-                  />
+                  >
+                    {JSON.stringify(matching_contents)}
+                  </TextInput>
                 </View>
 
               </View>
@@ -105,13 +111,13 @@ const MatchingCreateScreen = ({ navigation }) => {
                 <Button title="수정 완료"
                   onPress={() => {
                     const data = {
-                      count: count,
-                      etc: etc,
-                      date: date,
-                      ...location
+                      count: count, //인원 수
+                      etc: etc, //세부사항
+                      date: date, //날짜
+                      ...location //지역
                     }
                     console.log(data);
-                    navigation.navigate('MatchingWaitDetail');
+                    navigation.navigate('MatchingDetail');
                   }}
                 />
               </View>
@@ -124,7 +130,7 @@ const MatchingCreateScreen = ({ navigation }) => {
 
 }
 
-export default MatchingCreateScreen;
+export default MatchingModifyScreen;
 
 const styles = StyleSheet.create({
   container: {
