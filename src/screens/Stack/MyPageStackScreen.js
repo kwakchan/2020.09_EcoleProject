@@ -4,7 +4,8 @@ import {
   MyPageScreen,
   EditMyInformation,
   EditTeamInformation,
-  CreateNewPwScreen
+  CreateNewPwScreen,
+  MyTeamDetailScreen
 } from "../";
 
 const MyPageStack = createStackNavigator();
@@ -16,6 +17,7 @@ export default MypageStackScreen = () => {
       <MyPageStack.Screen name="EditMyInformation" component={EditMyInformation} />
       <MyPageStack.Screen name="EditTeamInformation" component={EditTeamInformation} />
       <MyPageStack.Screen name="CreateNewPw" component={CreateNewPwScreen} />
+      <MyPageStack.Screen name="MyTeamDetailScreen" component={MyTeamDetailScreen} />
     </MyPageStack.Navigator>
   );
 }
