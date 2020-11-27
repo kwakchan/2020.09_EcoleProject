@@ -14,7 +14,7 @@ async function getBoardList(setBoards){
         Authorization: token
       }
     }
-    const res = await api.get(`/api/boards?search=${search}`, config);
+    const res = await api.get(`/api/boards`, config);
     setBoards(res.data);
   } catch (error) {
     console.log(error)

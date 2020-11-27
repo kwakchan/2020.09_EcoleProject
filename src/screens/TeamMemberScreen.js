@@ -43,8 +43,11 @@ const requestmembers = [
   }
 ];
 
-const TeamMemberScreen = ({  }) => {
+const TeamMemberScreen = ({ route, navigation }) => {
+  const {id} = route.params;
+
   return (
+    
     <View style={{ flex: 1 }}>
       <View style={{ backgroundColor: "#EDD81C" }}>
         <Text style={styles.text}>멤버</Text>
