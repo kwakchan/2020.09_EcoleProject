@@ -13,7 +13,7 @@ const MyMatchingItem = (props) => {
         <Text style={{ fontSize: 15, marginLeft: 5 }}>{matching_location}</Text>
         <Text style={{ fontSize: 15, marginLeft: 5 }}>{matching_count}</Text>
     
-        <Button title="요청목록"  onPress={() => navigation.navigate('#') }/>
+        <Button title="요청목록"  onPress={() => navigation.navigate('MatchingRequest') }/>
     </TouchableOpacity>
   );
 };
