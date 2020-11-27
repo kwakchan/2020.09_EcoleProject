@@ -6,13 +6,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
-  LoginStackScreen
+  BoardStackScreen,
+  LoginStackScreen,
+  MatchingStackScreen,
+  MyPageStackScreen,
+  TeamStackScreen,
 } from "./src/screens/Stack";
-import {
-  MyPageScreen,
-  MatchingListScreen,
-  BoardListScreen
-} from "./src/screens";
 import { AuthContext } from "./src/context";
 import { api } from "./src/api";
 
@@ -114,38 +113,45 @@ export default App = () => {
   return (
     <Provider value={authContext}>
       <NavigationContainer>
-          {state.userToken == null ?
-            (
-              <>
-                <LoginStackScreen />
-              </>
-            ) :
-            (
+        {state.userToken == null ?
+          (
+            <>
+              <LoginStackScreen />
+            </>
+          ) :
+          (
             <>
               <Tab.Navigator tabBarOptions={{
                 activeTintColor: '#e85433'
               }}>
-                <Tab.Screen name="마이페이지" component={MyPageScreen}
+                <Tab.Screen name="마이페이지" component={MyPageStackScreen}
                   options={{
                     tabBarLabel: "마이페이지",
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons name="account" color={color} size={size} />
                     ),
                   }} />
-                <Tab.Screen name="경기" component={MatchingListScreen} 
-                options={{
-                  tabBarLabel: "경기",
-                  tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="soccer" color={color} size={size} />
-                  ),
-                }} />
-                <Tab.Screen name="게시판" component={BoardListScreen}
-                options={{
-                  tabBarLabel: "게시판",
-                  tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="clipboard-text-outline" color={color} size={size} />
-                  ),
-                }}  />
+                <Tab.Screen name="경기" component={MatchingStackScreen}
+                  options={{
+                    tabBarLabel: "경기",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons name="soccer" color={color} size={size} />
+                    ),
+                  }} />
+                <Tab.Screen name="게시판" component={BoardStackScreen}
+                  options={{
+                    tabBarLabel: "게시판",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons name="clipboard-text-outline" color={color} size={size} />
+                    ),
+                  }} />
+                <Tab.Screen name="팀정보" component={TeamStackScreen}
+                  options={{
+                    tabBarLabel: "팀정보",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons name="account" color={color} size={size} />
+                    ),
+                  }} />
               </Tab.Navigator>
             </>
           )}
