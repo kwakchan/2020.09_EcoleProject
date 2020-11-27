@@ -3,13 +3,13 @@ import { Text, View, StyleSheet, Button } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 
 const CommentsItem = (props) => {
-  const { id, name, title, createdAt, content, modifiedAt } = props.comment;
+  const { id, name, image, title, createdAt, content, modifiedAt } = props.comment;
 
   return (
     <View style={styles.commenter}>
       {/* 댓글; 이름+ 날짜 */}
       <ListItem bottomDivider style={styles.commenter}>
-        <Avatar rounded source={{ uri: 'http://placeimg.com/50/50' }} />
+        <Avatar rounded source={{ uri: image }} />
         <ListItem.Content>
           <ListItem.Title>{name}</ListItem.Title>
           <ListItem.Subtitle>{createdAt}</ListItem.Subtitle>

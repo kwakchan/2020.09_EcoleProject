@@ -8,7 +8,6 @@ import { api } from '../api';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 async function getTeamList(setTeams, search, location) {
-  console.log(location)
   try {
     const token = await AsyncStorage.getItem("token");
     const config = {
