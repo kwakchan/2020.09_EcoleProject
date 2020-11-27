@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
 import { ListItem, Icon } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
 
 const MatchingDetailScreen = ({route, navigation}) => {
   const { team_name, matching_location, matching_time, matching_count, matching_contents } = route.params;
+  const [showbtn, setShowbtn ] = useState(false)
   const list = [
     {
       title: '시간',
@@ -119,16 +120,32 @@ const MatchingDetailScreen = ({route, navigation}) => {
 
       {/* 신청/취소 버튼 */}
       <View style={styles.oxbutton}>
-        <Button
-          onPress={requestButtonAlert}
-          title="신청"
-          type="outline"
-        />
-        <Button
+        {
+          showbtn === false
+          ? <>
+          <Button
+            onPress={requestButtonAlert}
+            title="신청"
+          />
+          <Button
           onPress={cancelButtonAlert}
           title="취소"
           disabled
-        />
+          />
+          </>
+
+          : <>
+          <Button
+            onPress={requestButtonAlert}
+            title="신청"
+            disabled
+          />
+          <Button
+            onPress={cancelButtonAlert}
+            title="취소"
+          />
+          </>
+        }
       </View>
 
     </ScrollView>
@@ -136,6 +153,9 @@ const MatchingDetailScreen = ({route, navigation}) => {
 }
 
 const styles = StyleSheet.create({
+  background: {
+    margin: 30
+  },
   teamprofile: {
     margin:20,
     alignItems:'center'
