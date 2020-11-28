@@ -1,12 +1,51 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Text, Image, View, StyleSheet, Alert} from "react-native";
 import { Button, ListItem, Icon } from 'react-native-elements';
 import { ScrollView } from "react-native-gesture-handler";
-
+import { api } from '../api';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 // import Icon from 'react-native-vector-icons/FontAwesome';
+
+async function applystatus(setUserinfo) {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    const res = await api.get("/api/applications/accounts", config);
+    setUserinfo(res.data); 
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function applyteam(data) {
+  try {
+      const token = await AsyncStorage.getItem('token');
+      const config = {
+          headers: {
+              'Authorization': token
+          }
+      }
+      const res = await api.post('/api/applications/accounts', data, config);
+      console.log(res);
+  } catch (err) {
+      console.log(err);
+  }
+}
 
 const TeamDetailScreen = ({route, navigation}) => {
   const { id, name, logopath, state, district, description } = route.params;
+  const [userinfo, setUserinfo ] = useState('');
+  useEffect(() => {
+    applystatus(setUserinfo);
+  }, [])
+
+  console.log(userinfo)
+
   const applyButtonAlert = () =>
     Alert.alert(
       "팀 가입 신청",
@@ -17,7 +56,16 @@ const TeamDetailScreen = ({route, navigation}) => {
           onPress: () => console.log("팀 가입 신청 취소"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("팀 가입 신청 완료") }
+        { text: "확인", onPress: () => {
+          console.log("팀 가입 신청 완료")
+          const data = {
+            teamId: id
+          }
+          applyteam(data);
+          console.log(data)
+          //userinfo = useState(true)
+          }
+        }
       ],
       { cancelable: false }
     );
@@ -80,17 +128,33 @@ const TeamDetailScreen = ({route, navigation}) => {
 
       {/* 신청/취소 버튼 */}
       <View style={styles.oxbutton}>
-        <Button
-          onPress={applyButtonAlert}
-          title="신청"
-        />
-        <Button
+        {
+          id === ''
+          ? <>
+          <Button
+            onPress={applyButtonAlert}
+            title="신청"
+          />
+          <Button
           onPress={cancelButtonAlert}
           title="취소"
-          disabled
-        />
-      </View>
+          //disabled
+          />
+          </>
 
+          : <>
+          <Button
+            onPress={applyButtonAlert}
+            title="신청"
+            //disabled
+          />
+          <Button
+            onPress={cancelButtonAlert}
+            title="취소"
+          />
+          </>
+        }
+      </View>
 
     </ScrollView>
   );

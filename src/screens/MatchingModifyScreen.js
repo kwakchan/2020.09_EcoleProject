@@ -11,6 +11,26 @@ state = {
   selectedMinutes: 0,
 };  ``
 
+/*
+async function putMatching(data, id, navigation) {
+  console.log(data);
+  console.log(id);
+  try {
+      const token = await AsyncStorage.getItem('token');
+      const config = {
+          headers: {
+              'Authorization': token
+          }
+      }
+      const res = await api.put(`/api/boards/${id}`, data, config);
+      console.log(res);
+      navigation.navigate('BoardList');
+  } catch (err) {
+      console.log(err);
+  }
+}
+*/
+
 const MatchingModifyScreen = ({ route, navigation }) => {
 
   const [showCal, setShowCal] = useState(false);
