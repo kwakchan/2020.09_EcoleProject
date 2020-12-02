@@ -4,10 +4,9 @@ import { Avatar } from 'react-native-elements';
 
 const MatchingItem = (props) => {
   const navigation = props.navigation;
-  const { id, homeTeam, state, district, date, countMember } = props.matching;
+  const { id, homeTeam, state, district, date, countMember, description } = props.matching;
   const name = homeTeam.name;
   const logoPath = homeTeam.logopath;
-  const description = homeTeam.description
 
   return (
     <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", margin: 5, justifyContent: "space-between" }}

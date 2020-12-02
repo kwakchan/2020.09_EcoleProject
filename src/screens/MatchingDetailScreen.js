@@ -4,13 +4,13 @@ import { ListItem, Icon } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
 
 const MatchingDetailScreen = ({route, navigation}) => {
-  const { name, logoPath, state, district, date, countMember, description } = route.params;
+  const { id, homeTeam_id, name, logoPath, state, district, date, countMember, description, matchStatus } = route.params;
   const [showbtn, setShowbtn ] = useState(false)
   const list = [
     {
       title: '시간',
       icon: 'event',
-      text: state
+      text: date
     },
     {
       title: '장소',
@@ -81,7 +81,9 @@ const MatchingDetailScreen = ({route, navigation}) => {
       <View style={styles.udbutton} >
         <Button
           onPress={() => {navigation.navigate('MatchingModify',
-            {name: name, state: state, district: district, date: date, countMember: countMember, description: description}); }}
+            {id: id, homeTeam_id: homeTeam_id, name: name, logoPath: logoPath, state: state, district: district, 
+             date: date, countMember: countMember, description: description, matchStatus: matchStatus}); 
+            }}
           title="수정"
           color="gray"
           type="outline"

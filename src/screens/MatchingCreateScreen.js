@@ -67,7 +67,7 @@ const MatchingCreateScreen = ({ navigation }) => {
 
                   current={moment().format('YYYY-MM-DD')}
                   minDate={moment().format('YYYY-MM-DD')}
-                  maxDate={'2020-11-30'}
+                  maxDate={'2022-12-31'}
                   onDayPress={(day) => {
                     setDate(day.dateString);
                     setShowCal(false);
