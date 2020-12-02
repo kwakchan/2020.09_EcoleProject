@@ -11,7 +11,7 @@ async function putBoard(data, id, navigation) {
       const token = await AsyncStorage.getItem('token');
       const config = {
           headers: {
-              'Authorization': token
+              Authorization: token
           }
       }
       const res = await api.put(`/api/boards/${id}`, data, config);
