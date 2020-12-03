@@ -69,7 +69,7 @@ const TeamDetailScreen = ({route, navigation}) => {
       ],
       { cancelable: false }
     );
-
+D
   const cancelButtonAlert = () =>
     Alert.alert(
       "팀 가입 취소",

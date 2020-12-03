@@ -100,7 +100,7 @@ const MyTeamDetailScreen = ({ route, navigation }) => {
       <View style={{marginBottom:30}}>
         <Button
           onPress={() => {navigation.navigate('TeamMember', 
-          {id: id}); 
+          {id: teamId}); 
           }}
           title="팀원 목록"
           type="outline"
