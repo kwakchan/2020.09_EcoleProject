@@ -6,8 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RequestMemberItem = (props) => {
   const { id, name, image } = props.requestmember;
-  const [teamStatus, setTeamStatus] = useState('');
-
+  
 
   async function putRequestMember(teamStatus, id) {
     try {
@@ -32,13 +31,10 @@ const RequestMemberItem = (props) => {
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Button title="수락" onPress={() => {
-          setTeamStatus('ACCEPT')
-          putRequestMember(teamStatus, id)
-          console.log(id + " " + teamStatus)
+          putRequestMember({teamStatus : "ACCEPT"}, id)
         }} color="#EDD81C" />
         <Button title="거절" onPress={() => {
-          setTeamStatus('REJECT')
-          putRequestMember(teamStatus, id)
+          putRequestMember({teamStatus : "REJECT"}, id)
         }}
           color="#EDD81C" />
       </View>
