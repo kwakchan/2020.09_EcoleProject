@@ -6,13 +6,13 @@ import { api } from '../api';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import mime from "mime";
 
-async function putTeam(id, data, image, navigation) {
+async function putTeam(id, data, logopath, navigation) {
   const formData = new FormData();
-  formData.append("logo", {
+  formData.append("logopath", {
     name: `${id}_profile.jpg`,
-    type: mime.getType(image.uri),
+    type: mime.getType(logopath.uri),
     uri:
-      Platform.OS === "android" ? image.uri : image.uri.replace("file://", "")
+      Platform.OS === "android" ? logopath.uri : logopath.uri.replace("file://", "")
   });
   formData.append("data", JSON.stringify(data));
   try {
@@ -39,7 +39,7 @@ async function putTeam(id, data, image, navigation) {
 
 const EditTeamInformation = ({ route, navigation }) => {
   const {id, logopath, name, description} = route.params.team;
-  const [image, setImage] = useState({ uri: logopath, type: 'image' });
+  const [_logopath, setlogopath] = useState({ uri: logopath, type: 'logopath' });
   const [t_description, setDescription] = useState(description);
   
   
@@ -63,7 +63,7 @@ const EditTeamInformation = ({ route, navigation }) => {
       quality: 1,
     });
     if (!result.cancelled) {
-      setImage(result);
+      setlogopath(result);
     }
   };
 
@@ -98,7 +98,7 @@ const EditTeamInformation = ({ route, navigation }) => {
       </View>
       <View >
         <Text style={styles.info}>팀 대표 사진</Text>
-        {image && <Image source={{ uri: image.uri }} style={{ width: 200, height: 200 }} />}
+        {_logopath && <Image source={{ uri: _logopath.uri }} style={{ width: 200, height: 200 }} />}
         <View style={styles.button1}>
           <Button
             title="찾아보기"
@@ -126,7 +126,7 @@ const EditTeamInformation = ({ route, navigation }) => {
             const data = {
               description: t_description
             };
-            putTeam(id, data, image, navigation);
+            putTeam(id, data, _logopath, navigation);
             
           }}
           title="저장하기"
