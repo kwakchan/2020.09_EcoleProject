@@ -49,7 +49,7 @@ const TeamDetailScreen = ({route, navigation}) => {
   const applyButtonAlert = () =>
     Alert.alert(
       "팀 가입 신청",
-      JSON.stringify(name) + "팀 가입을 신청하시겠습니까?",
+      name + "팀 가입을 신청하시겠습니까?",
       [
         {
           text: "취소",
@@ -73,7 +73,7 @@ const TeamDetailScreen = ({route, navigation}) => {
   const cancelButtonAlert = () =>
     Alert.alert(
       "팀 가입 취소",
-      JSON.stringify(name) + "팀 가입을 취소하시겠습니까?",
+      name + "팀 가입을 취소하시겠습니까?",
       [
         {
           text: "취소",
@@ -89,7 +89,7 @@ const TeamDetailScreen = ({route, navigation}) => {
     <ScrollView style={styles.background}>
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
       <View style={styles.teamprofile}>
-        <Image source={{uri: JSON.stringify(logopath)}} style={{width:100, height:100, borderRadius: 150/2}} />
+        <Image source={{uri: logopath}} style={{width:100, height:100, borderRadius: 150/2}} />
         <View style={{flexDirection:'column'}}>
           <Text styles={styles.teamname} style={{fontSize:20}}>{name}</Text>
         </View>

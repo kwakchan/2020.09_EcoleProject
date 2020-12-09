@@ -5,7 +5,8 @@ import {
   MatchingListScreen,
   MatchingCreateScreen,
   MatchingModifyScreen,
-  MatchingRequestScreen
+  MatchingRequestScreen,
+  // MatchingMyDetailScreen
 } from "../";
 
 const MatchingStack = createStackNavigator();
@@ -18,6 +19,7 @@ export default MypageStackScreen = () => {
       <MatchingStack.Screen name="MatchingModify" component={MatchingModifyScreen} />
       <MatchingStack.Screen name="MatchingRequest" component={MatchingRequestScreen} />
       <MatchingStack.Screen name="MatchingDetail" component={MatchingDetailScreen} />
+      {/* <MatchingStack.Screen name="MatchingMyDetail" component={MatchingMyDetailScreen} /> */}
     </MatchingStack.Navigator>
   );
 }

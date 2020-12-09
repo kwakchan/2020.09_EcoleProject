@@ -1,18 +1,16 @@
-//다 되는데 에러메세지 뜸
-
 import React, {useState} from "react";
 import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
 import { ListItem, Icon } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
 
 const MatchingDetailScreen = ({route, navigation}) => {
-  const { id, name, logoPath, state, district, date, countMember, description } = route.params;
+  const { name, logoPath, state, district, date, countMember, description } = route.params;
   const [showbtn, setShowbtn ] = useState(false)
   const list = [
     {
       title: '시간',
       icon: 'event',
-      text: date
+      text: state
     },
     {
       title: '장소',
@@ -46,55 +44,15 @@ const MatchingDetailScreen = ({route, navigation}) => {
       { cancelable: false }
     );
 
-  const requestButtonAlert = () =>
-    Alert.alert(
-      "매칭 신청",
-      "해당 경기에 매칭을 신청하시겠습니까?",
-      [
-        {
-          text: "취소",
-          onPress: () => console.log("매칭 신청 취소"),
-          style: "cancel"
-        },
-        { text: "확인", onPress: () => console.log("매칭 신청 완료") }
-      ],
-      { cancelable: false }
-    );
-
-  const cancelButtonAlert = () =>
-    Alert.alert(
-      "매칭 취소",
-      "해당 경기에 매칭을 취소하시겠습니까?",
-      [
-        {
-          text: "취소",
-          onPress: () => console.log("매칭 신청 유지"),
-          style: "cancel"
-        },
-        { text: "확인", onPress: () => console.log("매칭 신청 취소 완료") }
-      ],
-      { cancelable: false }
-    );
-
   return (
     <ScrollView style={styles.background}>
-
-      {/* 팀로고(이미지) + 팀이름(텍스트) */}
-      <View style={styles.teamprofile}>
-        <Image source={{ uri: logoPath }} style={{width:100, height:100, borderRadius: 150/2}}
-        />
-        <View style={{flexDirection:'column'}}>
-          <Text styles={styles.teamname} style={{fontSize:20}}>{name}</Text>
-        </View>
-      </View>
 
       {/* 수정/삭제 버튼 */}
       <View style={styles.udbutton} >
         <Button
           onPress={() => {
-            navigation.navigate('MatchingModify', 
-              {id: id, name: name, state: state, district: district, date: date, countMember: countMember, description: description});
-            console.log(description)}}
+            navigation.navigate('MatchingModify', {name: name, state: state, district: district, date: date, countMember: countMember, description: description});
+            console.log(name)}}
           title="수정"
           color="gray"
           type="outline"
@@ -105,6 +63,15 @@ const MatchingDetailScreen = ({route, navigation}) => {
           color="#de3143"
           type="outline"
         />
+      </View>
+
+      {/* 팀로고(이미지) + 팀이름(텍스트) */}
+      <View style={styles.teamprofile}>
+        <Image source={{ uri: logoPath }} style={{width:100, height:100, borderRadius: 150/2}}
+        />
+        <View style={{flexDirection:'column'}}>
+          <Text styles={styles.teamname} style={{fontSize:20}}>{name}</Text>
+        </View>
       </View>
 
       {/* 상세내용 */}
@@ -119,36 +86,6 @@ const MatchingDetailScreen = ({route, navigation}) => {
               </ListItem.Content>
             </ListItem>
           ))
-        }
-      </View>
-
-      {/* 신청/취소 버튼 */}
-      <View style={styles.oxbutton}>
-        {
-          showbtn === false
-          ? <>
-          <Button
-            onPress={requestButtonAlert}
-            title="신청"
-          />
-          <Button
-          onPress={cancelButtonAlert}
-          title="취소"
-          disabled
-          />
-          </>
-
-          : <>
-          <Button
-            onPress={requestButtonAlert}
-            title="신청"
-            disabled
-          />
-          <Button
-            onPress={cancelButtonAlert}
-            title="취소"
-          />
-          </>
         }
       </View>
 
