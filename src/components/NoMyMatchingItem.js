@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableOpacity, Text, Button } from 'react-native';
 
-const MyMatchingItem = (props) => {
+const NoMyMatchingItem = (props) => {
   const navigation = props.navigation;
-  const { id, homeTeam, date, state, district, countMember, description, matchStatus } = props.myMatching;
+  const { id, homeTeam, date, state, district, countMember, description, matchStatus } = props.NoMyMatching;
   const homeTeam_id = homeTeam.id;
   const name = homeTeam.name;
   const logoPath = homeTeam.logopath;
@@ -19,10 +19,8 @@ const MyMatchingItem = (props) => {
       <Text style={{ fontSize: 15, marginLeft: 5 }}>{date}</Text>
       <Text style={{ fontSize: 15, marginLeft: 5 }}>{state} {district}</Text>
       <Text style={{ fontSize: 15, marginLeft: 5 }}>{countMember}</Text>
-
-      <Button title="요청목록" onPress={() => navigation.navigate('MatchingRequest')} />
     </TouchableOpacity>
   );
 };
 
-export default MyMatchingItem;
+export default NoMyMatchingItem;

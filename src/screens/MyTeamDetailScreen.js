@@ -17,14 +17,15 @@ async function getTeam(setTeam, teamId) {
     const token = await AsyncStorage.getItem('token');
     const config = {
       headers: {
-        'Authorization': token
+        Authorization: token
       }
     }
     const res = await api.get(`/api/teams/${teamId}`, config);
     setTeam(res.data);
     console.log(res.data);
+
   } catch (err) {
-    console.log(err);
+    //console.log(err);
   }
 }
 
@@ -48,7 +49,7 @@ const MyTeamDetailScreen = ({ route, navigation }) => {
         },
         {
           text: "확인", onPress: () => {
-            
+
             console.log("팀 탈퇴 성공")
             navigation.navigate('MyPage');
           }
@@ -59,7 +60,7 @@ const MyTeamDetailScreen = ({ route, navigation }) => {
 
   return (
     <>
-      {console.log(route.params)}
+      {/* {console.log(route.params)} */}
       {
         team ?
           <ScrollView style={styles.background}>
@@ -70,49 +71,92 @@ const MyTeamDetailScreen = ({ route, navigation }) => {
               </View>
             </View>
 
-            <View>
-        <Button
-          onPress={() => {
-            navigation.navigate('EditTeamInformation', {team: team})
-          }}
-          title="팀 정보 수정"
-        />
+            {
+              team.isOwner === false
+                ?
+                <>
+                  <View>
 
-<View style={{marginBottom:30}}>
-        <ListItem bottomDivider>
-          <Icon name='room' />
-          <ListItem.Content>
-            <ListItem.Title >지역</ListItem.Title>
-            <ListItem.Subtitle >{team.state} {team.district}</ListItem.Subtitle>
-          </ListItem.Content>
-        </ListItem>
-        <ListItem bottomDivider>
-          <Icon name='info' />
-          <ListItem.Content>
-            <ListItem.Title >설명</ListItem.Title>
-            <ListItem.Subtitle >{team.description}</ListItem.Subtitle>
-          </ListItem.Content>
-        </ListItem>
-      </View>
-      </View>
+                    <View style={{ marginBottom: 30 }}>
+                      <ListItem bottomDivider>
+                        <Icon name='room' />
+                        <ListItem.Content>
+                          <ListItem.Title >지역</ListItem.Title>
+                          <ListItem.Subtitle >{team.state} {team.district}</ListItem.Subtitle>
+                        </ListItem.Content>
+                      </ListItem>
+                      <ListItem bottomDivider>
+                        <Icon name='info' />
+                        <ListItem.Content>
+                          <ListItem.Title >설명</ListItem.Title>
+                          <ListItem.Subtitle >{team.description}</ListItem.Subtitle>
+                        </ListItem.Content>
+                      </ListItem>
+                    </View>
+                  </View>
 
-     
-      <View style={{marginBottom:30}}>
-        <Button
-          onPress={() => {navigation.navigate('TeamMember', 
-          {id: id}); 
-          }}
-          title="팀원 목록"
-          type="outline"
-        />
-      </View>
 
-       <View>
-        <Button
-          onPress={exitButtonAlert}
-          title="팀 탈퇴"
-        />
-      </View>
+                  <View style={{ marginBottom: 30 }}>
+                    <Button
+                      onPress={() => {
+                        navigation.navigate('TeamMember',
+                          { id: teamId });
+                      }}
+                      title="팀원 목록"
+                      type="outline"
+                    />
+                  </View>
+
+                  <View>
+                    <Button
+                      onPress={exitButtonAlert}
+                      title="팀 탈퇴"
+                    />
+                  </View>
+                </>
+                :
+                <>
+                  <View>
+                    <Button
+                      onPress={() => {
+                        navigation.navigate('EditTeamInformation', { team: team })
+                      }}
+                      title="팀 정보 수정"
+                    />
+
+                    <View style={{ marginBottom: 30 }}>
+                      <ListItem bottomDivider>
+                        <Icon name='room' />
+                        <ListItem.Content>
+                          <ListItem.Title >지역</ListItem.Title>
+                          <ListItem.Subtitle >{team.state} {team.district}</ListItem.Subtitle>
+                        </ListItem.Content>
+                      </ListItem>
+                      <ListItem bottomDivider>
+                        <Icon name='info' />
+                        <ListItem.Content>
+                          <ListItem.Title >설명</ListItem.Title>
+                          <ListItem.Subtitle >{team.description}</ListItem.Subtitle>
+                        </ListItem.Content>
+                      </ListItem>
+                    </View>
+                  </View>
+
+
+                  <View style={{ marginBottom: 30 }}>
+                    <Button
+                      onPress={() => {
+                        navigation.navigate('TeamMember',
+                          { id: teamId });
+                      }}
+                      title="팀원 목록"
+                      type="outline"
+                    />
+                  </View>
+
+                </>
+
+            }
 
 
 

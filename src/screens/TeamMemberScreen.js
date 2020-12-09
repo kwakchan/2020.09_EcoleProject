@@ -18,12 +18,12 @@ async function getTeamMember(setTeam, id) {
     setTeam(res.data);
     console.log(res.data);
   } catch (error) {
+    console.log(res.data);
     console.log(error)
   }
 }
 
-
-const TeamMemberScreen = ({ route, navigation }) => {
+const TeamMemberScreen = ({ route }) => {
   const { id } = route.params;
   const [team, setTeam] = useState(null);
 
@@ -34,31 +34,49 @@ const TeamMemberScreen = ({ route, navigation }) => {
   return (
     <>
       {
-        team?
-        <View style={{ flex: 1 }}>
-          <View style={{ backgroundColor: "#EDD81C" }}>
-            <Text style={styles.text}>멤버</Text>
+        team ?
+          <View style={{ flex: 1 }}>
+            {
+              team.isOwner === false
+                ?
+                <>
+                  <View style={{ backgroundColor: "#EDD81C" }}>
+                    <Text style={styles.text}>멤버</Text>
+                  </View>
+                  <FlatList style={styles.memberlist}
+                    data={team.accounts.teamsAccountsDTOS}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => <MemberItem member={item} />}
+                  />
+                </>
+                :
+                <>
+                  <View style={{ backgroundColor: "#EDD81C" }}>
+                    <Text style={styles.text}>멤버</Text>
+                  </View>
+                  <FlatList style={styles.memberlist}
+                    data={team.accounts.teamsAccountsDTOS}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => <MemberItem member={item} />}
+                  />
+
+                  {/* 팀장일 경우에만 보임 */}
+                  <View style={{ backgroundColor: "#EDD81C" }}>
+                    <Text style={styles.text}>새로운 요청</Text>
+                  </View>
+                  <FlatList style={styles.memberlist}
+                    data={team.applies}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => <RequestMemberItem requestmember={item} />}
+                  />
+                </>
+            }
           </View>
-          <FlatList style={styles.memberlist}
-            data={team.accounts.teamsAccountsDTOS}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <MemberItem member={item} />}
-          />
-
-          {/* 팀장일 경우에만 보임 */}
-          <View style={{ backgroundColor: "#EDD81C" }}>
-            <Text style={styles.text}>새로운 요청</Text>
-          </View>
-
-          <RequestMemberItem requestmember={team.owner} />
-
-
-        </View>:
-        <Text>Loading...</Text>
+          :
+          <Text>Loading...</Text>
       }
     </>
   )
-
 }
 
 export default TeamMemberScreen;

@@ -1,11 +1,10 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
 import { ListItem, Icon } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
 
 const MatchingDetailScreen = ({route, navigation}) => {
   const { name, logoPath, state, district, date, countMember, description } = route.params;
-  const [showbtn, setShowbtn ] = useState(false)
   const list = [
     {
       title: '시간',
@@ -51,8 +50,13 @@ const MatchingDetailScreen = ({route, navigation}) => {
       <View style={styles.udbutton} >
         <Button
           onPress={() => {
-            navigation.navigate('MatchingModify', {name: name, state: state, district: district, date: date, countMember: countMember, description: description});
-            console.log(name)}}
+            navigation.navigate('MatchingModify',
+              {
+                id: id, homeTeam_id: homeTeam_id, name: name, logoPath: logoPath, state: state, district: district,
+                date: date, countMember: countMember, description: description, matchStatus: matchStatus
+              });
+            console.log(matchStatus)
+          }}
           title="수정"
           color="gray"
           type="outline"

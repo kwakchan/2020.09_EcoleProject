@@ -32,6 +32,7 @@ async function getProfile(setAccount) {
     }
     const res = await api.get('/api/accounts/profile', config);
     setAccount(res.data);
+    console.log(res.data)
   } catch (err) {
     console.log(err);
   }
@@ -67,7 +68,7 @@ const MatchingCreateScreen = ({ navigation }) => {
 
                   current={moment().format('YYYY-MM-DD')}
                   minDate={moment().format('YYYY-MM-DD')}
-                  maxDate={'2020-11-30'}
+                  maxDate={'2022-12-31'}
                   onDayPress={(day) => {
                     setDate(day.dateString);
                     setShowCal(false);
