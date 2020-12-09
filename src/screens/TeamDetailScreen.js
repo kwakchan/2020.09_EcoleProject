@@ -1,3 +1,5 @@
+//팀 리스트-팀 상세
+
 import React, {useState, useEffect} from "react";
 import { Text, Image, View, StyleSheet, Alert} from "react-native";
 import { Button, ListItem, Icon } from 'react-native-elements';
@@ -6,6 +8,22 @@ import { api } from '../api';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 // import Icon from 'react-native-vector-icons/FontAwesome';
+
+async function getProfile(setAccount) {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    const res = await api.get('/api/accounts/profile', config);
+    setAccount(res.data);
+    // console.log(res.data.leadingTeam)
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 async function applystatus(setUserinfo) {
   try {
@@ -31,25 +49,27 @@ async function applyteam(data) {
           }
       }
       const res = await api.post('/api/applications/accounts', data, config);
-      console.log(res);
   } catch (err) {
       console.log(err);
   }
 }
 
 const TeamDetailScreen = ({route, navigation}) => {
-  const { id, name, logopath, state, district, description } = route.params;
+  const { id, name, logopath, state, district, description} = route.params;
   const [userinfo, setUserinfo ] = useState('');
+  const [account, setAccount] = useState(null);
+  useEffect(() => {
+    getProfile(setAccount);
+  }, [])
+
   useEffect(() => {
     applystatus(setUserinfo);
   }, [])
 
-  console.log(userinfo)
-
   const applyButtonAlert = () =>
     Alert.alert(
       "팀 가입 신청",
-      JSON.stringify(name) + "팀 가입을 신청하시겠습니까?",
+      name + "팀 가입을 신청하시겠습니까?",
       [
         {
           text: "취소",
@@ -73,7 +93,7 @@ const TeamDetailScreen = ({route, navigation}) => {
   const cancelButtonAlert = () =>
     Alert.alert(
       "팀 가입 취소",
-      JSON.stringify(name) + "팀 가입을 취소하시겠습니까?",
+      name + "팀 가입을 취소하시겠습니까?",
       [
         {
           text: "취소",
@@ -89,7 +109,7 @@ const TeamDetailScreen = ({route, navigation}) => {
     <ScrollView style={styles.background}>
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
       <View style={styles.teamprofile}>
-        <Image source={{uri: JSON.stringify(logopath)}} style={{width:100, height:100, borderRadius: 150/2}} />
+        <Image source={{uri: logopath}} style={{width:100, height:100, borderRadius: 150/2}} />
         <View style={{flexDirection:'column'}}>
           <Text styles={styles.teamname} style={{fontSize:20}}>{name}</Text>
         </View>
@@ -119,8 +139,7 @@ const TeamDetailScreen = ({route, navigation}) => {
       <View style={{marginBottom:30}}>
         <Button
           onPress={() => {navigation.navigate('TeamMember', 
-              {id: id, name: name, logopath: logopath, state: state, district: district,
-                description:description, ownerName: ownerName}); 
+              {id: id, owner: account.owner}); 
               }}
           title="팀원 목록"
           type="outline"
@@ -130,16 +149,16 @@ const TeamDetailScreen = ({route, navigation}) => {
       {/* 신청/취소 버튼 */}
       <View style={styles.oxbutton}>
         {
-          id === ''
+          account ?
+          account.team == null
           ? <>
           <Button
             onPress={applyButtonAlert}
             title="신청"
           />
           <Button
-          onPress={cancelButtonAlert}
-          title="취소"
-          //disabled
+            onPress={cancelButtonAlert}
+            title="취소"
           />
           </>
 
@@ -147,13 +166,15 @@ const TeamDetailScreen = ({route, navigation}) => {
           <Button
             onPress={applyButtonAlert}
             title="신청"
-            //disabled
+            disabled
           />
           <Button
             onPress={cancelButtonAlert}
             title="취소"
+            disabled
           />
           </>
+          :<></>
         }
       </View>
 
