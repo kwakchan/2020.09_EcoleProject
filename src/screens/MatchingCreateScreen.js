@@ -58,7 +58,7 @@ const MatchingCreateScreen = ({ navigation }) => {
     <>
       {
         account ?
-          account.leadingTeam ?
+          account.owner === true ?
             showCal ?
               <View style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}>
                 <CalendarList
