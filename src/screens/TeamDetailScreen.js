@@ -119,9 +119,8 @@ const TeamDetailScreen = ({route, navigation}) => {
       <View style={{marginBottom:30}}>
         <Button
           onPress={() => {navigation.navigate('TeamMember', 
-              {id: id, name: name, logopath: logopath, state: state, district: district,
-                description:description, ownerName: ownerName}); 
-              }}
+          {id: id}); 
+          }}
           title="팀원 목록"
           type="outline"
         />
