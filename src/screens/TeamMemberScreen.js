@@ -23,12 +23,11 @@ async function getTeamMember(setTeam, id) {
 }
 
 const TeamMemberScreen = ({ route }) => {
-  const { id, owner } = route.params;
+  const { id, memberId } = route.params;
   const [team, setTeam] = useState();
 
   useEffect(() => {
     getTeamMember(setTeam, id);
-    console.log("팀장이니 " + owner)
   }, [])
 
   return (
@@ -37,7 +36,7 @@ const TeamMemberScreen = ({ route }) => {
         team ?
           <View style={{ flex: 1 }}>
             {
-              owner === false 
+              team.owner.id !== memberId 
                 ?
                 <>
                   <View style={{ backgroundColor: "#EDD81C" }}>

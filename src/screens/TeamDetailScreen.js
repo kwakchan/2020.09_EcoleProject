@@ -1,5 +1,4 @@
 //팀 리스트-팀 상세
-
 import React, {useState, useEffect} from "react";
 import { Text, Image, View, StyleSheet, Alert} from "react-native";
 import { Button, ListItem, Icon } from 'react-native-elements';
@@ -19,12 +18,13 @@ async function getProfile(setAccount) {
     }
     const res = await api.get('/api/accounts/profile', config);
     setAccount(res.data);
-    // console.log(res.data.leadingTeam)
+    // console.log(res.data)
   } catch (err) {
     console.log(err);
   }
 }
 
+//token값 유저가 가입신청한 팀목록
 async function applystatus(setUserinfo) {
   try {
     const token = await AsyncStorage.getItem("token");
@@ -35,12 +35,13 @@ async function applystatus(setUserinfo) {
     }
     const res = await api.get("/api/applications/accounts", config);
     setUserinfo(res.data); 
+    // console.log(res.data)
   } catch (error) {
     console.log(error)
   }
 }
 
-async function applyteam(data) {
+async function applyTeam(data) {
   try {
       const token = await AsyncStorage.getItem('token');
       const config = {
@@ -54,8 +55,23 @@ async function applyteam(data) {
   }
 }
 
+async function cancelTeam(data, id) {
+  try {
+      const token = await AsyncStorage.getItem('token');
+      const config = {
+          headers: {
+              'Authorization': token
+          }
+      }
+      const res = await api.put(`/api/applications/accounts/${id}/account`, data, config);
+      // console.log(res.data)
+  } catch (err) {
+      console.log(err);
+  }
+}
+
 const TeamDetailScreen = ({route, navigation}) => {
-  const { id, name, logopath, state, district, description} = route.params;
+  const { id, name, logopath, state, district, description } = route.params;
   const [userinfo, setUserinfo ] = useState('');
   const [account, setAccount] = useState(null);
   useEffect(() => {
@@ -65,6 +81,8 @@ const TeamDetailScreen = ({route, navigation}) => {
   useEffect(() => {
     applystatus(setUserinfo);
   }, [])
+
+  // console.log(userinfo)
 
   const applyButtonAlert = () =>
     Alert.alert(
@@ -81,8 +99,8 @@ const TeamDetailScreen = ({route, navigation}) => {
           const data = {
             teamId: id
           }
-          applyteam(data);
-          console.log(data)
+          applyTeam(data);
+          console.log(data);
           //userinfo = useState(true)
           }
         }
@@ -100,7 +118,15 @@ const TeamDetailScreen = ({route, navigation}) => {
           onPress: () => console.log("팀 가입 신청 유지"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("팀 가입 신청 취소 완료") }
+        { text: "확인", onPress: () => {
+          console.log("팀 가입 신청 취소 완료") 
+          const data = {
+            applicationId: userinfo[0].id
+          }
+          cancelTeam(data, userinfo[0].id);
+          console.log(userinfo)
+          }
+        }
       ],
       { cancelable: false }
     );
@@ -139,7 +165,7 @@ const TeamDetailScreen = ({route, navigation}) => {
       <View style={{marginBottom:30}}>
         <Button
           onPress={() => {navigation.navigate('TeamMember', 
-              {id: id, owner: account.owner}); 
+              {id: id, memberId:account.id}); 
               }}
           title="팀원 목록"
           type="outline"

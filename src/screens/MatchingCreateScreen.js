@@ -32,6 +32,7 @@ async function getProfile(setAccount) {
     }
     const res = await api.get('/api/accounts/profile', config);
     setAccount(res.data);
+    console.log(res.data)
   } catch (err) {
     console.log(err);
   }
