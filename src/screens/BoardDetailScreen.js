@@ -38,7 +38,8 @@ async function postComment(data, setContent) {
 }
 
 const BoardDetailScreen = ({ route, navigation }) => {
-  const { id } = route.params;
+  const {id} = route.params;
+  // const {id, title, content} = route.board;
   const [boards, setBoards] = useState('');
   const [content, setContent] = useState('');
 
@@ -79,6 +80,8 @@ const BoardDetailScreen = ({ route, navigation }) => {
               <Button
                 title="수정"
                 type="outline"
+                onPress={() => {navigation.navigate('BoardModify', {id: id, title: boards.title, content: boards.content}); 
+                  console.log()}}
               />
               <Text>   </Text>
               <Button

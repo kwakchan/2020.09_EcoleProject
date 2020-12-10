@@ -32,6 +32,7 @@ async function getProfile(setAccount) {
     }
     const res = await api.get('/api/accounts/profile', config);
     setAccount(res.data);
+    console.log(res.data)
   } catch (err) {
     console.log(err);
   }
@@ -57,7 +58,7 @@ const MatchingCreateScreen = ({ navigation }) => {
     <>
       {
         account ?
-          account.leadingTeam ?
+          account.owner === true ?
             showCal ?
               <View style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}>
                 <CalendarList

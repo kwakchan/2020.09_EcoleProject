@@ -1,11 +1,118 @@
-import React, {useState} from "react";
-import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
+//내팀이 신청한 매칭중 현재페이지 매칭에 취소(cancelMatch) 안됨
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect } from "react";
+import { Text, Image, View, StyleSheet, Button, Alert } from "react-native";
 import { ListItem, Icon } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
+import { api } from '../api';
 
-const MatchingDetailScreen = ({route, navigation}) => {
-  const { id, homeTeam_id, name, logoPath, state, district, date, countMember, description, matchStatus } = route.params;
-  const [showbtn, setShowbtn ] = useState(false)
+async function getProfile(setAccount) {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    const res = await api.get('/api/accounts/profile', config);
+    setAccount(res.data);
+    //console.log(res)
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
+async function deleteMatch(id) {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    const res = await api.delete(`/api/matches/${id}`, config);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
+//id값 팀이 매칭신청한 경기목록
+async function applystatus(setUserinfo, id) { //teamId
+  try {
+    const token = await AsyncStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    const res = await api.get(`/api/applications/teams/away/${id}`, config);
+    setUserinfo(res.data); 
+    console.log(res.data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+async function applyMatch(data, id) { //matchId
+  try {
+      const token = await AsyncStorage.getItem('token');
+      const config = {
+          headers: {
+              'Authorization': token
+          }
+      }
+      const res = await api.put(`/api/applications/teams/apply/${id}`, data, config);
+  } catch (err) {
+      console.log(err);
+  }
+}
+
+
+async function cancelMatch(data, applicationId) {
+  try {
+      const token = await AsyncStorage.getItem('token');
+      const config = {
+          headers: {
+              'Authorization': token
+          }
+      }
+      const res = await api.put(`/api/applications/teams/${applicationId}/away`, data, config);
+  } catch (err) {
+      console.log(err);
+  }
+}
+
+
+
+
+const MatchingDetailScreen = ({ route, navigation }) => {
+  const { id, homeTeam_id, name, logoPath, state, district, date, countMember, description, matchStatus } = route.params; //id=matchingid
+  const [account, setAccount] = useState(null);
+  const [userinfo, setUserinfo ] = useState('');
+  useEffect(() => {
+    const getProfile = async () => {
+      try {
+       const token = await AsyncStorage.getItem('token');
+       const config = {
+         headers: {
+          Authorization: token
+         }
+       }
+       const res = await api.get('/api/accounts/profile', config);
+       setAccount(res.data);
+       applystatus(setUserinfo, res.data.team.id);
+      } catch (err) {
+       console.log(err);
+      }
+    }
+     getProfile();
+   }, [])
+  
+
   const list = [
     {
       title: '시간',
@@ -25,10 +132,14 @@ const MatchingDetailScreen = ({route, navigation}) => {
     {
       title: '설명',
       icon: 'info',
-      text: description   
+      text: description
     }
   ]
 
+
+  
+
+  
   const deleteButtonAlert = () =>
     Alert.alert(
       "매칭 삭제",
@@ -39,10 +150,16 @@ const MatchingDetailScreen = ({route, navigation}) => {
           onPress: () => console.log("매칭 삭제 취소"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("매칭 삭제 완료") }
+        { text: "확인", onPress: () => {
+          console.log("매칭 삭제 완료")
+          deleteMatch(id)
+          navigation.navigate('MatchingList')
+          }
+        }
       ],
       { cancelable: false }
     );
+    
 
   const requestButtonAlert = () =>
     Alert.alert(
@@ -54,7 +171,14 @@ const MatchingDetailScreen = ({route, navigation}) => {
           onPress: () => console.log("매칭 신청 취소"),
           style: "cancel"
         },
-        { text: "확인", onPress: () => console.log("매칭 신청 완료") }
+        { text: "확인", onPress: () => {
+            console.log("매칭 신청 완료")
+            const data = {
+              awayTeamId: account.team.id
+            } 
+            applyMatch(data, id)
+          }
+        }
       ],
       { cancelable: false }
     );
@@ -73,84 +197,120 @@ const MatchingDetailScreen = ({route, navigation}) => {
       ],
       { cancelable: false }
     );
+    
 
   return (
     <ScrollView style={styles.background}>
-
-      {/* 수정/삭제 버튼 */}
-      <View style={styles.udbutton} >
-        <Button
-          onPress={() => {navigation.navigate('MatchingModify',
-            {id: id, homeTeam_id: homeTeam_id, name: name, logoPath: logoPath, state: state, district: district, 
-             date: date, countMember: countMember, description: description, matchStatus: matchStatus}); 
-            }}
-          title="수정"
-          color="gray"
-          type="outline"
-        />
-        <Button
-          onPress={deleteButtonAlert}
-          title="삭제"
-          color="#de3143"
-          type="outline"
-        />
-      </View>
-
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
       <View style={styles.teamprofile}>
-        <Image source={{ uri: logoPath }} style={{width:100, height:100, borderRadius: 150/2}}
+        <Image source={{ uri: logoPath }} style={{ width: 100, height: 100, borderRadius: 150 / 2 }}
         />
-        <View style={{flexDirection:'column'}}>
-          <Text styles={styles.teamname} style={{fontSize:20}}>{name}</Text>
+        <View style={{ flexDirection: 'column' }}>
+          <Text styles={styles.teamname} style={{ fontSize: 20 }}>{name}</Text>
         </View>
       </View>
+      {
+        account ?
+        account.owner === false
+        ?
+        <>
+          {/* 상세내용 */}
+          <View >
+            {
+              list.map((item, i) => (
+                <ListItem key={i} bottomDivider>
+                  <Icon name={item.icon} />
+                  <ListItem.Content>
+                    <ListItem.Title >{item.title}</ListItem.Title>
+                    <ListItem.Subtitle >{item.text}</ListItem.Subtitle>
+                  </ListItem.Content>
+                </ListItem>
+              ))
+            }
+          </View>
 
-      {/* 상세내용 */}
-      <View >
-        {
-          list.map((item, i) => (
-            <ListItem key={i} bottomDivider>
-              <Icon name={item.icon} />
-              <ListItem.Content>
-                <ListItem.Title >{item.title}</ListItem.Title>
-                <ListItem.Subtitle >{item.text}</ListItem.Subtitle>
-              </ListItem.Content>
-            </ListItem>
-          ))
-        }
-      </View>
+          
+        </>
+        :
+        <>
+          {
+            account.team.name === name
+            ?
+            <>
+              {/* 수정/삭제 버튼 */}
+              <Button
+              onPress={() => {
+                navigation.navigate('MatchingModify',
+                    {
+                      id: id, homeTeam_id: homeTeam_id, name: name, logoPath: logoPath, state: state, district: district,
+                      date: date, countMember: countMember, description: description, matchStatus: matchStatus
+                    });
+              }}
+              title="매칭 수정"
+              color="gray"
+              type="outline"
+              />
+              <Button
+                onPress=
+                //{() => {
+                  {deleteButtonAlert}
+                  //deleteMatch(id)
+                  //navigation.navigate('MatchingList')
+                //}}
+                title="매칭 삭제"
+                color="#de3143"
+                type="outline"
+              />
 
-      {/* 신청/취소 버튼 */}
-      <View style={styles.oxbutton}>
-        {
-          showbtn === false
-          ? <>
-          <Button
-            onPress={requestButtonAlert}
-            title="신청"
-          />
-          <Button
-          onPress={cancelButtonAlert}
-          title="취소"
-          disabled
-          />
-          </>
+              {/* 상세내용 */}
+              <View >
+                {
+                  list.map((item, i) => (
+                    <ListItem key={i} bottomDivider>
+                      <Icon name={item.icon} />
+                      <ListItem.Content>
+                        <ListItem.Title >{item.title}</ListItem.Title>
+                        <ListItem.Subtitle >{item.text}</ListItem.Subtitle>
+                      </ListItem.Content>
+                    </ListItem>
+                  ))
+                }
+              </View>
+            </>
+            :
+            <>
+              {/* 신청/취소 버튼 */}
+              <View style={styles.oxbutton}>
+                <Button
+                onPress={requestButtonAlert}
+                title="신청"
+                />
+                <Button
+                onPress={cancelButtonAlert}
+                title="누르지마 취소"
+                />
+              </View>
 
-          : <>
-          <Button
-            onPress={requestButtonAlert}
-            title="신청"
-            disabled
-          />
-          <Button
-            onPress={cancelButtonAlert}
-            title="취소"
-          />
-          </>
-        }
-      </View>
-
-    </ScrollView>
+              {/* 상세내용 */}
+              <View >
+                {
+                  list.map((item, i) => (
+                    <ListItem key={i} bottomDivider>
+                      <Icon name={item.icon} />
+                      <ListItem.Content>
+                        <ListItem.Title >{item.title}</ListItem.Title>
+                        <ListItem.Subtitle >{item.text}</ListItem.Subtitle>
+                      </ListItem.Content>
+                    </ListItem>
+                  ))
+                }
+              </View>
+            </>
+          }
+        </>
+        :<></>
+      }
+    </ScrollView >
   );
 }
 
@@ -159,25 +319,25 @@ const styles = StyleSheet.create({
     margin: 30
   },
   teamprofile: {
-    margin:20,
-    alignItems:'center'
+    margin: 20,
+    alignItems: 'center'
   },
   teamname: {
-    marginLeft:10,
-    alignContent:'center',
-    fontWeight:'bold',
-    textAlign:'center',
-    alignSelf:'center'
+    marginLeft: 10,
+    alignContent: 'center',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'center'
   },
   udbutton: {
-    flexDirection:'row',
-    position:'absolute',
-    top:20,
-    right:20
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 20,
+    right: 20
   },
   oxbutton: {
-    marginTop:30,
-    marginBottom:30
+    marginTop: 30,
+    marginBottom: 30
   }
 });
 

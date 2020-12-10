@@ -16,16 +16,15 @@ async function getTeamMember(setTeam, id) {
     }
     const res = await api.get(`/api/teams/${id}`, config);
     setTeam(res.data);
-    console.log(res.data);
+    console.log(res.data)
   } catch (error) {
-    console.log(res.data);
     console.log(error)
   }
 }
 
 const TeamMemberScreen = ({ route }) => {
-  const { id } = route.params;
-  const [team, setTeam] = useState(null);
+  const { id, memberId } = route.params;
+  const [team, setTeam] = useState();
 
   useEffect(() => {
     getTeamMember(setTeam, id);
@@ -37,7 +36,7 @@ const TeamMemberScreen = ({ route }) => {
         team ?
           <View style={{ flex: 1 }}>
             {
-              team.isOwner === false
+              team.owner.id !== memberId 
                 ?
                 <>
                   <View style={{ backgroundColor: "#EDD81C" }}>
