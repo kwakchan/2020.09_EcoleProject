@@ -6,7 +6,6 @@ import { api } from '../api';
 import MemberItem from '../components/MemberItem';
 import RequestMemberItem from '../components/RequestMemberItem';
 
-//id값을 보내고 data를 받아옴
 async function getTeamMember(setTeam, id) {
   try {
     const token = await AsyncStorage.getItem("token");
@@ -17,30 +16,28 @@ async function getTeamMember(setTeam, id) {
     }
     const res = await api.get(`/api/teams/${id}`, config);
     setTeam(res.data);
-    console.log(res.data);
+    console.log(res.data)
   } catch (error) {
-    console.log(res.data);
     console.log(error)
   }
 }
 
 const TeamMemberScreen = ({ route }) => {
   const { id, owner } = route.params;
-  const [team, setTeam] = useState(null);
+  const [team, setTeam] = useState();
 
   useEffect(() => {
     getTeamMember(setTeam, id);
+    console.log("팀장이니 " + owner)
   }, [])
 
   return (
     <>
       {
-        //불러온 값이 있다면
         team ?
           <View style={{ flex: 1 }}>
             {
-              //팀장이 아니면 멤버목록만 불러옴
-              owner === false
+              owner === false 
                 ?
                 <>
                   <View style={{ backgroundColor: "#EDD81C" }}>
@@ -52,7 +49,6 @@ const TeamMemberScreen = ({ route }) => {
                     renderItem={({ item }) => <MemberItem member={item} />}
                   />
                 </>
-                //팀장이면 멤버목록과 새로운 요청 불러옴
                 :
                 <>
                   <View style={{ backgroundColor: "#EDD81C" }}>
@@ -64,6 +60,7 @@ const TeamMemberScreen = ({ route }) => {
                     renderItem={({ item }) => <MemberItem member={item} />}
                   />
 
+                  {/* 팀장일 경우에만 보임 */}
                   <View style={{ backgroundColor: "#EDD81C" }}>
                     <Text style={styles.text}>새로운 요청</Text>
                   </View>
@@ -75,7 +72,6 @@ const TeamMemberScreen = ({ route }) => {
                 </>
             }
           </View>
-          //불러온 값이 없다면
           :
           <Text>Loading...</Text>
       }

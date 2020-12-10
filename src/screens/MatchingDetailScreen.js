@@ -1,36 +1,11 @@
-//다 되는데 에러메세지 뜸
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState, useEffect } from "react";
-import { Text, Image, View, StyleSheet, Button, Alert } from "react-native";
+import React, {useState} from "react";
+import { Text, Image, View, StyleSheet, Button, Alert} from "react-native";
 import { ListItem, Icon } from 'react-native-elements'
 import { ScrollView } from "react-native-gesture-handler";
 
-async function getTeamMember(setTeam, id) {
-  try {
-    const token = await AsyncStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: token
-      }
-    }
-    const res = await api.get(`/api/teams/${id}`, config);
-    setTeam(res.data);
-    console.log(res.data);
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const MatchingDetailScreen = ({ route, navigation }) => {
+const MatchingDetailScreen = ({route, navigation}) => {
   const { id, homeTeam_id, name, logoPath, state, district, date, countMember, description, matchStatus } = route.params;
-  console.log(id)
-  const [showbtn, setShowbtn] = useState(false)
-  const [team, setTeam] = useState(null);
-
-  useEffect(() => {
-    getTeamMember(setTeam, id);
-  }, [])
-
+  const [showbtn, setShowbtn ] = useState(false)
   const list = [
     {
       title: '시간',
@@ -50,7 +25,7 @@ const MatchingDetailScreen = ({ route, navigation }) => {
     {
       title: '설명',
       icon: 'info',
-      text: description
+      text: description   
     }
   ]
 
@@ -101,114 +76,81 @@ const MatchingDetailScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView style={styles.background}>
+
+      {/* 수정/삭제 버튼 */}
+      <View style={styles.udbutton} >
+        <Button
+          onPress={() => {navigation.navigate('MatchingModify',
+            {id: id, homeTeam_id: homeTeam_id, name: name, logoPath: logoPath, state: state, district: district, 
+             date: date, countMember: countMember, description: description, matchStatus: matchStatus}); 
+            }}
+          title="수정"
+          color="gray"
+          type="outline"
+        />
+        <Button
+          onPress={deleteButtonAlert}
+          title="삭제"
+          color="#de3143"
+          type="outline"
+        />
+      </View>
+
       {/* 팀로고(이미지) + 팀이름(텍스트) */}
       <View style={styles.teamprofile}>
-        <Image source={{ uri: logoPath }} style={{ width: 100, height: 100, borderRadius: 150 / 2 }}
+        <Image source={{ uri: logoPath }} style={{width:100, height:100, borderRadius: 150/2}}
         />
-        <View style={{ flexDirection: 'column' }}>
-          <Text styles={styles.teamname} style={{ fontSize: 20 }}>{name}</Text>
+        <View style={{flexDirection:'column'}}>
+          <Text styles={styles.teamname} style={{fontSize:20}}>{name}</Text>
         </View>
       </View>
-      {
-        team ?
-        <>
-          {
-            team.isOwner === true
-              ?
-              <>
-                {/* 수정/삭제 버튼 */}
-                <Button
-                  onPress={() => {
-                    navigation.navigate('MatchingModify',
-                      {
-                        id: id, homeTeam_id: homeTeam_id, name: name, logoPath: logoPath, state: state, district: district,
-                        date: date, countMember: countMember, description: description, matchStatus: matchStatus
-                      });
-                  }}
-                  title="매칭 수정"
-                  color="gray"
-                  type="outline"
-                />
-                <Button
-                  onPress={() => {
-                    { deleteButtonAlert }
-                    // navigation.navigate('EditTeamInformation', { team: team })
-                  }}
-                  title="매칭 삭제"
-                  color="#de3143"
-                  type="outline"
-                />
 
-                {/* 상세내용 */}
-                <View >
-                  {
-                    list.map((item, i) => (
-                      <ListItem key={i} bottomDivider>
-                        <Icon name={item.icon} />
-                        <ListItem.Content>
-                          <ListItem.Title >{item.title}</ListItem.Title>
-                          <ListItem.Subtitle >{item.text}</ListItem.Subtitle>
-                        </ListItem.Content>
-                      </ListItem>
-                    ))
-                  }
-                </View>
+      {/* 상세내용 */}
+      <View >
+        {
+          list.map((item, i) => (
+            <ListItem key={i} bottomDivider>
+              <Icon name={item.icon} />
+              <ListItem.Content>
+                <ListItem.Title >{item.title}</ListItem.Title>
+                <ListItem.Subtitle >{item.text}</ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
+          ))
+        }
+      </View>
 
-
-              </>
-              :
-              <>
-                {/* 신청/취소 버튼 */}
-                <View style={styles.oxbutton}>
-                  {
-                    showbtn === false
-                      ? <>
-                        <Button
-                          onPress={requestButtonAlert}
-                          title="신청"
-                        />
-                        <Button
-                          onPress={cancelButtonAlert}
-                          title="취소"
-                          disabled
-                        />
-                      </>
-
-                      : <>
-                        <Button
-                          onPress={requestButtonAlert}
-                          title="신청"
-                          disabled
-                        />
-                        <Button
-                          onPress={cancelButtonAlert}
-                          title="취소"
-                        />
-                      </>
-
-                  }
-                </View>
-
-                {/* 상세내용 */}
-                <View >
-                  {
-                    list.map((item, i) => (
-                      <ListItem key={i} bottomDivider>
-                        <Icon name={item.icon} />
-                        <ListItem.Content>
-                          <ListItem.Title >{item.title}</ListItem.Title>
-                          <ListItem.Subtitle >{item.text}</ListItem.Subtitle>
-                        </ListItem.Content>
-                      </ListItem>
-                    ))
-                  }
-                </View>
-              </>
-          }
+      {/* 신청/취소 버튼 */}
+      <View style={styles.oxbutton}>
+        {
+          showbtn === false
+          ? <>
+          <Button
+            onPress={requestButtonAlert}
+            title="신청"
+          />
+          <Button
+          onPress={cancelButtonAlert}
+          title="취소"
+          disabled
+          />
           </>
-          : <><Text>gg</Text></>
-      }
-    </ScrollView >
+
+          : <>
+          <Button
+            onPress={requestButtonAlert}
+            title="신청"
+            disabled
+          />
+          <Button
+            onPress={cancelButtonAlert}
+            title="취소"
+          />
+          </>
+        }
+      </View>
+
+    </ScrollView>
   );
 }
 
@@ -217,25 +159,25 @@ const styles = StyleSheet.create({
     margin: 30
   },
   teamprofile: {
-    margin: 20,
-    alignItems: 'center'
+    margin:20,
+    alignItems:'center'
   },
   teamname: {
-    marginLeft: 10,
-    alignContent: 'center',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    alignSelf: 'center'
+    marginLeft:10,
+    alignContent:'center',
+    fontWeight:'bold',
+    textAlign:'center',
+    alignSelf:'center'
   },
   udbutton: {
-    flexDirection: 'row',
-    position: 'absolute',
-    top: 20,
-    right: 20
+    flexDirection:'row',
+    position:'absolute',
+    top:20,
+    right:20
   },
   oxbutton: {
-    marginTop: 30,
-    marginBottom: 30
+    marginTop:30,
+    marginBottom:30
   }
 });
 
