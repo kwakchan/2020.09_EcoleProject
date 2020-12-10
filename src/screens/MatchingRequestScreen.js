@@ -1,11 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View} from 'react-native';
 import { SearchBar} from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import MatchingRequestItem from '../components/MatchingRequestItem';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { api } from '../api';
+
 import moment from 'moment';
 import 'moment-timezone';
 moment.tz.setDefault("Asia/Seoul");
+
+async function getRequest(setRequest, id) {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    const res = await api.get(`/api/teams/${id}`, config);
+    setRequest(res.data);
+    console.log(res.data);
+  } catch (error) {
+    // console.log(res.data);
+    console.log(error)
+  }
+}
 
 const list = [
   {
@@ -70,43 +90,69 @@ const list = [
   }
 ];
 
-const MatchingRequestScreen = (na) => {
+const MatchingRequestScreen = ({ route }) => {
+  const { id } = route.params;
+  const [ request , setRequest] = useState(null);
+  console.log(request)
+
+  useEffect(() => {
+    getRequest(setRequest, id);
+  }, [])
+
+  console.log("request" + request)
 
   const [search, setSearch] = useState('');
 
   return (
-    <View style={{ flex: 1, padding: 10 }}>
-      <SearchBar
-        placeholder="Team Seach"
-        onChangeText={setSearch}
-        value={search}
-        onSubmitEditing={() => console.log('search:' + search)}
-        containerStyle={{ backgroundColor: '#f2f2f2' }}
-        lightTheme round
-      />
-
-      <FlatList
-        data={list}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <MatchingRequestItem matchingRequest={item} />}
-        style={{ margin: 10 }}
-      />
-
-      {/* <View
-        {
-          list.map((item, i) => (
-          <ListItem key={i} bottomDivider>
-            <Avatar size="medium" rounded title={team_name.substring(0, 1)} containerStyle={{ backgroundColor: "gray" }} />
-            <ListItem.Content>
-              <ListItem.Title >{item.team_name}</ListItem.Title>
-              <ListItem.Subtitle >{item.matching_count}</ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-        ))
-        }
-      /> */}
-
-    </View>
+    <>
+      {
+        request ?
+        <>
+          {
+            <View style={{ flex: 1, padding: 10 }}>
+            <SearchBar
+              placeholder="Team Seach"
+              onChangeText={setSearch}
+              value={search}
+              onSubmitEditing={() => console.log('search:' + search)}
+              containerStyle={{ backgroundColor: '#f2f2f2' }}
+              lightTheme round
+            />
+      
+            <FlatList
+              data={list}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => <MatchingRequestItem matchingRequest={item} />}
+              style={{ margin: 10 }}
+            />
+      
+      
+            </View>
+          }
+        </>
+        : <>{
+          <View style={{ flex: 1, padding: 10 }}>
+          <SearchBar
+            placeholder="Team Seach"
+            onChangeText={setSearch}
+            value={search}
+            onSubmitEditing={() => console.log('search:' + search)}
+            containerStyle={{ backgroundColor: '#f2f2f2' }}
+            lightTheme round
+          />
+    
+          <FlatList
+            data={list} //request.applies
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <MatchingRequestItem matchingRequest={item} />}
+            style={{ margin: 10 }}
+          />
+    
+    
+          </View>
+        }</>
+      }
+    </>
 
   )
 }

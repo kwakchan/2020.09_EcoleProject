@@ -27,6 +27,8 @@ const TeamMemberScreen = ({ route }) => {
   const { id } = route.params;
   const [team, setTeam] = useState(null);
 
+console.log(team)
+
   useEffect(() => {
     getTeamMember(setTeam, id);
   }, [])
