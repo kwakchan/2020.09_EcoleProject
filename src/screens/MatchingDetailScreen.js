@@ -1,4 +1,4 @@
-//내팀이 신청한 매칭의 목록(applystatus), 신청(applyMatch), 취소(cancelMatch) 안됨
+//내팀이 신청한 매칭중 현재페이지 매칭에 취소(cancelMatch) 안됨
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from "react";
@@ -40,7 +40,7 @@ async function deleteMatch(id) {
 
 
 //id값 팀이 매칭신청한 경기목록
-async function applystatus(setUserinfo, id) {
+async function applystatus(setUserinfo, id) { //teamId
   try {
     const token = await AsyncStorage.getItem("token");
     const config = {
@@ -50,15 +50,14 @@ async function applystatus(setUserinfo, id) {
     }
     const res = await api.get(`/api/applications/teams/away/${id}`, config);
     setUserinfo(res.data); 
-    console.log("applystatus" + res.data)
-    console.log(id)
+    console.log(res.data)
   } catch (error) {
     console.log(error)
   }
 }
 
 
-async function applyMatch(data, id) {
+async function applyMatch(data, id) { //matchId
   try {
       const token = await AsyncStorage.getItem('token');
       const config = {
@@ -173,8 +172,11 @@ const MatchingDetailScreen = ({ route, navigation }) => {
           style: "cancel"
         },
         { text: "확인", onPress: () => {
-            console.log("매칭 신청 완료") 
-            applyMatch(id)
+            console.log("매칭 신청 완료")
+            const data = {
+              awayTeamId: account.team.id
+            } 
+            applyMatch(data, id)
           }
         }
       ],
@@ -281,7 +283,7 @@ const MatchingDetailScreen = ({ route, navigation }) => {
               <View style={styles.oxbutton}>
                 <Button
                 onPress={requestButtonAlert}
-                title="누르지마 신청"
+                title="신청"
                 />
                 <Button
                 onPress={cancelButtonAlert}
