@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, Button, Alert } from 'react-native';
+import React from 'react';
+import { Text, View, Button } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { api } from '../api';
 import AsyncStorage from "@react-native-async-storage/async-storage";
