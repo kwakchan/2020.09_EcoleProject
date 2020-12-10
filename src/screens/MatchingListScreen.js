@@ -3,7 +3,6 @@ import { View, Text, Switch, Button } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import MatchingItem from '../components/MatchingItem';
-import MyMatchingItem from '../components/MyMatchingItem';
 import NoMyMatchingItem from '../components/NoMyMatchingItem';
 import AllLocationItem from '../components/AllLocationItem';
 import { Avatar } from 'react-native-elements';
